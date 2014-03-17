@@ -216,7 +216,17 @@ void ae_dump::write_individual_probes( void )
     int_probes    = indiv->get_int_probes();
     double_probes = indiv->get_double_probes();
     
+    int16_t x=0;
+    int16_t y=0;
+    if (indiv->get_placed_in_population())
+    {
+      x=indiv->get_grid_cell()->get_x();
+      y=indiv->get_grid_cell()->get_y();
+    }
+    
     fprintf(current_file,"%"PRId32, index);
+    fprintf(current_file,"\t%"PRId16, x);
+    fprintf(current_file,"\t%"PRId16, y);
     for(int16_t i = 0; i < 5; i++)
     {
       fprintf(current_file,"\t%"PRId32,int_probes[i]);
