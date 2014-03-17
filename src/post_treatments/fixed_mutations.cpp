@@ -229,10 +229,11 @@ int main(int argc, char** argv)
   fprintf( output, "#  12. repl_seg_len     (replaced segment length for repl_HT, -1 for the others)\n" );
   fprintf( output, "#  13. GU_length        (before the event)\n" );
   fprintf( output, "#  14. Impact of the mutation on the metabolic error (negative value = smaller gap after = beneficial mutation) \n" );
+  fprintf( output, "#  15. Impact of the mutation on the secretion error (negative value = smaller gap after = beneficial mutation) \n" );
   fprintf( output, "####################################################################################################################\n" );
   fprintf( output, "#\n" );
   fprintf( output, "# Header for R\n" );
-  fprintf( output, "gener gen_unit mut_type pos_0 pos_1 pos_2 pos_3 invert align_score align_score_2 seg_len repl_seg_len GU_len impact\n" );
+  fprintf( output, "gener gen_unit mut_type pos_0 pos_1 pos_2 pos_3 invert align_score align_score_2 seg_len repl_seg_len GU_len impact sec_impact\n" );
 
 
   // =========================
@@ -294,6 +295,7 @@ int main(int argc, char** argv)
 
   int32_t i, index, genetic_unit_number, unitlen_before;
   double metabolic_error_before, metabolic_error_after, impact_on_metabolic_error;
+  double secretion_error_before, secretion_error_after, impact_on_secretion_error;
   char mut_descr_string[80];
   
   ae_exp_manager* exp_manager_backup = NULL;
@@ -386,6 +388,7 @@ int main(int argc, char** argv)
         mut = (ae_mutation *) mnode->get_obj();
 
         metabolic_error_before = indiv->get_dist_to_target_by_feature( METABOLISM );
+        secretion_error_before = indiv->get_dist_to_target_by_feature( SECRETION );
         unitlen_before = unit->get_dna()->get_length();
         // TODO : number of affected genes
 
@@ -393,14 +396,15 @@ int main(int argc, char** argv)
 
         indiv->reevaluate(env);
         metabolic_error_after = indiv->get_dist_to_target_by_feature( METABOLISM );
+        secretion_error_after = indiv->get_dist_to_target_by_feature( SECRETION );
         impact_on_metabolic_error = metabolic_error_after - metabolic_error_before;
-
+        impact_on_secretion_error = secretion_error_after - secretion_error_before;
       
         mut->get_generic_description_string( mut_descr_string );
-        fprintf( output, "%"PRId32" %"PRId32" %s %"PRId32" %.15f \n",\
+        fprintf( output, "%"PRId32" %"PRId32" %s %"PRId32" %.15f %.15f \n",\
                  num_gener, genetic_unit_number, \
                  mut_descr_string, unitlen_before, \
-                 impact_on_metabolic_error );
+                 impact_on_metabolic_error, impact_on_secretion_error );
 
 
         mnode = mnode->get_next();
@@ -417,6 +421,7 @@ int main(int argc, char** argv)
         mut = (ae_mutation *) mnode->get_obj();
         
         metabolic_error_before = indiv->get_dist_to_target_by_feature( METABOLISM );
+        secretion_error_before = indiv->get_dist_to_target_by_feature( SECRETION );
         unitlen_before = unit->get_dna()->get_length();
         // TODO : number of affected genes
 
@@ -424,13 +429,15 @@ int main(int argc, char** argv)
 
         indiv->reevaluate(env);
         metabolic_error_after = indiv->get_dist_to_target_by_feature( METABOLISM );
+        secretion_error_after = indiv->get_dist_to_target_by_feature( SECRETION );
         impact_on_metabolic_error = metabolic_error_after - metabolic_error_before;
-
+        impact_on_secretion_error = secretion_error_after - secretion_error_before;
+        
         mut->get_generic_description_string( mut_descr_string );
-        fprintf( output, "%"PRId32" %"PRId32" %s %"PRId32" %.15f \n",\
+        fprintf( output, "%"PRId32" %"PRId32" %s %"PRId32" %.15f %.15f \n",\
                  num_gener, genetic_unit_number, \
                  mut_descr_string, unitlen_before, \
-                 impact_on_metabolic_error );
+                 impact_on_metabolic_error, impact_on_secretion_error );
 
 
         mnode = mnode->get_next();
@@ -447,6 +454,7 @@ int main(int argc, char** argv)
         mut = (ae_mutation *) mnode->get_obj();
 
         metabolic_error_before = indiv->get_dist_to_target_by_feature( METABOLISM );
+        secretion_error_before = indiv->get_dist_to_target_by_feature( SECRETION );
         unitlen_before = unit->get_dna()->get_length();
         // TODO : number of affected genes
 
@@ -454,13 +462,15 @@ int main(int argc, char** argv)
 
         indiv->reevaluate(env);
         metabolic_error_after = indiv->get_dist_to_target_by_feature( METABOLISM );
+        secretion_error_after = indiv->get_dist_to_target_by_feature( SECRETION );
         impact_on_metabolic_error = metabolic_error_after - metabolic_error_before;
+        impact_on_secretion_error = secretion_error_after - secretion_error_before;
 
         mut->get_generic_description_string( mut_descr_string );
-        fprintf( output, "%"PRId32" %"PRId32" %s %"PRId32" %.15f \n",\
+        fprintf( output, "%"PRId32" %"PRId32" %s %"PRId32" %.15f %.15f \n",\
                  num_gener, genetic_unit_number, \
                  mut_descr_string, unitlen_before, \
-                 impact_on_metabolic_error );
+                 impact_on_metabolic_error, impact_on_secretion_error );
 
         mnode = mnode->get_next();
       }
