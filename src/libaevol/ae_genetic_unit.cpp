@@ -1093,7 +1093,14 @@ void ae_genetic_unit::compute_fitness( ae_environment* env )
   }
   else
   {
-    _fitness =  _fitness_by_feature[METABOLISM] * ( 1 + _exp_m->get_secretion_contrib_to_fitness() * ( _indiv->get_grid_cell()->get_compound_amount() - _exp_m->get_secretion_cost() * _fitness_by_feature[SECRETION] ) );
+    if ( env->get_area_by_feature(METABOLISM)==0.0 )
+    {
+      _fitness = ( 1 + _exp_m->get_secretion_contrib_to_fitness() * ( _indiv->get_grid_cell()->get_compound_amount() - _exp_m->get_secretion_cost() * _fitness_by_feature[SECRETION] ) );
+    }
+    else
+    {
+      _fitness =  _fitness_by_feature[METABOLISM] + _exp_m->get_secretion_contrib_to_fitness() * ( _indiv->get_grid_cell()->get_compound_amount() - _exp_m->get_secretion_cost() * _fitness_by_feature[SECRETION] );
+    }
   }
   
   if ( _exp_m->get_selection_scheme() == FITNESS_PROPORTIONATE ) // Then the exponential selection is integrated inside the fitness value
