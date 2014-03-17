@@ -436,6 +436,14 @@ int main( int argc, char* argv[] )
       change_based_on_non_coding_bases_in_population(pop, exp_manager, DOUBLE_NON_CODING_BASES_POPULATION);
       printf("\tChange of the population for a population with %"PRId32" individuals with twice the non coding bases number\n",pop->get_nb_indivs());
     }
+    else if ( strcmp( line->words[0], "DUMP_STEP" ) == 0 )
+    {
+      int step = atoi( line->words[1] );
+      if (step>0)
+      {
+        exp_manager->get_output_m()->set_dump_step( step );
+      }
+    }
     else
     {
       printf( "%s:%d: error: the change %s is not implemented yet \n", __FILE__, __LINE__, line->words[0] );
