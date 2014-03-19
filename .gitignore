@@ -1,0 +1,17 @@
+# Compiled source #
+###################
+*.o
+*.so
+*.Po
+*.m4
+*.a
+.status
+*.cache
+.deps
+*.status
+*.log
+Aevol4.3local
+patches
+Makefile
+
+#*.in
