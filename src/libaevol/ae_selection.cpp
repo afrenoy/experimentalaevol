@@ -735,12 +735,6 @@ ae_individual* ae_selection::do_replication( ae_individual* parent, int32_t inde
   //  new_indiv->assert_promoters();
   #endif
   
-  // Record metabolic and secretion errors of the descendant, because they will be "forgotten" if the descendant do not reproduce.
-  if ( new_indiv->get_replic_report() != NULL )
-  {
-    new_indiv->get_replic_report()->record_descendant_properties(new_indiv->get_dist_to_target_by_feature(METABOLISM),new_indiv->get_dist_to_target_by_feature(SECRETION));
-  }
-
   
   return new_indiv;
 }

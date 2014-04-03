@@ -117,7 +117,6 @@ class ae_replication_report : public ae_object
     
     void signal_end_of_replication( void );
     void write_to_tree_file( gzFile tree_file ) const;
-    inline void record_descendant_properties(double metabolic_error, double secretion_error);
 
 
     // =================================================================
@@ -167,10 +166,7 @@ class ae_replication_report : public ae_object
     double          _parent_metabolic_error;
     double          _parent_secretion_error;
     int32_t         _parent_genome_size;
-  
-    double          _descendant_metabolic_error;
-    double          _descendant_secretion_error;
-  
+    
     int32_t			    _donor_id;
     double          _donor_metabolic_error;
     double          _donor_secretion_error;
@@ -310,11 +306,7 @@ inline void ae_replication_report::set_donor_genome_size( int32_t donor_genome_s
   _donor_genome_size = donor_genome_size;
 }
 
-inline void ae_replication_report::record_descendant_properties(double metabolic_error, double secretion_error)
-{
-  _descendant_metabolic_error=metabolic_error;
-  _descendant_secretion_error=secretion_error;
-}
+  
 
 
 // =====================================================================
