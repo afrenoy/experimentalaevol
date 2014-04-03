@@ -69,6 +69,7 @@ ae_replication_report::ae_replication_report( ae_individual * indiv, ae_individu
     
   _genome_size        = 0;
   _metabolic_error    = 0.0;
+  _secretion_error    = 0.0;
   _nb_genes_activ     = 0;
   _nb_genes_inhib     = 0;
   _nb_non_fun_genes   = 0;
@@ -111,6 +112,7 @@ ae_replication_report::ae_replication_report( const ae_replication_report &model
     
   _genome_size        = model._genome_size;
   _metabolic_error    = model._metabolic_error;
+  _secretion_error    = model._secretion_error;
   _nb_genes_activ     = model._nb_genes_activ;
   _nb_genes_inhib     = model._nb_genes_inhib;
   _nb_non_fun_genes   = model._nb_non_fun_genes;
@@ -149,11 +151,15 @@ ae_replication_report::ae_replication_report( gzFile tree_file, ae_individual * 
   
   gzread( tree_file, &_genome_size,         sizeof(_genome_size) );
   gzread( tree_file, &_metabolic_error,     sizeof(_metabolic_error) );
+  gzread( tree_file, &_secretion_error,     sizeof(_secretion_error) );
   gzread( tree_file, &_nb_genes_activ,      sizeof(_nb_genes_activ) );
   gzread( tree_file, &_nb_genes_inhib,      sizeof(_nb_genes_inhib) );
   gzread( tree_file, &_nb_non_fun_genes,    sizeof(_nb_non_fun_genes) );
   gzread( tree_file, &_nb_coding_RNAs,      sizeof(_nb_coding_RNAs) );
   gzread( tree_file, &_nb_non_coding_RNAs,  sizeof(_nb_non_coding_RNAs) );
+  
+  gzread( tree_file, &_parent_metabolic_error,  sizeof(_parent_metabolic_error) );
+  gzread( tree_file, &_parent_secretion_error,  sizeof(_parent_secretion_error) );
   
   int32_t nb_dna_replic_reports;
   gzread( tree_file, &nb_dna_replic_reports, sizeof(nb_dna_replic_reports) );
@@ -194,8 +200,6 @@ ae_replication_report::ae_replication_report( gzFile tree_file, ae_individual * 
     _dna_replic_reports->add( dnareport );
   }
   
-  _parent_metabolic_error = -1;
-  _parent_secretion_error = -1;
   _donor_metabolic_error  = -1;
   _parent_genome_size     = -1;
   _donor_genome_size      = -1;
@@ -223,6 +227,7 @@ void ae_replication_report::signal_end_of_replication( void )
   // Retreive data from the individual
   _genome_size        = _indiv->get_total_genome_size();
   _metabolic_error    = _indiv->get_dist_to_target_by_feature( METABOLISM );
+  _secretion_error    = _indiv->get_dist_to_target_by_feature( SECRETION );
   _nb_genes_activ     = _indiv->get_nb_genes_activ();
   _nb_genes_inhib     = _indiv->get_nb_genes_inhib();
   _nb_non_fun_genes   = _indiv->get_nb_functional_genes();
@@ -319,11 +324,15 @@ void ae_replication_report::write_to_tree_file( gzFile tree_file ) const
   
   gzwrite( tree_file, &_genome_size,         sizeof(_genome_size) );
   gzwrite( tree_file, &_metabolic_error,     sizeof(_metabolic_error) );
+  gzwrite( tree_file, &_secretion_error,     sizeof(_secretion_error) );
   gzwrite( tree_file, &_nb_genes_activ,      sizeof(_nb_genes_activ) );
   gzwrite( tree_file, &_nb_genes_inhib,      sizeof(_nb_genes_inhib) );
   gzwrite( tree_file, &_nb_non_fun_genes,    sizeof(_nb_non_fun_genes) );
   gzwrite( tree_file, &_nb_coding_RNAs,      sizeof(_nb_coding_RNAs) );
   gzwrite( tree_file, &_nb_non_coding_RNAs,  sizeof(_nb_non_coding_RNAs) );  
+  
+  gzwrite( tree_file, &_parent_metabolic_error,     sizeof(_parent_metabolic_error) );
+  gzwrite( tree_file, &_parent_secretion_error,     sizeof(_parent_secretion_error) );
   
   // For each genetic unit, write the mutations and rearrangements undergone during replication
   int32_t nb_dna_replic_reports = _dna_replic_reports->get_nb_elts();

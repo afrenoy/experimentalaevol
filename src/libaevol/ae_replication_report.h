@@ -82,6 +82,8 @@ class ae_replication_report : public ae_object
     int32_t         get_id( void ) const;
     int32_t         get_rank( void ) const;
     inline int32_t  get_genome_size( void ) const;
+    inline double   get_metabolic_error( void ) const;
+    inline double   get_secretion_error( void ) const;
 
     inline int32_t  get_parent_id( void ) const;
     inline double   get_parent_metabolic_error( void ) const;
@@ -155,6 +157,7 @@ class ae_replication_report : public ae_object
     
     int32_t         _genome_size;
     double          _metabolic_error;
+    double          _secretion_error;
     int16_t         _nb_genes_activ;
     int16_t         _nb_genes_inhib;
     int16_t         _nb_non_fun_genes;
@@ -202,6 +205,17 @@ inline int32_t ae_replication_report::get_genome_size( void ) const
 {
   return _genome_size;
 }
+
+double ae_replication_report::get_metabolic_error( void ) const
+{
+  return _metabolic_error;
+}
+
+double ae_replication_report::get_secretion_error( void ) const
+{
+  return _secretion_error;
+}
+
 
 int32_t ae_replication_report::get_parent_id( void ) const
 {
