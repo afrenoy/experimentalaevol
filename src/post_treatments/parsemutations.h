@@ -34,12 +34,3 @@
 ae_replication_report***  reports;
 int32_t** reproductive_success;
 
-int32_t get_nb_descendant_per_generation(int32_t generation, int32_t individual, int32_t nbgen){
-  ae_replication_report* report = reports[generation][individual];
-  return 0;
-}
-
-int32_t get_total_nb_descendant(int32_t generation, int32_t individual, ae_replication_report* rep){
-  ae_replication_report* report = reports[generation][individual];
-  return 0;
-}

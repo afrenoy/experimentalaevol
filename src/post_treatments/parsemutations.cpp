@@ -13,20 +13,14 @@ void print_help( void );
 
 int main(int argc, char** argv)
 {
-  // =====================
-  //  Parse command line
-  // =====================
-  
-  // Default values
-  bool        verbose           = false;
+  // Parse the parameters
   int32_t     begin_gener       = 0;
   int32_t     end_gener         = -1;
   char tree_file_name[50];
   
-  const char * short_options = "hvncb:i:r:e:";
+  const char * short_options = "hb:e:";
   static struct option long_options[] = {
     {"help",      no_argument,       NULL,  'h'},
-    {"verbose",   no_argument,       NULL,  'v'},
     {"begin",     required_argument, NULL,  'b'},
     {"end",       required_argument,  NULL, 'e' },
     {0, 0, 0, 0}
@@ -37,21 +31,9 @@ int main(int argc, char** argv)
   {
     switch( option )
     {
-      case 'h' : print_help(); exit(EXIT_SUCCESS);  break;
-      case 'v' : verbose = true;                    break;
-      case 'b' : begin_gener  = atol(optarg);       break;
-      case 'e' :
-      {
-        if ( strcmp( optarg, "" ) == 0 )
-        {
-          printf( "%s: error: Option -e or --end : missing argument.\n", argv[0] );
-          exit( EXIT_FAILURE );
-        }
-        
-        end_gener = atol( optarg );
-        
-        break;
-      }
+      case 'h' : print_help(); exit(EXIT_SUCCESS); break;
+      case 'b' : begin_gener = atol(optarg); break;
+      case 'e' : end_gener = atol(optarg); break;
     }
   }
   
@@ -97,7 +79,6 @@ int main(int argc, char** argv)
     }
     delete tree;
   }
-  
   printf("Done with loading\n");
 
   // Open the output file
@@ -112,15 +93,69 @@ int main(int argc, char** argv)
     exit(EXIT_FAILURE);
   }
   
-  fprintf(output_file,"Small test\n");
+  // Calculate reproductive success of each (set of) mutation
+  reproductive_success=new int32_t*[nb_geners];
+  for(i=0;i<nb_geners;i++)
+  {
+    reproductive_success[i] = new int32_t[nb_indivs];
+  }
+  
+  int32_t generation,individual;
+  
+  // Dynamic programming algorithm
+  // initialize the table with 1s
+  for (generation=0;generation<nb_geners;generation++) {
+    for (individual=0;individual<nb_indivs;individual++){
+      reproductive_success[generation][individual]=0;
+    }
+  }
+  /*
+  // fill the last generation with 0s
+  for (individual=0;individual<nb_indivs;individual++){
+    reproductive_success[nb_geners-1][individual]=0;
+  }
+  */
+  // then go backward from last generation
+  for (generation=nb_geners-1;generation>0;generation--) {
+    for (individual=0;individual<nb_indivs;individual++){
+      // Find parent and update its reproductive success
+      int32_t idparent = reports[generation][individual]->get_parent_id(); // the report that describes creation of individual at generation + 1 from parent_id at generation.
+      reproductive_success[generation-1][idparent]+=reproductive_success[generation][individual]+1;
+    }
+  }
+  // Note that at this stage we do not use the "first" reports (reports[0][x]) because they tell us where generation 1 come from, so what of the individuals of generation 0 are successful, but we do not know what mutations permitted to obtain generation 0 from generation -1.
+  // We will however use these reports when we will analyse reproductive_success[0][x] (individuals at generation 1) because these reports explain what created this generation of individuals.
+  
+  // Assert the sum of reproductive success is correct at each generation
+  for (generation=0;generation<nb_geners;generation++) {
+    int32_t sum=0;
+    for (individual=0;individual<nb_indivs;individual++){
+      sum+=reproductive_success[generation][individual];
+    }
+    //printf("%"PRId32" %"PRId32" %"PRId32"\n",generation,sum,(nb_geners-1-generation)*nb_indivs);
+    assert(sum==(nb_geners-1-generation)*nb_indivs);
+  }
+  
+  // output all the analyzed mutations
+  for (generation=0;generation<nb_geners;generation++){
+    for (individual=0;individual<nb_indivs;individual++){
+      double metabolic_effect=reports[generation][individual]->get_metabolic_error() - reports[generation][individual]->get_parent_metabolic_error();
+      double secretion_effect=reports[generation][individual]->get_secretion_error() - reports[generation][individual]->get_parent_secretion_error();
+      // negative value = smaller gap = beneficial mutation
+      fprintf(output_file,"%"PRId32" %"PRId32" %"PRId32" %+.15f %+.15f\n", generation, individual, reproductive_success[generation][individual], metabolic_effect, secretion_effect);
+    }
+  }
   
   
+  // Close the files and clean memory
   fclose(output_file);
   for(i=0;i<end_gener - begin_gener;i++)
   {
     delete [] reports[i];
+    delete [] reproductive_success[i];
   }
   delete [] reports;
+  delete [] reproductive_success;
   delete exp_manager;
   
   exit(EXIT_SUCCESS);
