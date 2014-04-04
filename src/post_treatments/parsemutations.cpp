@@ -66,6 +66,7 @@ int main(int argc, char** argv)
   }
   
   int32_t loading_step;
+  //printf("%"PRId32"\n",tree_step);
   for (loading_step = end_gener; loading_step >= begin_gener+tree_step; loading_step-=tree_step){
     sprintf( tree_file_name,"tree/tree_%06"PRId32".ae", loading_step );
     printf("  Loading tree file %s\n",tree_file_name);
@@ -74,7 +75,7 @@ int main(int argc, char** argv)
     for (generation=0;generation<tree_step;generation++) {
       for (individual=0;individual<nb_indivs;individual++){
         //printf("about to treat %"PRId32" %"PRId32" %"PRId32"\n",loading_step,generation,individual);
-        reports[generation+loading_step-tree_step][individual]=new ae_replication_report(*(tree->get_report_by_index(generation+1,individual)));
+        reports[generation+loading_step-tree_step-begin_gener][individual]=new ae_replication_report(*(tree->get_report_by_index(generation+1,individual)));
       }
     }
     delete tree;
@@ -142,7 +143,7 @@ int main(int argc, char** argv)
       double metabolic_effect=reports[generation][individual]->get_metabolic_error() - reports[generation][individual]->get_parent_metabolic_error();
       double secretion_effect=reports[generation][individual]->get_secretion_error() - reports[generation][individual]->get_parent_secretion_error();
       // negative value = smaller gap = beneficial mutation
-      fprintf(output_file,"%"PRId32" %"PRId32" %"PRId32" %+.15f %+.15f\n", generation, individual, reproductive_success[generation][individual], metabolic_effect, secretion_effect);
+      fprintf(output_file,"%"PRId32" %"PRId32" %"PRId32" %+.15f %+.15f\n", generation+begin_gener, individual, reproductive_success[generation][individual], metabolic_effect, secretion_effect);
     }
   }
   
