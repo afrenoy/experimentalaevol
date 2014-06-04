@@ -226,7 +226,7 @@ int main( int argc, char* argv[] )
     else if ( strcmp( line->words[0], "POPULATION_SIZE") == 0 )
     {
     	pop->set_nb_indivs(atol( line->words[1] ) );
-      printf("\tChange of population size to %d\n",atol( line->words[1] ));
+      printf("\tChange of population size to %ld\n",atol( line->words[1] ));
     }
     else if ( strcmp( line->words[0], "SELECTION_PRESSURE") == 0 )
     {

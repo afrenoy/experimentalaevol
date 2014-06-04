@@ -700,19 +700,19 @@ void ae_mutation::get_generic_description_string( char * str )
     case INSERT :
     {
       sprintf( str, "%"PRId8" %"PRId32" %"PRId32" %"PRId32" %"PRId32" %"PRId8" %"PRId16" %"PRId16" %"PRId32" %"PRId32"", \
-              (int8_t) _mut_type, _pos[0], (int32_t)-1, (int32_t)-1, (int32_t)-1, (int8_t) -1, (int16_t) -1, (int32_t) -1, _length[0], (int32_t) -1 );
+              (int8_t) _mut_type, _pos[0], (int32_t)-1, (int32_t)-1, (int32_t)-1, (int8_t) -1, (int16_t) -1, (int16_t) -1, _length[0], (int32_t) -1 );
       break;
     }
     case INS_HT :
     {
       sprintf( str, "%"PRId8" %"PRId32" %"PRId32" %"PRId32" %"PRId32" %"PRId8" %"PRId16" %"PRId16" %"PRId32" %"PRId32"", \
-              (int8_t) _mut_type, _pos[0], _pos[1], _pos[2], _pos[3], _sense, _align_score[0], _align_score[1], _length[0], (int32_t) -1 );
+              (int8_t) _mut_type, _pos[0], _pos[1], _pos[2], _pos[3], (int8_t) _sense, _align_score[0], _align_score[1], _length[0], (int32_t) -1 );
       break;
     }
     case REPL_HT :
     {
       sprintf( str, "%"PRId8" %"PRId32" %"PRId32" %"PRId32" %"PRId32" %"PRId8" %"PRId16" %"PRId16" %"PRId32" %"PRId32" ", \
-              (int8_t) _mut_type, _pos[0], _pos[1], _pos[2], _pos[3], _sense, _align_score[0], _align_score[1], _length[1], _length[0] );
+              (int8_t) _mut_type, _pos[0], _pos[1], _pos[2], _pos[3], (int8_t) _sense, _align_score[0], _align_score[1], _length[1], _length[0] );
       break;
     }
     default :
@@ -730,7 +730,7 @@ void ae_mutation::get_generic_description_string( char * str )
 /* DEPRECATED, use get_length instead */
 int32_t ae_mutation::segment_length( int32_t gen_unit_len )
 {
-  int32_t res;
+  int32_t res=0; // Not initialised for INS_HT and REPL_HT. Why ?
   switch ( _mut_type )
   {
     case SWITCH :
