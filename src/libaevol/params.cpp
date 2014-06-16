@@ -175,7 +175,13 @@ params::params( void )
   _recipient_cost             = 0;
   _compute_phen_contrib_by_GU = false;
   _swap_GUs         = false;
-  
+  _trait_gu_location = new int16_t[NB_FEATURES];
+  int16_t i;
+  for (i=0; i<NB_FEATURES; i++)
+  {
+    _trait_gu_location[i]=0;
+  }
+
   // ------------------------------------------------------- Translation cost
   _translation_cost = 0;
     
@@ -216,6 +222,7 @@ params::~params( void )
   // these are allocated during reading of the parameter file
   if ( _env_axis_segment_boundaries != NULL ) delete [] _env_axis_segment_boundaries;
   if ( _env_axis_features != NULL ) delete [] _env_axis_features;
+  delete _trait_gu_location;
 }
 
 // =================================================================

@@ -183,6 +183,35 @@ void param_loader::interpret_line( f_line* line, int32_t _cur_line )
     _param_values->set_env_axis_features( env_axis_features );
     // do not delete env_axis_features, no in-depth copy, will be deleted with _param_values 
   }
+  else if ( strcmp( line->words[0], "TRAIT_GU_LOCATION" ) == 0)
+  {
+    if ( strcmp( line->words[1], "NEUTRAL" ) == 0 )
+    {
+      _param_values->set_trait_gu_location(NEUTRAL,atoi( line->words[2] ));
+    }
+    else if ( strcmp( line->words[1], "METABOLISM" ) == 0 )
+    {
+      _param_values->set_trait_gu_location(METABOLISM,atoi( line->words[2] ));
+    }
+    else if ( strcmp( line->words[1], "SECRETION" ) == 0 )
+    {
+      _param_values->set_trait_gu_location(SECRETION,atoi( line->words[2] ));
+    }
+    else if ( strcmp( line->words[1], "DONOR" ) == 0 )
+    {
+      _param_values->set_trait_gu_location(DONOR,atoi( line->words[2] ));
+    }
+    else if ( strcmp( line->words[1], "RECIPIENT" ) == 0 )
+    {
+      _param_values->set_trait_gu_location(RECIPIENT,atoi( line->words[2] ));
+    }
+    else
+    {
+      printf( "ERROR in param file \"%s\" on line %"PRId32" : unknown axis feature \"%s\".\n",
+              _param_file_name, _cur_line, line->words[2] );
+      exit( EXIT_FAILURE );
+    }
+  }
   else if ( strcmp( line->words[0], "ENV_SEPARATE_SEGMENTS" ) == 0 )
   {
     _param_values->set_env_axis_separate_segments( true );
@@ -1049,6 +1078,7 @@ void param_loader::load( ae_exp_manager* exp_m, bool verbose )
   exp_s->set_donor_cost( _param_values->_donor_cost );
   exp_s->set_recipient_cost( _param_values->_recipient_cost );
   exp_s->set_swap_GUs( _param_values->_swap_GUs );
+  exp_s->set_trait_gu_location( _param_values->_trait_gu_location);
   output_m->set_compute_phen_contrib_by_GU( _param_values->_compute_phen_contrib_by_GU );
   
   // -------------------------------------------------------- Spatial structure

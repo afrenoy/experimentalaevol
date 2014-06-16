@@ -976,9 +976,33 @@ void ae_genetic_unit::compute_phenotypic_contribution( void )
   while ( prot_node != NULL )
   {
     prot = prot_node->get_obj();
-
+    
     if ( prot->get_is_functional() )
     {
+      if (get_exp_m()->get_exp_s()->get_restriction_on_trait_gu_location() && (_indiv->get_nb_gen_units()>1)) // This second part of the condition ensures that we are not in aevol_create, evaluating an individual with only one genetic unit that would then be copied to the plasmid
+      {
+        int nfeat=-1;
+        ae_environment* env=get_exp_m()->get_env();
+        for ( int i=0; i<=(env->get_nb_segments() - 1); i++ )
+        {
+          if ( (prot->get_mean() >= env->get_segment_boundaries(i) ) && (prot->get_mean() < env->get_segment_boundaries(i+1)) )
+          {
+            nfeat = env->get_axis_feature(i);
+            break;
+          }
+        }
+        if (prot->get_mean()==1) nfeat = env->get_axis_feature(env->get_nb_segments()-1);
+        if (nfeat<0)
+        {
+          printf( "ERROR : unknown feature (mean = %f) in file %s : l%d\n", prot->get_mean(), __FILE__, __LINE__ );
+          exit( EXIT_FAILURE );
+        }
+        int16_t allowedgu = get_exp_m()->get_exp_s()->get_trait_gu_location()[nfeat];
+        //printf("%"PRId16" %p %p %p \n",allowedgu, this,_indiv->get_genetic_unit(0),_indiv->get_genetic_unit(1));
+        if ( (allowedgu==1) && (this==_indiv->get_genetic_unit(1)) ) break;//{printf("skiped\n");break;} // skip this protein, because only allowed on chromosome while we are on plasmid
+        if ( (allowedgu==2) && (this==_indiv->get_genetic_unit(0)) ) break;//{printf("skiped\n");break;} // skip this protein, because only allowed on plasmid while we are on chromosome
+      }
+      
       if ( prot->get_height() > 0 )
       {
         _activ_contribution->add_triangle(  prot->get_mean(),
@@ -1004,6 +1028,30 @@ void ae_genetic_unit::compute_phenotypic_contribution( void )
 
     if ( prot->get_is_functional() )
     {
+      if (get_exp_m()->get_exp_s()->get_restriction_on_trait_gu_location() && (_indiv->get_nb_gen_units()>1)) // This second part of the condition ensures that we are not in aevol_create, evaluating an individual with only one genetic unit that would then be copied to the plasmid
+      {
+        int nfeat=-1;
+        ae_environment* env=get_exp_m()->get_env();
+        for ( int i=0; i<=(env->get_nb_segments() - 1); i++ )
+        {
+          if ( (prot->get_mean() >= env->get_segment_boundaries(i) ) && (prot->get_mean() < env->get_segment_boundaries(i+1)) )
+          {
+            nfeat = env->get_axis_feature(i);
+            break;
+          }
+        }
+        if (prot->get_mean()==1) nfeat = env->get_axis_feature(env->get_nb_segments()-1);
+        if (nfeat<0)
+        {
+          printf( "ERROR : unknown feature (mean = %f) in file %s : l%d\n", prot->get_mean(), __FILE__, __LINE__ );
+          exit( EXIT_FAILURE );
+        }
+        int16_t allowedgu = get_exp_m()->get_exp_s()->get_trait_gu_location()[nfeat];
+        //printf("%"PRId16" %p %p %p \n",allowedgu, this,_indiv->get_genetic_unit(0),_indiv->get_genetic_unit(1));
+        if ( (allowedgu==1) && (this==_indiv->get_genetic_unit(1)) ) break;//{printf("skiped\n");break;} // skip this protein
+        if ( (allowedgu==2) && (this==_indiv->get_genetic_unit(0)) ) break;//{printf("skiped\n");break;} // skip this protein
+      }
+
       if ( prot->get_height() > 0 )
       {
         _activ_contribution->add_triangle(  prot->get_mean(),

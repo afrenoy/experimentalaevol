@@ -86,6 +86,7 @@ ae_exp_setup::ae_exp_setup( ae_exp_manager* exp_m )
   _donor_cost       = 0.0;
   _recipient_cost   = 0.0;
   _swap_GUs         = false;
+  _trait_gu_location = new int16_t[NB_FEATURES];
   
   // -------------------------------------------------------------- Secretion
   _with_secretion = false;
@@ -100,6 +101,7 @@ ae_exp_setup::ae_exp_setup( ae_exp_manager* exp_m )
 ae_exp_setup::~ae_exp_setup( void )
 {
   delete _sel;
+  delete _trait_gu_location;
 }
 
 // ===========================================================================
@@ -136,6 +138,13 @@ void ae_exp_setup::write_setup_file( gzFile exp_setup_file ) const
     gzwrite( exp_setup_file, &_recipient_cost,  sizeof(_recipient_cost) );
     int8_t tmp_swap_GUs = _swap_GUs;
     gzwrite( exp_setup_file, &tmp_swap_GUs, sizeof(tmp_swap_GUs) );
+    gzwrite( exp_setup_file, &_restriction_on_trait_gu_location, sizeof(_restriction_on_trait_gu_location) );
+    int16_t i;
+    for (i=0; i<NB_FEATURES; i++)
+    {
+      gzwrite( exp_setup_file, &_trait_gu_location[i], sizeof(_trait_gu_location[i]) );
+    }
+
   }
   
   // -------------------------------------------------------------- Secretion
@@ -193,7 +202,13 @@ void ae_exp_setup::load( gzFile setup_file, gzFile backup_file, bool verbose )
     gzread( setup_file, &tmp_swap_GUs, sizeof(tmp_swap_GUs) );
     _swap_GUs = tmp_swap_GUs ? 1 : 0;
   }
-  
+  gzread( setup_file, &_restriction_on_trait_gu_location, sizeof(_restriction_on_trait_gu_location) );
+  int16_t i;
+  for (i=0; i<NB_FEATURES; i++)
+  {
+    gzread( setup_file, &_trait_gu_location[i], sizeof(_trait_gu_location[i]) );
+  }
+
   // ------------------------------------------ Retrieve secretion parameters
   int8_t tmp_with_secretion;
   gzread( setup_file, &tmp_with_secretion, sizeof(tmp_with_secretion) );

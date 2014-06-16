@@ -101,7 +101,8 @@ class ae_exp_setup : public ae_object
     inline double get_donor_cost( void ) const;
     inline double get_recipient_cost( void ) const;
     inline bool   get_swap_GUs( void ) const;
-    
+    inline int16_t* get_trait_gu_location( void ) const;
+    inline bool   get_restriction_on_trait_gu_location( void ) const;
     // -------------------------------------------------------------- Secretion
     inline bool   get_with_secretion( void ) const;
     inline double get_secretion_contrib_to_fitness( void ) const;
@@ -127,7 +128,8 @@ class ae_exp_setup : public ae_object
     inline void set_donor_cost( double donor_cost );
     inline void set_recipient_cost( double recipient_cost );
     inline void set_swap_GUs( bool swap_GUs );
-    
+    inline void set_trait_gu_location( int16_t* trait_gu_location );
+
     // -------------------------------------------------------------- Secretion
     inline void set_with_secretion( bool with_secretion );
     inline void set_secretion_contrib_to_fitness( double secretion_contrib );
@@ -197,7 +199,9 @@ class ae_exp_setup : public ae_object
     double  _donor_cost;
     double  _recipient_cost;
     bool    _swap_GUs; // Whether plasmid HT is uni- or bidirectional
-    
+    int16_t* _trait_gu_location;
+    bool _restriction_on_trait_gu_location;
+  
     // -------------------------------------------------- Secretion parameters
     bool    _with_secretion;
     double  _secretion_contrib_to_fitness;
@@ -268,9 +272,19 @@ inline double ae_exp_setup::get_recipient_cost( void ) const
   return _recipient_cost;
 }
 
-inline bool   ae_exp_setup::get_swap_GUs( void ) const
+inline bool ae_exp_setup::get_swap_GUs( void ) const
 {
   return _swap_GUs;
+}
+
+inline int16_t* ae_exp_setup::get_trait_gu_location( void ) const
+{
+  return _trait_gu_location;
+}
+
+inline bool ae_exp_setup::get_restriction_on_trait_gu_location( void ) const
+{
+  return _restriction_on_trait_gu_location;
 }
 
 inline bool ae_exp_setup::get_with_secretion( void ) const
@@ -350,6 +364,20 @@ inline void ae_exp_setup::set_recipient_cost( double recipient_cost )
 inline void ae_exp_setup::set_swap_GUs( bool swap_GUs )
 {
   _swap_GUs = swap_GUs;
+}
+
+inline void ae_exp_setup::set_trait_gu_location( int16_t* trait_gu_location )
+{
+  int16_t i;
+  _restriction_on_trait_gu_location=false;
+  for (i=0; i<NB_FEATURES; i++)
+  {
+    _trait_gu_location[i]=trait_gu_location[i];
+    if (_trait_gu_location[i]>0)
+    {
+      _restriction_on_trait_gu_location=true;
+    }
+  }
 }
 
 // -------------------------------------------------------------- Secretion
