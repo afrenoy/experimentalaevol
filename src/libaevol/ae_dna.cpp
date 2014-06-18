@@ -1247,7 +1247,6 @@ ae_mutation* ae_dna::do_translocation( void )
       {
         if (_exp_m->get_exp_s()->get_isolate_GUs())
         {
-          printf("Inter GU translocation not done\n");
           return mut;
         }
         // Report the translocation

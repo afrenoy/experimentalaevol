@@ -1584,10 +1584,21 @@ ae_individual* param_loader::create_random_individual_with_good_gene( ae_exp_man
     {
       // here things work the same as before, but in the constructor of the individual, 
       // a single genetic unit is created and then copied from the chromosome to the plasmid
-      while ( indiv->get_dist_to_target_by_feature( METABOLISM ) >= env_metabolic_area )
+      if ( exp_m->get_env()->get_area_by_feature(METABOLISM)!=0.0 )
       {
-        delete indiv;
-        indiv = create_random_individual( exp_m, param_mut, id );
+        while ( indiv->get_dist_to_target_by_feature( METABOLISM ) >= env_metabolic_area )
+        {
+          delete indiv;
+          indiv = create_random_individual( exp_m, param_mut, id );
+        }
+      }
+      else
+      {
+        while ( indiv->get_dist_to_target_by_feature( SECRETION ) >= exp_m->get_env()->get_area_by_feature( SECRETION ) )
+        {
+          delete indiv;
+          indiv = create_random_individual( exp_m, param_mut, id );
+        }
       }
     }
     if ( _param_values->get_plasmid_initial_gene() == 2 )
