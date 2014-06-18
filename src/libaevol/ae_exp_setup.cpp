@@ -201,14 +201,15 @@ void ae_exp_setup::load( gzFile setup_file, gzFile backup_file, bool verbose )
     int8_t tmp_swap_GUs;
     gzread( setup_file, &tmp_swap_GUs, sizeof(tmp_swap_GUs) );
     _swap_GUs = tmp_swap_GUs ? 1 : 0;
+    // retrieve restriction on trait location
+    gzread( setup_file, &_restriction_on_trait_gu_location, sizeof(_restriction_on_trait_gu_location) );
+    int16_t i;
+    for (i=0; i<NB_FEATURES; i++)
+    {
+      gzread( setup_file, &_trait_gu_location[i], sizeof(_trait_gu_location[i]) );
+    }
   }
-  gzread( setup_file, &_restriction_on_trait_gu_location, sizeof(_restriction_on_trait_gu_location) );
-  int16_t i;
-  for (i=0; i<NB_FEATURES; i++)
-  {
-    gzread( setup_file, &_trait_gu_location[i], sizeof(_trait_gu_location[i]) );
-  }
-
+  
   // ------------------------------------------ Retrieve secretion parameters
   int8_t tmp_with_secretion;
   gzread( setup_file, &tmp_with_secretion, sizeof(tmp_with_secretion) );
