@@ -103,6 +103,8 @@ class ae_exp_setup : public ae_object
     inline bool   get_swap_GUs( void ) const;
     inline int16_t* get_trait_gu_location( void ) const;
     inline bool   get_restriction_on_trait_gu_location( void ) const;
+    inline bool   get_isolate_GUs( void ) const;
+  
     // -------------------------------------------------------------- Secretion
     inline bool   get_with_secretion( void ) const;
     inline double get_secretion_contrib_to_fitness( void ) const;
@@ -129,6 +131,7 @@ class ae_exp_setup : public ae_object
     inline void set_recipient_cost( double recipient_cost );
     inline void set_swap_GUs( bool swap_GUs );
     inline void set_trait_gu_location( int16_t* trait_gu_location );
+    inline void set_isolate_GUs( bool isolate_GUs );
 
     // -------------------------------------------------------------- Secretion
     inline void set_with_secretion( bool with_secretion );
@@ -201,6 +204,7 @@ class ae_exp_setup : public ae_object
     bool    _swap_GUs; // Whether plasmid HT is uni- or bidirectional
     int16_t* _trait_gu_location;
     bool _restriction_on_trait_gu_location;
+    bool _isolate_GUs;
   
     // -------------------------------------------------- Secretion parameters
     bool    _with_secretion;
@@ -285,6 +289,11 @@ inline int16_t* ae_exp_setup::get_trait_gu_location( void ) const
 inline bool ae_exp_setup::get_restriction_on_trait_gu_location( void ) const
 {
   return _restriction_on_trait_gu_location;
+}
+
+inline bool ae_exp_setup::get_isolate_GUs( void ) const
+{
+  return _isolate_GUs;
 }
 
 inline bool ae_exp_setup::get_with_secretion( void ) const
@@ -378,6 +387,11 @@ inline void ae_exp_setup::set_trait_gu_location( int16_t* trait_gu_location )
       _restriction_on_trait_gu_location=true;
     }
   }
+}
+
+inline void ae_exp_setup::set_isolate_GUs( bool isolate_GUs )
+{
+  _isolate_GUs = isolate_GUs;
 }
 
 // -------------------------------------------------------------- Secretion

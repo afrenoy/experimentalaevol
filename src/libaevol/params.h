@@ -364,6 +364,7 @@ class params : public ae_object
     inline void set_compute_phen_contrib_by_GU( bool compute_phen_contrib_by_GU );
     inline void set_swap_GUs( bool swap_GUs );
     inline void set_trait_gu_location(ae_env_axis_feature feature, int16_t gu);
+    inline void set_isolate_GUs(bool isolate_GUs);
   
     // ------------------------------------------------------- Translation cost
     inline void set_translation_cost( double translation_cost );
@@ -576,6 +577,7 @@ class params : public ae_object
     bool      _compute_phen_contrib_by_GU;
     bool      _swap_GUs;
     int16_t*  _trait_gu_location;
+    bool      _isolate_GUs;
   
     // ------------------------------------------------------- Translation cost
     double _translation_cost;
@@ -1542,6 +1544,11 @@ inline void params::set_swap_GUs( bool swap_GUs )
 inline void params::set_trait_gu_location(ae_env_axis_feature feature, int16_t gu)
 {
   _trait_gu_location[feature]=gu;
+}
+
+inline void params::set_isolate_GUs( bool isolate_GUs )
+{
+  _isolate_GUs = isolate_GUs;
 }
 
 // ----------------------------------------------------------- Translation cost

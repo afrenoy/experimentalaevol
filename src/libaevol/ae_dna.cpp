@@ -1245,6 +1245,11 @@ ae_mutation* ae_dna::do_translocation( void )
       
       if ( do_inter_GU_translocation( pos_1_rel, pos_2_rel, pos_3_rel, pos_4_rel, invert ) )
       {
+        if (_exp_m->get_exp_s()->get_isolate_GUs())
+        {
+          printf("Inter GU translocation not done\n");
+          return mut;
+        }
         // Report the translocation
         if ( _exp_m->get_output_m()->get_record_tree() && _exp_m->get_output_m()->get_tree_mode() == NORMAL )
         {

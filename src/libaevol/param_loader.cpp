@@ -212,6 +212,10 @@ void param_loader::interpret_line( f_line* line, int32_t _cur_line )
       exit( EXIT_FAILURE );
     }
   }
+  else if ( strcmp( line->words[0], "ISOLATE_GUS" ) == 0 )
+  {
+    _param_values->set_isolate_GUs( true );
+  }
   else if ( strcmp( line->words[0], "ENV_SEPARATE_SEGMENTS" ) == 0 )
   {
     _param_values->set_env_axis_separate_segments( true );
@@ -1080,6 +1084,7 @@ void param_loader::load( ae_exp_manager* exp_m, bool verbose )
   exp_s->set_swap_GUs( _param_values->_swap_GUs );
   exp_s->set_trait_gu_location( _param_values->_trait_gu_location);
   output_m->set_compute_phen_contrib_by_GU( _param_values->_compute_phen_contrib_by_GU );
+  exp_s->set_isolate_GUs( _param_values->_isolate_GUs );
   
   // -------------------------------------------------------- Spatial structure
   if ( _param_values->_spatially_structured )

@@ -181,6 +181,7 @@ params::params( void )
   {
     _trait_gu_location[i]=0;
   }
+  _isolate_GUs = false;
 
   // ------------------------------------------------------- Translation cost
   _translation_cost = 0;

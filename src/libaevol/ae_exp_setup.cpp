@@ -144,7 +144,8 @@ void ae_exp_setup::write_setup_file( gzFile exp_setup_file ) const
     {
       gzwrite( exp_setup_file, &_trait_gu_location[i], sizeof(_trait_gu_location[i]) );
     }
-
+    int8_t tmp_isolate_GUs = _isolate_GUs;
+    gzwrite( exp_setup_file, &tmp_isolate_GUs, sizeof(tmp_isolate_GUs));
   }
   
   // -------------------------------------------------------------- Secretion
@@ -208,6 +209,9 @@ void ae_exp_setup::load( gzFile setup_file, gzFile backup_file, bool verbose )
     {
       gzread( setup_file, &_trait_gu_location[i], sizeof(_trait_gu_location[i]) );
     }
+    int8_t tmp_isolate_GUs;
+    gzread( setup_file, &tmp_isolate_GUs, sizeof(tmp_isolate_GUs) );
+    _isolate_GUs = tmp_isolate_GUs ? 1 : 0;
   }
   
   // ------------------------------------------ Retrieve secretion parameters
