@@ -1615,11 +1615,23 @@ ae_individual* param_loader::create_random_individual_with_good_gene( ae_exp_man
   }
   else
   {
-    while ( indiv->get_dist_to_target_by_feature( METABOLISM ) >= env_metabolic_area )
+    if ( exp_m->get_env()->get_area_by_feature(METABOLISM)!=0.0 )
     {
-      delete indiv;
-      indiv = create_random_individual( exp_m, param_mut, id );
+      while ( indiv->get_dist_to_target_by_feature( METABOLISM ) >= env_metabolic_area )
+      {
+        delete indiv;
+        indiv = create_random_individual( exp_m, param_mut, id );
+      }
     }
+    else
+    {
+      while ( indiv->get_dist_to_target_by_feature( SECRETION ) >= exp_m->get_env()->get_area_by_feature( SECRETION ) )
+      {
+        delete indiv;
+        indiv = create_random_individual( exp_m, param_mut, id );
+      }
+    }
+    
   }
   
   // Compute the "good" individual's statistics
