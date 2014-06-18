@@ -1590,6 +1590,28 @@ ae_individual* param_loader::create_random_individual_with_good_gene( ae_exp_man
         indiv = create_random_individual( exp_m, param_mut, id );
       }
     }
+    if ( _param_values->get_plasmid_initial_gene() == 2 )
+    {
+      // We already have one chromosome with a good metabolic gene
+      
+      // We now create one other genetic unit with a good secretion gene in an independant individual
+      double env_secretion_area = exp_m->get_env()->get_area_by_feature( SECRETION );
+      ae_individual* indivbis = create_random_individual( exp_m, param_mut, id );
+      while ( indivbis->get_dist_to_target_by_feature(SECRETION) >= env_secretion_area )
+      {
+        delete indivbis;
+        indivbis = create_random_individual( exp_m, param_mut, id );
+      }
+      
+      // We remove plasmid from indiv, extract plasmid from indivbis and insert it as plasmid in indiv
+      indiv->get_genetic_unit_list()->remove(indiv->get_genetic_unit_list()->get_last(),true,true);
+      indiv->inject_GU(indivbis);
+      
+      // We check that there is no negative epistasis between our two genes
+      indiv->evaluate( exp_m->get_env() );
+      assert( (indiv->get_dist_to_target_by_feature(SECRETION) < env_secretion_area) && (indiv->get_dist_to_target_by_feature(METABOLISM) < env_metabolic_area) );
+      delete indivbis;
+    }
   }
   else
   {
