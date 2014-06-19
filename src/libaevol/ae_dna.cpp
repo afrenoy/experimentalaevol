@@ -1243,12 +1243,13 @@ ae_mutation* ae_dna::do_translocation( void )
       //~ printf( "  %"PRId32" %"PRId32" %"PRId32" %"PRId32" (length : %"PRId32")\n", pos_1, pos_2, pos_3, pos_4, segment_length );
       //~ printf( "  former pos : %"PRId32" %"PRId32" %"PRId32" %"PRId32"\n", former_pos_1, former_pos_2, former_pos_3, former_pos_4 );
       
+      if (_exp_m->get_exp_s()->get_isolate_GUs())
+      {
+        return mut;
+      }
+      
       if ( do_inter_GU_translocation( pos_1_rel, pos_2_rel, pos_3_rel, pos_4_rel, invert ) )
       {
-        if (_exp_m->get_exp_s()->get_isolate_GUs())
-        {
-          return mut;
-        }
         // Report the translocation
         if ( _exp_m->get_output_m()->get_record_tree() && _exp_m->get_output_m()->get_tree_mode() == NORMAL )
         {
