@@ -75,7 +75,7 @@ class param_loader
     //                            Public Methods
     // =================================================================
     void read_file( void );
-    void load( ae_exp_manager* exp_m, bool verbose = false );
+    void load( ae_exp_manager* exp_m, bool verbose = false, char* genome = NULL, int32_t lgenome = 0 );
     
     f_line* get_line( void ); 
     

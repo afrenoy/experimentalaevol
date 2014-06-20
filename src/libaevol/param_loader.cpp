@@ -977,7 +977,7 @@ void param_loader::read_file( void )
 }
 
 
-void param_loader::load( ae_exp_manager* exp_m, bool verbose )
+void param_loader::load( ae_exp_manager* exp_m, bool verbose, char* genome, int32_t lgenome )
 {
   // Check consistency of min, max and initial length of chromosome and plasmid
   // Default for by GU minimal or maximal size is -1.
@@ -1186,7 +1186,34 @@ void param_loader::load( ae_exp_manager* exp_m, bool verbose )
   ae_individual* indiv        = NULL;
   int32_t        id_new_indiv = 0;
   
-  if ( _param_values->get_init_method() & ONE_GOOD_GENE )
+  if (genome != NULL)
+  {
+    ae_individual* indiv = new ae_individual( exp_m,
+                                             _prng,
+                                             _prng,
+                                             param_mut,
+                                             _param_values->_w_max,
+                                             _param_values->_min_genome_length,
+                                             _param_values->_max_genome_length,
+                                             _param_values->_allow_plasmids,
+                                             id_new_indiv++, 0 );
+
+    indiv->add_GU( genome, lgenome );
+    indiv->evaluate( exp_m->get_env() );
+    indiv->get_genetic_unit(0)->set_min_gu_length(_param_values->_chromosome_minimal_length);
+    indiv->get_genetic_unit(0)->set_max_gu_length(_param_values->_chromosome_maximal_length);
+    indiv->set_with_stochasticity( _param_values->get_with_stochasticity() );
+    pop->add_indiv( indiv );
+    // Make the clones and add them to the list of individuals
+    ae_individual* clone = NULL;
+    for ( int32_t i = 1 ; i < _param_values->get_init_pop_size() ; i++ )
+    {
+      clone = create_clone( indiv, id_new_indiv++ );
+      pop->add_indiv( clone );
+    }
+    pop->sort_individuals();
+  }
+  else if ( _param_values->get_init_method() & ONE_GOOD_GENE )
   {
     if ( _param_values->get_init_method() & CLONE )
     {

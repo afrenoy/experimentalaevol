@@ -69,14 +69,15 @@ int main( int argc, char* argv[] )
 {
   // 1) Initialize command-line option variables with default values
   char* param_file_name = NULL;
-  
+  char* genome_file_name = NULL;
   
   // 2) Define allowed options
-  const char * options_list = "hf:V";
+  const char * options_list = "hf:Vg:";
   static struct option long_options_list[] = {
     { "help",     no_argument,        NULL, 'h' },
     { "file",     required_argument,  NULL, 'f' },
     { "version",  no_argument,        NULL, 'V' },
+    { "genome",   required_argument,  NULL, 'g' },
     { 0, 0, 0, 0 }
   };
   
@@ -103,6 +104,10 @@ int main( int argc, char* argv[] )
         strcpy( param_file_name, optarg );
         break;
       }
+      case 'g':
+        genome_file_name = new char [strlen(optarg)+1];
+        strcpy( genome_file_name, optarg );
+        break;
       default :
       {
         // An error message is printed in getopt_long, we just need to exit
@@ -119,6 +124,20 @@ int main( int argc, char* argv[] )
     sprintf( param_file_name, "%s", DEFAULT_PARAM_FILE_NAME );
   }
   
+  char rawgenome[1000000];
+  int32_t lgenome=-1;
+  char* genome;
+  
+  if ( genome_file_name != NULL )
+  {
+    FILE* genome_file = fopen(genome_file_name,"r");
+    fgets(rawgenome, 1000000, genome_file);
+    lgenome = strlen(rawgenome);
+    genome = new char[lgenome]; // Warning: will become the DNA of the first individual created -> no not delete, will be freed in ~ae_dna.
+    strncpy(genome, rawgenome, lgenome);
+    printf("%"PRId32" \n",lgenome);
+    fclose(genome_file);
+  }
   
   // 5) Create a param loader for the parameter file
   param_loader* my_param_loader = new param_loader( param_file_name );
@@ -133,7 +152,14 @@ int main( int argc, char* argv[] )
   #endif
   
   // 7) Load the parameter file
-  my_param_loader->load( exp_manager, true );
+  if (lgenome > -1)
+  {
+    my_param_loader->load( exp_manager, true, genome, lgenome );
+  }
+  else
+  {
+    my_param_loader->load( exp_manager, true );
+  }
   delete my_param_loader;
   
   //~ ((ae_exp_manager_X11*)exp_manager)->toggle_display_on_off();
