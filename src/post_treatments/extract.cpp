@@ -95,7 +95,7 @@
 
 
 void print_help( char* prog_name );
-void analyse_indiv( ae_individual* indiv, FILE* triangles_file, FILE* sequence_file, int16_t gu, ae_environment* env );
+void analyse_indiv( ae_individual* indiv, FILE* triangles_file, FILE* sequence_file, FILE* info_file, int16_t gu, ae_environment* env );
 void analyse_gu( ae_genetic_unit* gen_unit, int32_t gen_unit_number, FILE* triangles_file, ae_environment* env );
 
 
@@ -106,18 +106,20 @@ int main( int argc, char* argv[] )
   char* pop_file_name  = NULL;
   char* triangles_file_name  = NULL;
   char* sequence_file_name  = NULL;
+  char* info_file_name = NULL;
   bool best_only = false;
   int16_t gu = -1;
   int32_t num_gener = -1;
   
   // Define allowed options
-  const char * options_list = "hp:r:t:s:b";
+  const char * options_list = "hp:r:t:s:i:b";
   static struct option long_options_list[] = {
     { "help", 1, NULL, 'h' },
     { "popfile", 1, NULL, 'p' },
     { "resume", 1, NULL, 'r' },
     { "triangles", 1, NULL, 't' },
     { "sequence", 1, NULL, 's' },
+    { "info", 1, NULL, 'i' },
     { "best", 0, NULL, 'b' },
     { "gu", 1, NULL, 'g'},
     { 0, 0, 0, 0 }
@@ -148,6 +150,9 @@ int main( int argc, char* argv[] )
         sequence_file_name = new char[strlen(optarg) + 1];
         sprintf( sequence_file_name, "%s", optarg );
         break;
+      case 'i' :
+        info_file_name = new char [strlen(optarg) + 1];
+        sprintf( info_file_name, "%s", optarg );
       case 'g' :
         gu = atoi( optarg );
         break;
@@ -160,6 +165,7 @@ int main( int argc, char* argv[] )
   // Open the files
   FILE* triangles_file = NULL;
   FILE* sequence_file = NULL;
+  FILE* info_file = NULL;
   
   if ( triangles_file_name != NULL )
   {
@@ -168,6 +174,10 @@ int main( int argc, char* argv[] )
   if ( sequence_file_name != NULL )
   {
     sequence_file = fopen(sequence_file_name,"w");
+  }
+  if ( info_file_name != NULL )
+  {
+    info_file = fopen(info_file_name,"w");
   }
 
   ae_population* pop = NULL;
@@ -183,6 +193,11 @@ int main( int argc, char* argv[] )
   }
   else
   {
+    if ( info_file != NULL)
+    {
+      printf("You can not use option -i when no full backup is provided\n");
+      exit( EXIT_FAILURE );
+    }
     if ( pop_file_name == NULL )
     {
       printf("You must specify either a generation number or a source population file");
@@ -210,17 +225,22 @@ int main( int argc, char* argv[] )
   {
     ae_individual* best = pop->get_best();
     best->do_transcription_translation_folding(); // We need to recompute proteins if not already done (ie if using a population file and not a full backup)
-    analyse_indiv(best, triangles_file, sequence_file, gu, env);
+    analyse_indiv(best, triangles_file, sequence_file, info_file, gu, env);
   }
   else
   {
+    if ( info_file != NULL)
+    {
+      assert(env);
+      pop->evaluate_individuals(env); // Needed if we want fitness of each individual. Warning: do not compute rank.
+    }
     ae_list_node<ae_individual*>* indiv_node = pop->get_indivs()->get_first();
     ae_individual* indiv      = NULL;
     while( indiv_node != NULL )
     {
       indiv = (ae_individual *) indiv_node->get_obj();
       indiv->do_transcription_translation_folding(); // We need to recompute proteins if not already done (ie if using a population file and not a full backup)
-      analyse_indiv(indiv, triangles_file, sequence_file, gu, env);
+      analyse_indiv(indiv, triangles_file, sequence_file, info_file, gu, env);
       indiv_node = indiv_node->get_next();
     }
   }
@@ -245,7 +265,7 @@ int main( int argc, char* argv[] )
 }
 
 // Parsing an individual
-inline void analyse_indiv( ae_individual* indiv, FILE* triangles_file, FILE* sequence_file, int16_t gu, ae_environment* env )
+inline void analyse_indiv( ae_individual* indiv, FILE* triangles_file, FILE* sequence_file, FILE* info_file, int16_t gu, ae_environment* env )
 {
   if ( gu == -1 ) // We want to treat all genetic units
   {
@@ -283,6 +303,11 @@ inline void analyse_indiv( ae_individual* indiv, FILE* triangles_file, FILE* seq
       int32_t length = gen_unit->get_dna()->get_length();
       fprintf(sequence_file,"%.*s",length,dna); // We output the sequence
     }
+  }
+  
+  if ( info_file != NULL )
+  {
+    fprintf(info_file, "%e\n", indiv->get_fitness());
   }
   
   // We go to next line in each file
