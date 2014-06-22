@@ -132,7 +132,7 @@ int main( int argc, char* argv[] )
   {
     FILE* genome_file = fopen(genome_file_name,"r");
     fgets(rawgenome, 1000000, genome_file);
-    lgenome = strlen(rawgenome);
+    lgenome = strlen(rawgenome)-1;
     genome = new char[lgenome]; // Warning: will become the DNA of the first individual created -> no not delete, will be freed in ~ae_dna.
     strncpy(genome, rawgenome, lgenome);
     printf("%"PRId32" \n",lgenome);

@@ -153,6 +153,7 @@ int main( int argc, char* argv[] )
       case 'i' :
         info_file_name = new char [strlen(optarg) + 1];
         sprintf( info_file_name, "%s", optarg );
+        break;
       case 'g' :
         gu = atoi( optarg );
         break;
@@ -252,6 +253,10 @@ int main( int argc, char* argv[] )
   if (triangles_file_name != NULL)
   {
     fclose(triangles_file);
+  }
+  if (info_file_name != NULL)
+  {
+    fclose(info_file);
   }
   
   if (pop_file_name != NULL) {delete [] pop_file_name;}
