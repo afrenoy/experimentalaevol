@@ -642,6 +642,8 @@ ENABLE_DEVEL_FALSE
 ENABLE_DEVEL_TRUE
 ENABLE_FORCEPJ_FALSE
 ENABLE_FORCEPJ_TRUE
+WITH_BINARY_SECRETION_FALSE
+WITH_BINARY_SECRETION_TRUE
 WITH_NORMALIZED_FITNESS_FALSE
 WITH_NORMALIZED_FITNESS_TRUE
 WITH_RAEVOL_FALSE
@@ -756,6 +758,7 @@ with_x
 enable_optim
 enable_raevol
 enable_normalized_fitness
+enable_binary_secretion
 enable_mtperiod
 enable_trivialjumps
 enable_devel
@@ -1404,6 +1407,7 @@ Optional Features:
   --disable-optim turn off compile time optimization
   --enable-raevol to enable regulation
   --enable-normalized-fitness to enable fitness normalization
+  --enable-binary-secretion to use binary secretion
   --enable-mtperiod=period
         Set the Mersenne Twister period to 2^period (default is 2^607).
 
@@ -5345,6 +5349,7 @@ done
 #     --enable-optim                    [enabled]
 #     --enable-raevol                   [disabled]
 #     --enable-normalized-fitness       [disabled]
+#     --enable-binary-secretion         [disabled]
 #     --enable-mtperiod=period          [disabled]
 #     --enable-trivialjumps=jumpsize    [disabled]
 #     --enable-devel                    [disabled]
@@ -6348,6 +6353,35 @@ fi
 
 
 
+#  ******************* --enable-binary-secretion option ***************************
+#
+#  With this option, the BINARY_SECRETION flag is defined,
+#  allowing to use a binary probe as secretion value
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to use binary secretion" >&5
+$as_echo_n "checking whether to use binary secretion... " >&6; }
+# Check whether --enable-binary-secretion was given.
+if test "${enable_binary_secretion+set}" = set; then :
+  enableval=$enable_binary_secretion;
+else
+  enable_binary_secretion=no
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $enable_binary_secretion" >&5
+$as_echo "$enable_binary_secretion" >&6; }
+ if test x"$enable_binary_secretion" != xno; then
+  WITH_BINARY_SECRETION_TRUE=
+  WITH_BINARY_SECRETION_FALSE='#'
+else
+  WITH_BINARY_SECRETION_TRUE='#'
+  WITH_BINARY_SECRETION_FALSE=
+fi
+
+if test "x$enable_binary_secretion" = "xyes" ; then
+   $as_echo "#define BINARY_SECRETION 1" >>confdefs.h
+
+fi
+
 
 
 #  ************************* --enable-mtperiod=period option *******************************
@@ -6949,6 +6983,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${WITH_NORMALIZED_FITNESS_TRUE}" && test -z "${WITH_NORMALIZED_FITNESS_FALSE}"; then
   as_fn_error $? "conditional \"WITH_NORMALIZED_FITNESS\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${WITH_BINARY_SECRETION_TRUE}" && test -z "${WITH_BINARY_SECRETION_FALSE}"; then
+  as_fn_error $? "conditional \"WITH_BINARY_SECRETION\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${ENABLE_FORCEPJ_TRUE}" && test -z "${ENABLE_FORCEPJ_FALSE}"; then

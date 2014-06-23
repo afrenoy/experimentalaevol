@@ -28,6 +28,10 @@
 #ifndef __AE_SELECTION_H__
 #define __AE_SELECTION_H__
 
+#ifdef BINARY_SECRETION
+#define MUTCD 0.001
+#define MUTDC 0.001
+#endif
 
 // =================================================================
 //                              Libraries

@@ -715,7 +715,18 @@ ae_individual* ae_selection::do_replication( ae_individual* parent, int32_t inde
       }
     }
   }
-
+  
+#ifdef BINARY_SECRETION
+  int32_t oldsecretion = new_indiv->get_int_probes()[0];
+  if ((oldsecretion==1) && (get_prng()->random()<MUTCD))
+  {
+    new_indiv->get_int_probes()[0] = 0;
+  }
+  if ((oldsecretion==0) && (get_prng()->random()<MUTDC))
+  {
+    new_indiv->get_int_probes()[0] = 1;
+  }
+#endif
 
   
   // ===========================================================================

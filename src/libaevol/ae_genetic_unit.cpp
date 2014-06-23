@@ -1149,6 +1149,9 @@ void ae_genetic_unit::compute_fitness( ae_environment* env )
       }
     }
   }
+#ifdef BINARY_SECRETION
+  _fitness_by_feature[SECRETION]=0.;
+#endif
   
   if ((! _indiv->get_placed_in_population()) || (! _exp_m->get_with_secretion() ))
   {

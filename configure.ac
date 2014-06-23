@@ -65,6 +65,7 @@ AC_CHECK_FUNCS([floor memset mkdir pow rint sqrt gzread])
 #     --enable-optim                    [enabled]
 #     --enable-raevol                   [disabled]
 #     --enable-normalized-fitness       [disabled]
+#     --enable-binary-secretion         [disabled]
 #     --enable-mtperiod=period          [disabled]
 #     --enable-trivialjumps=jumpsize    [disabled]
 #     --enable-devel                    [disabled]
@@ -172,6 +173,19 @@ if test "x$enable_normalized_fitness" = "xyes" ; then
 fi
 
 
+
+#  ******************* --enable-binary-secretion option ***************************
+#
+#  With this option, the BINARY_SECRETION flag is defined, 
+#  allowing to use a binary probe as secretion value 
+
+AC_MSG_CHECKING([whether to use binary secretion])
+AC_ARG_ENABLE(binary-secretion, [  --enable-binary-secretion to use binary secretion], , enable_binary_secretion=no)
+AC_MSG_RESULT($enable_binary_secretion)
+AM_CONDITIONAL(WITH_BINARY_SECRETION, test x"$enable_binary_secretion" != xno)
+if test "x$enable_binary_secretion" = "xyes" ; then
+   AC_DEFINE(BINARY_SECRETION)
+fi
 
 
 

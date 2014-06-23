@@ -1101,6 +1101,10 @@ void param_loader::load( ae_exp_manager* exp_m, bool verbose, char* genome, int3
   
   // ---------------------------------------------------------------- Secretion
   exp_s->set_with_secretion( _param_values->_with_secretion );
+#ifdef BINARY_SECRETION
+  assert(!exp_s->get_with_secretion()); // If we us a binary secretion we can not use a 'classical' secretion feature
+  exp_s->set_with_secretion(true);
+#endif
   exp_s->set_secretion_contrib_to_fitness( _param_values->_secretion_contrib_to_fitness );
   exp_s->set_secretion_cost( _param_values->_secretion_cost );
   

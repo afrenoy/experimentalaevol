@@ -783,6 +783,9 @@ void ae_individual::compute_fitness( ae_environment* envir )
         }
       }
     }
+#ifdef BINARY_SECRETION
+  _fitness_by_feature[SECRETION]=_int_probes[0];
+#endif
     
     if ( ( ! _placed_in_population ) || (! _exp_m->get_with_secretion() ))
     {
