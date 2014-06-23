@@ -17,6 +17,7 @@ AM_CPPFLAGS = -I./
 # __STDC_CONSTANT_MACROS allows us to define exact-width integer macros with e.g. INT32_C( <value> )
 # __STDC_LIMIT_MACROS allows us to use exact-width integer limit macros with e.g. INT32_MAX
 AM_CPPFLAGS += -D__STDC_FORMAT_MACROS -D__STDC_CONSTANT_MACROS -D__STDC_LIMIT_MACROS
+AUTOMAKE_OPTIONS = subdir-objects
 
 
 
@@ -27,3 +28,4 @@ libsfmt_a_CPPFLAGS = $(AM_CPPFLAGS)
 #libsfmt_a_HEADERS = SFMT.h SFMT-common.h $(SFMT_params) jump/SFMT-jump.h
 libsfmt_a_SOURCES = SFMT.c jump/SFMT-jump.cpp
 libsfmt_a_SOURCES += SFMT.h SFMT-common.h $(SFMT_params) jump/SFMT-jump.h
+

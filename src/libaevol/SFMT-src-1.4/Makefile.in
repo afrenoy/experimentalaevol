@@ -99,9 +99,10 @@ am__v_AR_0 = @echo "  AR      " $@;
 am__v_AR_1 = 
 libsfmt_a_AR = $(AR) $(ARFLAGS)
 libsfmt_a_LIBADD =
+am__dirstamp = $(am__leading_dot)dirstamp
 am__objects_1 =
 am_libsfmt_a_OBJECTS = libsfmt_a-SFMT.$(OBJEXT) \
-	libsfmt_a-SFMT-jump.$(OBJEXT) $(am__objects_1)
+	jump/libsfmt_a-SFMT-jump.$(OBJEXT) $(am__objects_1)
 libsfmt_a_OBJECTS = $(am_libsfmt_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -290,6 +291,7 @@ noinst_LIBRARIES = libsfmt.a
 # __STDC_LIMIT_MACROS allows us to use exact-width integer limit macros with e.g. INT32_MAX
 AM_CPPFLAGS = -I./ -D__STDC_FORMAT_MACROS -D__STDC_CONSTANT_MACROS \
 	-D__STDC_LIMIT_MACROS
+AUTOMAKE_OPTIONS = subdir-objects
 SFMT_params = SFMT-params.h SFMT-params607.h SFMT-params1279.h SFMT-params2281.h SFMT-params4253.h SFMT-params11213.h SFMT-params19937.h SFMT-params44497.h SFMT-params86243.h SFMT-params132049.h  SFMT-params216091.h
 libsfmt_adir = ./
 libsfmt_a_CPPFLAGS = $(AM_CPPFLAGS)
@@ -333,6 +335,14 @@ $(am__aclocal_m4_deps):
 
 clean-noinstLIBRARIES:
 	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+jump/$(am__dirstamp):
+	@$(MKDIR_P) jump
+	@: > jump/$(am__dirstamp)
+jump/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) jump/$(DEPDIR)
+	@: > jump/$(DEPDIR)/$(am__dirstamp)
+jump/libsfmt_a-SFMT-jump.$(OBJEXT): jump/$(am__dirstamp) \
+	jump/$(DEPDIR)/$(am__dirstamp)
 
 libsfmt.a: $(libsfmt_a_OBJECTS) $(libsfmt_a_DEPENDENCIES) $(EXTRA_libsfmt_a_DEPENDENCIES) 
 	$(AM_V_at)-rm -f libsfmt.a
@@ -341,23 +351,26 @@ libsfmt.a: $(libsfmt_a_OBJECTS) $(libsfmt_a_DEPENDENCIES) $(EXTRA_libsfmt_a_DEPE
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
+	-rm -f jump/*.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsfmt_a-SFMT-jump.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libsfmt_a-SFMT.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@jump/$(DEPDIR)/libsfmt_a-SFMT-jump.Po@am__quote@
 
 .c.o:
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ $<
 
 .c.obj:
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
@@ -377,32 +390,34 @@ libsfmt_a-SFMT.obj: SFMT.c
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsfmt_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libsfmt_a-SFMT.obj `if test -f 'SFMT.c'; then $(CYGPATH_W) 'SFMT.c'; else $(CYGPATH_W) '$(srcdir)/SFMT.c'; fi`
 
 .cpp.o:
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ $<
 
 .cpp.obj:
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
+@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
-libsfmt_a-SFMT-jump.o: jump/SFMT-jump.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsfmt_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libsfmt_a-SFMT-jump.o -MD -MP -MF $(DEPDIR)/libsfmt_a-SFMT-jump.Tpo -c -o libsfmt_a-SFMT-jump.o `test -f 'jump/SFMT-jump.cpp' || echo '$(srcdir)/'`jump/SFMT-jump.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libsfmt_a-SFMT-jump.Tpo $(DEPDIR)/libsfmt_a-SFMT-jump.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='jump/SFMT-jump.cpp' object='libsfmt_a-SFMT-jump.o' libtool=no @AMDEPBACKSLASH@
+jump/libsfmt_a-SFMT-jump.o: jump/SFMT-jump.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsfmt_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT jump/libsfmt_a-SFMT-jump.o -MD -MP -MF jump/$(DEPDIR)/libsfmt_a-SFMT-jump.Tpo -c -o jump/libsfmt_a-SFMT-jump.o `test -f 'jump/SFMT-jump.cpp' || echo '$(srcdir)/'`jump/SFMT-jump.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) jump/$(DEPDIR)/libsfmt_a-SFMT-jump.Tpo jump/$(DEPDIR)/libsfmt_a-SFMT-jump.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='jump/SFMT-jump.cpp' object='jump/libsfmt_a-SFMT-jump.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsfmt_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libsfmt_a-SFMT-jump.o `test -f 'jump/SFMT-jump.cpp' || echo '$(srcdir)/'`jump/SFMT-jump.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsfmt_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o jump/libsfmt_a-SFMT-jump.o `test -f 'jump/SFMT-jump.cpp' || echo '$(srcdir)/'`jump/SFMT-jump.cpp
 
-libsfmt_a-SFMT-jump.obj: jump/SFMT-jump.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsfmt_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libsfmt_a-SFMT-jump.obj -MD -MP -MF $(DEPDIR)/libsfmt_a-SFMT-jump.Tpo -c -o libsfmt_a-SFMT-jump.obj `if test -f 'jump/SFMT-jump.cpp'; then $(CYGPATH_W) 'jump/SFMT-jump.cpp'; else $(CYGPATH_W) '$(srcdir)/jump/SFMT-jump.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libsfmt_a-SFMT-jump.Tpo $(DEPDIR)/libsfmt_a-SFMT-jump.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='jump/SFMT-jump.cpp' object='libsfmt_a-SFMT-jump.obj' libtool=no @AMDEPBACKSLASH@
+jump/libsfmt_a-SFMT-jump.obj: jump/SFMT-jump.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsfmt_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT jump/libsfmt_a-SFMT-jump.obj -MD -MP -MF jump/$(DEPDIR)/libsfmt_a-SFMT-jump.Tpo -c -o jump/libsfmt_a-SFMT-jump.obj `if test -f 'jump/SFMT-jump.cpp'; then $(CYGPATH_W) 'jump/SFMT-jump.cpp'; else $(CYGPATH_W) '$(srcdir)/jump/SFMT-jump.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) jump/$(DEPDIR)/libsfmt_a-SFMT-jump.Tpo jump/$(DEPDIR)/libsfmt_a-SFMT-jump.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='jump/SFMT-jump.cpp' object='jump/libsfmt_a-SFMT-jump.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsfmt_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libsfmt_a-SFMT-jump.obj `if test -f 'jump/SFMT-jump.cpp'; then $(CYGPATH_W) 'jump/SFMT-jump.cpp'; else $(CYGPATH_W) '$(srcdir)/jump/SFMT-jump.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsfmt_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o jump/libsfmt_a-SFMT-jump.obj `if test -f 'jump/SFMT-jump.cpp'; then $(CYGPATH_W) 'jump/SFMT-jump.cpp'; else $(CYGPATH_W) '$(srcdir)/jump/SFMT-jump.cpp'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -516,6 +531,8 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
+	-rm -f jump/$(DEPDIR)/$(am__dirstamp)
+	-rm -f jump/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -525,7 +542,7 @@ clean: clean-am
 clean-am: clean-generic clean-noinstLIBRARIES mostlyclean-am
 
 distclean: distclean-am
-	-rm -rf ./$(DEPDIR)
+	-rm -rf ./$(DEPDIR) jump/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -571,7 +588,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -rf ./$(DEPDIR)
+	-rm -rf ./$(DEPDIR) jump/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
