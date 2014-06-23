@@ -135,7 +135,7 @@ int main( int argc, char* argv[] )
     lgenome = strlen(rawgenome)-1;
     genome = new char[lgenome]; // Warning: will become the DNA of the first individual created -> no not delete, will be freed in ~ae_dna.
     strncpy(genome, rawgenome, lgenome);
-    printf("%"PRId32" \n",lgenome);
+    printf("Loading genome from text file %s (%"PRId32" base pairs) \n",genome_file_name,lgenome);
     fclose(genome_file);
   }
   
