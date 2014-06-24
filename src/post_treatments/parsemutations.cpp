@@ -104,7 +104,7 @@ int main(int argc, char** argv)
   int32_t generation,individual;
   
   // Dynamic programming algorithm
-  // initialize the table with 1s
+  // initialize the table with 0s
   for (generation=0;generation<nb_geners;generation++) {
     for (individual=0;individual<nb_indivs;individual++){
       reproductive_success[generation][individual]=0;
