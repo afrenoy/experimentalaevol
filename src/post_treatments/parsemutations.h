@@ -31,6 +31,19 @@
 #include <ae_dna_replic_report.h>
 #include <ae_mutation.h>
 
+int32_t nb_indivs;
+int32_t nb_geners;
+
 ae_replication_report***  reports;
 int32_t** reproductive_success;
+int32_t*** reproductive_success_bygen;
+int32_t** bigger_reproductive_success;
+int32_t** bigger_targetgen;
 
+/*
+int32_t** snapshot2gen(int32_t gen0, int32_t gen1)
+{
+  int32_t
+  
+}
+*/

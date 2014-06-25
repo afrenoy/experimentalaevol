@@ -52,16 +52,15 @@ int main(int argc, char** argv)
   exp_manager->load( end_gener, false, true, false );
   
   int32_t tree_step = exp_manager->get_tree_step();
-  int32_t nb_indivs = exp_manager->get_nb_indivs();
-  int32_t nb_geners = end_gener - begin_gener;
+  nb_indivs = exp_manager->get_nb_indivs();
+  nb_geners = end_gener - begin_gener;
   
   // Load the tree files and copy replication reports into big table reports
   ae_tree * tree = NULL;
   
   reports = new ae_replication_report**[nb_geners];
-  int32_t i;
-  for(i=0;i<end_gener - begin_gener;i++)
-  {
+  int32_t i,j;
+  for(i=0;i<end_gener - begin_gener;i++){
     reports[i] = new ae_replication_report*[nb_indivs];
   }
   
@@ -94,20 +93,32 @@ int main(int argc, char** argv)
     exit(EXIT_FAILURE);
   }
   
-  // Calculate reproductive success of each (set of) mutation
+  // Calculate reproductive success and reproductive success by generation of each (set of) mutation
   reproductive_success=new int32_t*[nb_geners];
-  for(i=0;i<nb_geners;i++)
-  {
+  bigger_reproductive_success=new int32_t*[nb_geners];
+  bigger_targetgen=new int32_t*[nb_geners];
+  reproductive_success_bygen=new int32_t**[nb_geners];
+  
+  for(i=0;i<nb_geners;i++){
     reproductive_success[i] = new int32_t[nb_indivs];
+    bigger_reproductive_success[i] = new int32_t[nb_indivs];
+    bigger_targetgen[i] = new int32_t[nb_indivs];
+    reproductive_success_bygen[i] = new int32_t*[nb_indivs];
+    for(j=0;j<nb_indivs;j++){
+      reproductive_success_bygen[i][j] = new int32_t[nb_geners];
+    }
   }
   
-  int32_t generation,individual;
+  int32_t generation,individual,targetgen;
   
   // Dynamic programming algorithm
   // initialize the table with 0s
   for (generation=0;generation<nb_geners;generation++) {
     for (individual=0;individual<nb_indivs;individual++){
       reproductive_success[generation][individual]=0;
+      for (targetgen=0;targetgen<nb_geners;targetgen++){
+        reproductive_success_bygen[generation][individual][targetgen]=0;
+      }
     }
   }
   /*
@@ -122,6 +133,10 @@ int main(int argc, char** argv)
       // Find parent and update its reproductive success
       int32_t idparent = reports[generation][individual]->get_parent_id(); // the report that describes creation of individual at generation + 1 from parent_id at generation.
       reproductive_success[generation-1][idparent]+=reproductive_success[generation][individual]+1;
+      reproductive_success_bygen[generation-1][idparent][generation]+=1;
+      for (targetgen=generation+1;targetgen<nb_geners;targetgen++){
+          reproductive_success_bygen[generation-1][idparent][targetgen]+=reproductive_success_bygen[generation][individual][targetgen];
+      }
     }
   }
   // Note that at this stage we do not use the "first" reports (reports[0][x]) because they tell us where generation 1 come from, so what of the individuals of generation 0 are successful, but we do not know what mutations permitted to obtain generation 0 from generation -1.
@@ -133,20 +148,54 @@ int main(int argc, char** argv)
     for (individual=0;individual<nb_indivs;individual++){
       sum+=reproductive_success[generation][individual];
     }
-    //printf("%"PRId32" %"PRId32" %"PRId32"\n",generation,sum,(nb_geners-1-generation)*nb_indivs);
     assert(sum==(nb_geners-1-generation)*nb_indivs);
   }
   
+  // Also assert correctness of the sum of reproductive success by generation
+  for (generation=0;generation<nb_geners;generation++) {
+    for (individual=0;individual<nb_indivs;individual++){
+      int32_t totalsum=0;
+      for (targetgen=generation+1;targetgen<nb_geners;targetgen++){
+        totalsum+=reproductive_success_bygen[generation][individual][targetgen];
+      }
+      assert (totalsum==reproductive_success[generation][individual]);
+    }
+    for (targetgen=generation+1;targetgen<nb_geners;targetgen++){
+      int32_t totalsum=0;
+      for (individual=0;individual<nb_indivs;individual++){
+        totalsum+=reproductive_success_bygen[generation][individual][targetgen];
+      }
+      assert (totalsum==nb_indivs);
+    }
+  }
+
+
+  // For each individual (at each generation), find the target generation at which reproductive success by generation is better (= largest patch created)
+  for (generation=0;generation<nb_geners;generation++){
+    for (individual=0;individual<nb_indivs;individual++){
+      int32_t maxvalue=0;
+      int32_t maxindex=-1;
+      for (targetgen=generation+1;targetgen<nb_geners;targetgen++){
+        if (reproductive_success_bygen[generation][individual][targetgen]>maxvalue){
+          maxvalue=reproductive_success_bygen[generation][individual][targetgen];
+          maxindex=targetgen;
+        }
+      }
+      bigger_reproductive_success[generation][individual]=maxvalue;
+      bigger_targetgen[generation][individual]=maxindex;
+    }
+  }
+
   // output all the analyzed mutations
+  fprintf(output_file,"#Syntax:\n#generation\n#individual\n#total reproductive success\n#highest reproductive success among all generations\n#generation at which highest reproductive success is reached\n#metabolic effect of the mutation set\n#secretion effect of the mutation set\n\n");
   for (generation=0;generation<nb_geners;generation++){
     for (individual=0;individual<nb_indivs;individual++){
       double metabolic_effect=reports[generation][individual]->get_metabolic_error() - reports[generation][individual]->get_parent_metabolic_error();
       double secretion_effect=reports[generation][individual]->get_secretion_error() - reports[generation][individual]->get_parent_secretion_error();
       // negative value = smaller gap = beneficial mutation
-      fprintf(output_file,"%"PRId32" %"PRId32" %"PRId32" %+.15f %+.15f\n", generation+begin_gener, individual, reproductive_success[generation][individual], metabolic_effect, secretion_effect);
+      fprintf(output_file,"%"PRId32" %"PRId32" %"PRId32" %"PRId32" %"PRId32" %+.15f %+.15f\n", generation+begin_gener, individual, reproductive_success[generation][individual], bigger_reproductive_success[generation][individual], bigger_targetgen[generation][individual]+begin_gener, metabolic_effect, secretion_effect);
     }
   }
-  
   
   // Close the files and clean memory
   fclose(output_file);
@@ -154,6 +203,12 @@ int main(int argc, char** argv)
   {
     delete [] reports[i];
     delete [] reproductive_success[i];
+    for (j=0;j<nb_indivs;j++){
+      delete [] reproductive_success_bygen[i][j];
+    }
+    delete [] bigger_reproductive_success[i];
+    delete [] bigger_targetgen[i];
+    delete [] reproductive_success_bygen[i];
   }
   delete [] reports;
   delete [] reproductive_success;
