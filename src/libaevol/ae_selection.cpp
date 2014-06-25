@@ -83,6 +83,11 @@ ae_selection::ae_selection( ae_exp_manager* exp_m )
 
   // --------------------------- Probability of reproduction of each organism
   _prob_reprod = NULL;
+#ifdef BINARY_SECRETION
+  _mutdc = 0.;
+  _mutcd = 0.;
+#endif
+
 }
 
 // =================================================================
@@ -417,6 +422,10 @@ void ae_selection::write_setup_file( gzFile exp_setup_file ) const
   int8_t tmp_sel_scheme = _selection_scheme;
   gzwrite( exp_setup_file, &tmp_sel_scheme,      sizeof(tmp_sel_scheme) );
   gzwrite( exp_setup_file, &_selection_pressure, sizeof(_selection_pressure) );
+#ifdef BINARY_SECRETION
+  gzwrite( exp_setup_file, &_mutdc, sizeof(_mutdc) );
+  gzwrite( exp_setup_file, &_mutdc, sizeof(_mutcd) );
+#endif
 }
 
 /*!
@@ -453,6 +462,10 @@ void ae_selection::load( gzFile& exp_setup_file,
 
   // ----------------------------------------- Pseudo-random number generator
   _prng = new ae_jumping_mt( backup_file );
+#ifdef BINARY_SECRETION
+  gzread( exp_setup_file, &_mutdc, sizeof(_mutdc) );
+  gzread( exp_setup_file, &_mutdc, sizeof(_mutcd) );
+#endif
 }
 
 void ae_selection::load( FILE*& exp_setup_file,
@@ -717,14 +730,17 @@ ae_individual* ae_selection::do_replication( ae_individual* parent, int32_t inde
   }
   
 #ifdef BINARY_SECRETION
-  int32_t oldsecretion = new_indiv->get_int_probes()[0];
-  if ((oldsecretion==1) && (get_prng()->random()<MUTCD))
+  if (_exp_m->get_with_secretion())
   {
-    new_indiv->get_int_probes()[0] = 0;
-  }
-  if ((oldsecretion==0) && (get_prng()->random()<MUTDC))
-  {
-    new_indiv->get_int_probes()[0] = 1;
+    int32_t oldsecretion = new_indiv->get_int_probes()[0];
+    if ((oldsecretion==1) && (get_prng()->random()<_mutcd))
+    {
+      new_indiv->get_int_probes()[0] = 0;
+    }
+    if ((oldsecretion==0) && (get_prng()->random()<_mutdc))
+    {
+      new_indiv->get_int_probes()[0] = 1;
+    }
   }
 #endif
 

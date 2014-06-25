@@ -952,6 +952,16 @@ void param_loader::interpret_line( f_line* line, int32_t _cur_line )
       _param_values->set_protein_presence_limit( atof( line->words[1] ) );
     }
   #endif
+#ifdef BINARY_SECRETION
+  else if ( strcmp( line->words[0], "SWITCH_DC") == 0 )
+  {
+    _param_values->_mutdc=atof(line->words[1]);
+  }
+  else if ( strcmp( line->words[0], "SWITCH_CD") == 0 )
+  {
+    _param_values->_mutcd=atof(line->words[1]);
+  }
+#endif
   else
   {
     printf( "ERROR in param file \"%s\" on line %"PRId32" : undefined key word \"%s\"\n", _param_file_name, _cur_line, line->words[0] );
@@ -1103,7 +1113,12 @@ void param_loader::load( ae_exp_manager* exp_m, bool verbose, char* genome, int3
   exp_s->set_with_secretion( _param_values->_with_secretion );
 #ifdef BINARY_SECRETION
   assert(!exp_s->get_with_secretion()); // If we us a binary secretion we can not use a 'classical' secretion feature
-  exp_s->set_with_secretion(true);
+  if ((_param_values->_mutdc>0) || (_param_values->_mutcd>0))
+  {
+    exp_s->set_with_secretion(true);
+    exp_s->get_sel()->set_mutdc(_param_values->_mutdc);
+    exp_s->get_sel()->set_mutcd(_param_values->_mutcd);
+  }
 #endif
   exp_s->set_secretion_contrib_to_fitness( _param_values->_secretion_contrib_to_fitness );
   exp_s->set_secretion_cost( _param_values->_secretion_cost );

@@ -160,6 +160,11 @@ params::params( void )
   _secretion_cost               = 0;
   _secretion_init               = 0;
   
+#ifdef BINARY_SECRETION
+  _mutdc=0.;
+  _mutcd=0.;
+#endif
+
   // --------------------------------------------------------------- Plasmids
   _allow_plasmids             = false;
   _plasmid_initial_length     = -1;

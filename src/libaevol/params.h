@@ -560,7 +560,12 @@ class params : public ae_object
     // Starting configuration of secretion grid
     // 0, all are 0; 1, point source of secreted compund
     double _secretion_init;
-    
+
+#ifdef BINARY_SECRETION
+    double _mutdc;
+    double _mutcd;
+#endif
+
     // --------------------------------------------------------------- Plasmids
     bool      _allow_plasmids;
     int32_t   _plasmid_initial_length;

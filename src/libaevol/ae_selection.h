@@ -28,11 +28,6 @@
 #ifndef __AE_SELECTION_H__
 #define __AE_SELECTION_H__
 
-#ifdef BINARY_SECRETION
-#define MUTCD 0.001
-#define MUTDC 0.001
-#endif
-
 // =================================================================
 //                              Libraries
 // =================================================================
@@ -90,6 +85,10 @@ class ae_selection : public ae_object
     // -------------------------------------------------------------- Selection
     inline void set_selection_scheme( ae_selection_scheme sel_scheme );
     inline void set_selection_pressure( double sel_pressure );
+#ifdef BINARY_SECRETION
+    inline void set_mutcd( double rate );
+    inline void set_mutdc( double rate );
+#endif
 
     // =================================================================
     //                              Operators
@@ -158,6 +157,12 @@ class ae_selection : public ae_object
 
     // --------------------------- Probability of reproduction of each organism
     double* _prob_reprod;
+  
+#ifdef BINARY_SECRETION
+    double _mutdc;
+    double _mutcd;
+#endif
+
 };
 
 
@@ -209,6 +214,16 @@ inline void ae_selection::set_selection_pressure( double sel_pressure )
   _selection_pressure = sel_pressure;
 }
 
+#ifdef BINARY_SECRETION
+inline void ae_selection::set_mutcd( double rate )
+{
+  _mutcd = rate;
+}
+inline void ae_selection::set_mutdc( double rate )
+{
+  _mutdc = rate;
+}
+#endif
 
 // =====================================================================
 //                          Operators' definitions
