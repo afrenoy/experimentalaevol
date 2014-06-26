@@ -987,7 +987,7 @@ void param_loader::read_file( void )
 }
 
 
-void param_loader::load( ae_exp_manager* exp_m, bool verbose, char* genome, int32_t lgenome )
+void param_loader::load( ae_exp_manager* exp_m, bool verbose, char* chromosome, int32_t lchromosome, char* plasmid, int32_t lplasmid )
 {
   // Check consistency of min, max and initial length of chromosome and plasmid
   // Default for by GU minimal or maximal size is -1.
@@ -1205,7 +1205,7 @@ void param_loader::load( ae_exp_manager* exp_m, bool verbose, char* genome, int3
   ae_individual* indiv        = NULL;
   int32_t        id_new_indiv = 0;
   
-  if (genome != NULL)
+  if (chromosome != NULL)
   {
     ae_individual* indiv = new ae_individual( exp_m,
                                              _prng,
@@ -1217,12 +1217,23 @@ void param_loader::load( ae_exp_manager* exp_m, bool verbose, char* genome, int3
                                              _param_values->_allow_plasmids,
                                              id_new_indiv++, 0 );
 
-    indiv->add_GU( genome, lgenome );
-    indiv->evaluate( exp_m->get_env() );
+    indiv->add_GU( chromosome, lchromosome );
     indiv->get_genetic_unit(0)->set_min_gu_length(_param_values->_chromosome_minimal_length);
     indiv->get_genetic_unit(0)->set_max_gu_length(_param_values->_chromosome_maximal_length);
+    
+    if (plasmid != NULL)
+    {
+      indiv->add_GU( plasmid, lplasmid );
+      indiv->get_genetic_unit(1)->set_min_gu_length(_param_values->_plasmid_minimal_length);
+      indiv->get_genetic_unit(1)->set_max_gu_length(_param_values->_plasmid_maximal_length);
+    }
+    
     indiv->set_with_stochasticity( _param_values->get_with_stochasticity() );
+    indiv->compute_statistical_data();
+    indiv->evaluate( exp_m->get_env() );
+    printf("Starting with a clonal population of individual with metabolic error %f and secretion error %f \n",indiv->get_dist_to_target_by_feature(METABOLISM),indiv->get_dist_to_target_by_feature(SECRETION));
     pop->add_indiv( indiv );
+    
     // Make the clones and add them to the list of individuals
     ae_individual* clone = NULL;
     for ( int32_t i = 1 ; i < _param_values->get_init_pop_size() ; i++ )

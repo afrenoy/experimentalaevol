@@ -69,15 +69,17 @@ int main( int argc, char* argv[] )
 {
   // 1) Initialize command-line option variables with default values
   char* param_file_name = NULL;
-  char* genome_file_name = NULL;
+  char* chromosome_file_name = NULL;
+  char* plasmid_file_name = NULL;
   
   // 2) Define allowed options
-  const char * options_list = "hf:Vg:";
+  const char * options_list = "hf:Vc:p:";
   static struct option long_options_list[] = {
     { "help",     no_argument,        NULL, 'h' },
     { "file",     required_argument,  NULL, 'f' },
     { "version",  no_argument,        NULL, 'V' },
-    { "genome",   required_argument,  NULL, 'g' },
+    { "chromosome",   required_argument,  NULL, 'c' },
+    { "plasmid",   required_argument,  NULL, 'p' },
     { 0, 0, 0, 0 }
   };
   
@@ -104,10 +106,18 @@ int main( int argc, char* argv[] )
         strcpy( param_file_name, optarg );
         break;
       }
-      case 'g':
-        genome_file_name = new char [strlen(optarg)+1];
-        strcpy( genome_file_name, optarg );
+      case 'c':
+      {
+        chromosome_file_name = new char [strlen(optarg)+1];
+        strcpy( chromosome_file_name, optarg );
         break;
+      }
+      case 'p':
+      {
+        plasmid_file_name = new char [strlen(optarg)+1];
+        strcpy( plasmid_file_name, optarg );
+        break;
+      }
       default :
       {
         // An error message is printed in getopt_long, we just need to exit
@@ -124,21 +134,36 @@ int main( int argc, char* argv[] )
     sprintf( param_file_name, "%s", DEFAULT_PARAM_FILE_NAME );
   }
   
-  char rawgenome[1000000];
-  int32_t lgenome=-1;
-  char* genome;
+  char rawchromosome[1000000];
+  int32_t lchromosome=-1;
+  char* chromosome;
   
-  if ( genome_file_name != NULL )
+  if ( chromosome_file_name != NULL )
   {
-    FILE* genome_file = fopen(genome_file_name,"r");
-    fgets(rawgenome, 1000000, genome_file);
-    lgenome = strlen(rawgenome)-1;
-    genome = new char[lgenome]; // Warning: will become the DNA of the first individual created -> no not delete, will be freed in ~ae_dna.
-    strncpy(genome, rawgenome, lgenome);
-    printf("Loading genome from text file %s (%"PRId32" base pairs) \n",genome_file_name,lgenome);
-    fclose(genome_file);
+    FILE* chromosome_file = fopen(chromosome_file_name,"r");
+    fgets(rawchromosome, 1000000, chromosome_file);
+    lchromosome = strlen(rawchromosome)-1;
+    chromosome = new char[lchromosome]; // Warning: will become the DNA of the first individual created -> no not delete, will be freed in ~ae_dna.
+    strncpy(chromosome, rawchromosome, lchromosome);
+    printf("Loading chromosome from text file %s (%"PRId32" base pairs) \n",chromosome_file_name,lchromosome);
+    fclose(chromosome_file);
   }
+
+  char rawplasmid[1000000];
+  int32_t lplasmid=-1;
+  char* plasmid;
   
+  if ( plasmid_file_name != NULL )
+  {
+    FILE* plasmid_file = fopen(plasmid_file_name,"r");
+    fgets(rawplasmid, 1000000, plasmid_file);
+    lplasmid = strlen(rawplasmid)-1;
+    plasmid = new char[lplasmid]; // Warning: will become the DNA of the first individual created -> no not delete, will be freed in ~ae_dna.
+    strncpy(plasmid, rawplasmid, lplasmid);
+    printf("Loading plasmid from text file %s (%"PRId32" base pairs) \n",plasmid_file_name,lplasmid);
+    fclose(plasmid_file);
+  }
+
   // 5) Create a param loader for the parameter file
   param_loader* my_param_loader = new param_loader( param_file_name );
   delete param_file_name;
@@ -152,9 +177,16 @@ int main( int argc, char* argv[] )
   #endif
   
   // 7) Load the parameter file
-  if (lgenome > -1)
+  if (lchromosome > -1)
   {
-    my_param_loader->load( exp_manager, true, genome, lgenome );
+    if (lplasmid > -1)
+    {
+      my_param_loader->load( exp_manager, true, chromosome, lchromosome, plasmid, lplasmid );
+    }
+    else
+    {
+      my_param_loader->load( exp_manager, true, chromosome, lchromosome );
+    }
   }
   else
   {
