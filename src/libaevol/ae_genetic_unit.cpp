@@ -998,9 +998,18 @@ void ae_genetic_unit::compute_phenotypic_contribution( void )
           exit( EXIT_FAILURE );
         }
         int16_t allowedgu = get_exp_m()->get_exp_s()->get_trait_gu_location()[nfeat];
-        //printf("%"PRId16" %p %p %p \n",allowedgu, this,_indiv->get_genetic_unit(0),_indiv->get_genetic_unit(1));
-        if ( (allowedgu==1) && (this==_indiv->get_genetic_unit(1)) ) break;//{printf("skiped\n");break;} // skip this protein, because only allowed on chromosome while we are on plasmid
-        if ( (allowedgu==2) && (this==_indiv->get_genetic_unit(0)) ) break;//{printf("skiped\n");break;} // skip this protein, because only allowed on plasmid while we are on chromosome
+        if ( (allowedgu==1) && (this==_indiv->get_genetic_unit(1)) )
+        {
+          //printf("protein with mean %f skipped because we detected feature %d and we are on plasmid \n",prot->get_mean(),nfeat);
+          prot_node = prot_node->get_next();
+          continue;
+        }
+        if ( (allowedgu==2) && (this==_indiv->get_genetic_unit(0)) )
+        {
+          //printf("protein with mean %f skipped because we detected feature %d and we are on chromosome \n",prot->get_mean(),nfeat);
+          prot_node = prot_node->get_next();
+          continue;
+        }
       }
       
       if ( prot->get_height() > 0 )
@@ -1047,9 +1056,18 @@ void ae_genetic_unit::compute_phenotypic_contribution( void )
           exit( EXIT_FAILURE );
         }
         int16_t allowedgu = get_exp_m()->get_exp_s()->get_trait_gu_location()[nfeat];
-        //printf("%"PRId16" %p %p %p \n",allowedgu, this,_indiv->get_genetic_unit(0),_indiv->get_genetic_unit(1));
-        if ( (allowedgu==1) && (this==_indiv->get_genetic_unit(1)) ) break;//{printf("skiped\n");break;} // skip this protein
-        if ( (allowedgu==2) && (this==_indiv->get_genetic_unit(0)) ) break;//{printf("skiped\n");break;} // skip this protein
+        if ( (allowedgu==1) && (this==_indiv->get_genetic_unit(1)) )
+        {
+          //printf("protein with mean %f skipped because we detected feature %d and we are on plasmid \n",prot->get_mean(),nfeat);
+          prot_node = prot_node->get_next();
+          continue;
+        }
+        if ( (allowedgu==2) && (this==_indiv->get_genetic_unit(0)) )
+        {
+          //printf("protein with mean %f skipped because we detected feature %d and we are on chromosome \n",prot->get_mean(),nfeat);
+          prot_node = prot_node->get_next();
+          continue;
+        }
       }
 
       if ( prot->get_height() > 0 )
