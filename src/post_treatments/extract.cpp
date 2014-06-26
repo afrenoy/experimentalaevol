@@ -112,7 +112,7 @@ int main( int argc, char* argv[] )
   int32_t num_gener = -1;
   
   // Define allowed options
-  const char * options_list = "hp:r:t:s:i:b";
+  const char * options_list = "hp:r:t:s:i:g:b";
   static struct option long_options_list[] = {
     { "help", 1, NULL, 'h' },
     { "popfile", 1, NULL, 'p' },
