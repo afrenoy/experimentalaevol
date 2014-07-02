@@ -7,12 +7,17 @@
 //
 
 #include "parsemutations.h"
-#define NGEN 1000 
-// Number of generations to take into account to calculate reproductive success. Should be a few times higher than population radius.
 
-#define STEPGEN 500
-// Discretisation of the algorithm: we analyse successively (for all i) from i*STEPGEN to (i+1)*STEPGEN, so using data from i*STEPGEN to (i+1)*STEPGEN + NGEN
-// Does not change the output but changes time and space complexity. If low, we use more CPU but less memory (because there are more independent and smaller steps)
+/*
+ 
+ This post-treatment analyses all the reproductive events (being caracterised by a set of mutations) and outputs the reproductive success of each of these reproductive events.
+ 
+ ngen: Number of generations to take into account to calculate reproductive success. Should be a few times higher than population radius.
+
+ stepgen: Discretisation of the algorithm: we analyse successively (for all i) from i*stepgen to (i+1)*stepgen, so using data from i*stepgen to (i+1)*stepgen + ngen.
+ Does not change the output but changes time and space complexity. If low, we use more CPU but less memory (because there are more independent and smaller steps)
+ 
+*/
 
 void print_help( void );
 
@@ -20,15 +25,20 @@ void print_help( void );
 int main(int argc, char** argv)
 {
   // Parse the parameters
-  int32_t     begin_gener       = 0;
-  int32_t     end_gener         = -1;
+  int32_t begin_gener = 0;
+  int32_t end_gener = -1;
+  int32_t ngen = 1000;
+  int32_t stepgen = 500;
+  
   char tree_file_name[50];
   
-  const char * short_options = "hb:e:";
+  const char * short_options = "hb:e:g:f:";
   static struct option long_options[] = {
-    {"help",      no_argument,       NULL,  'h'},
-    {"begin",     required_argument, NULL,  'b'},
-    {"end",       required_argument,  NULL, 'e' },
+    {"help",        no_argument,       NULL,  'h'},
+    {"begin",       required_argument, NULL,  'b'},
+    {"end",         required_argument, NULL,  'e' },
+    {"granularity", required_argument, NULL,  'g' },
+    {"future",      required_argument, NULL,  'f' },
     {0, 0, 0, 0}
   };
   
@@ -40,12 +50,14 @@ int main(int argc, char** argv)
       case 'h' : print_help(); exit(EXIT_SUCCESS); break;
       case 'b' : begin_gener = atol(optarg); break;
       case 'e' : end_gener = atol(optarg); break;
+      case 'g' : stepgen = atol(optarg); break;
+      case 'f' : ngen = atol(optarg); break;
     }
   }
   
   if ( end_gener == -1 )
   {
-    printf( "%s: error: You must provide a generation number.\n", argv[0] );
+    printf( "error: You must provide a generation number.\n");
     exit( EXIT_FAILURE );
   }
   
@@ -102,45 +114,45 @@ int main(int argc, char** argv)
 
   
   // Allocate memory
-  reproductive_success_bygen=new int32_t**[STEPGEN+NGEN];
-  bigger_reproductive_success=new int32_t*[STEPGEN];
-  gen_bigger_reproductive_success=new int32_t*[STEPGEN];
-  reproductive_success=new int32_t*[STEPGEN];
+  reproductive_success_bygen=new int32_t**[stepgen+ngen];
+  bigger_reproductive_success=new int32_t*[stepgen];
+  gen_bigger_reproductive_success=new int32_t*[stepgen];
+  reproductive_success=new int32_t*[stepgen];
   
-  for(i=0;i<STEPGEN+NGEN;i++){
+  for(i=0;i<stepgen+ngen;i++){
     reproductive_success_bygen[i] = new int32_t*[nb_indivs];
     for(j=0;j<nb_indivs;j++){
-      reproductive_success_bygen[i][j] = new int32_t[STEPGEN+NGEN];
+      reproductive_success_bygen[i][j] = new int32_t[stepgen+ngen];
     }
   }
   
-  for (i=0;i<STEPGEN;i++){
+  for (i=0;i<stepgen;i++){
     bigger_reproductive_success[i]=new int32_t[nb_indivs];
     gen_bigger_reproductive_success[i]=new int32_t[nb_indivs];
     reproductive_success[i]=new int32_t[nb_indivs];
   }
   
-  // For each STEPGEN generations
-  int32_t nbstep=(nb_geners-NGEN)/STEPGEN; // We do not analyse the last NGEN generations to avoid a creating a bias
+  // For each stepgen generations
+  int32_t nbstep=(nb_geners-ngen)/stepgen; // We do not analyse the last ngen generations to avoid a creating a bias
   int32_t step;
   for (step=0;step<nbstep;step++){
-    int32_t gena=step*STEPGEN; // First generation we analyse
-    int32_t genb=(step+1)*STEPGEN; // Last generation we analyse
-    int32_t genc=genb+NGEN; // Last generation we need to consider to be able to analyse until genb
+    int32_t gena=step*stepgen; // First generation we analyse
+    // int32_t genb=(step+1)*stepgen; // Last generation we analyse
+    // int32_t genc=genb+ngen; // Last generation we need to consider to be able to analyse until genb
     
     
     // Initialize memory with 0s
-    int32_t generation,individual,targetgen,relgeneration,reltargetgen;
+    int32_t generation,individual,relgeneration,reltargetgen;
 
-    for (relgeneration=0;relgeneration<STEPGEN+NGEN;relgeneration++) {
+    for (relgeneration=0;relgeneration<stepgen+ngen;relgeneration++) {
       for (individual=0;individual<nb_indivs;individual++){
-        for (reltargetgen=0;reltargetgen<STEPGEN+NGEN;reltargetgen++){
+        for (reltargetgen=0;reltargetgen<stepgen+ngen;reltargetgen++){
           reproductive_success_bygen[relgeneration][individual][reltargetgen]=0;
         }
       }
     }
 
-    for (relgeneration=0;relgeneration<STEPGEN;relgeneration++) {
+    for (relgeneration=0;relgeneration<stepgen;relgeneration++) {
       for (individual=0;individual<nb_indivs;individual++){
         bigger_reproductive_success[relgeneration][individual]=0;
         gen_bigger_reproductive_success[relgeneration][individual]=0;
@@ -150,21 +162,21 @@ int main(int argc, char** argv)
     
     // Dynamic programming algorithm
     
-    for (relgeneration=STEPGEN+NGEN-1;relgeneration>0;relgeneration--) {
+    for (relgeneration=stepgen+ngen-1;relgeneration>0;relgeneration--) {
       generation=relgeneration+gena;
       for (individual=0;individual<nb_indivs;individual++){
         // Find parent and update its reproductive success
         int32_t idparent = reports[generation][individual]->get_parent_id(); // the report that describes creation of individual at generation + 1 from parent_id at generation.
         reproductive_success_bygen[relgeneration-1][idparent][relgeneration]+=1;
-        for (reltargetgen=relgeneration+1;reltargetgen<STEPGEN+NGEN;reltargetgen++){
+        for (reltargetgen=relgeneration+1;reltargetgen<stepgen+ngen;reltargetgen++){
           reproductive_success_bygen[relgeneration-1][idparent][reltargetgen]+=reproductive_success_bygen[relgeneration][individual][reltargetgen];
         }
       }
     }
     
     // Assert consistency: for all relgeneration, for all reltargetgen, the sum of reproductive success of all individuals should be equal to the number of individual
-    for (relgeneration=0;relgeneration<STEPGEN+NGEN;relgeneration++) {
-      for (reltargetgen=relgeneration+1;reltargetgen<STEPGEN+NGEN;reltargetgen++){
+    for (relgeneration=0;relgeneration<stepgen+ngen;relgeneration++) {
+      for (reltargetgen=relgeneration+1;reltargetgen<stepgen+ngen;reltargetgen++){
         int32_t sum_indivs=0;
         for (individual=0;individual<nb_indivs;individual++){
           sum_indivs+=reproductive_success_bygen[relgeneration][individual][reltargetgen];
@@ -173,13 +185,13 @@ int main(int argc, char** argv)
       }
     }
     
-    // Find total reproductive success and best reproductive success (among all generations) during NGEN
-    for (relgeneration=0;relgeneration<STEPGEN;relgeneration++) {
+    // Find total reproductive success and best reproductive success (among all generations) during ngen
+    for (relgeneration=0;relgeneration<stepgen;relgeneration++) {
       for (individual=0;individual<nb_indivs;individual++){
         int32_t valuebest=0;
         int32_t indexbest=-1;
         int32_t totsuccess=0; // Start with zero because we do not count the focal individual in its offsprings
-        for (reltargetgen=relgeneration+1;reltargetgen<=relgeneration+NGEN;reltargetgen++){
+        for (reltargetgen=relgeneration+1;reltargetgen<=relgeneration+ngen;reltargetgen++){
           if (reproductive_success_bygen[relgeneration][individual][reltargetgen]>valuebest){
             valuebest=reproductive_success_bygen[relgeneration][individual][reltargetgen];
             indexbest=reltargetgen;
@@ -192,23 +204,22 @@ int main(int argc, char** argv)
       }
     }
     
-    // Assert consistency: for all generations, for all individuals, the sum of total reproductive success is nb_indivs*NGEN
-    for (relgeneration=0;relgeneration<STEPGEN;relgeneration++) {
+    // Assert consistency: for all generations, for all individuals, the sum of total reproductive success is nb_indivs*ngen
+    for (relgeneration=0;relgeneration<stepgen;relgeneration++) {
       int32_t sum=0;
       for (individual=0;individual<nb_indivs;individual++){
         sum+=reproductive_success[relgeneration][individual];
       }
-      //printf("%"PRId32" %"PRId32"\n",sum,nb_indivs*NGEN);
-      assert(sum==nb_indivs*NGEN);
+      assert(sum==nb_indivs*ngen);
     }
     
     // output all the analyzed mutations
-    for (relgeneration=0;relgeneration<STEPGEN;relgeneration++){
+    for (relgeneration=0;relgeneration<stepgen;relgeneration++){
       for (individual=0;individual<nb_indivs;individual++){
         double metabolic_effect=reports[gena+relgeneration][individual]->get_metabolic_error() - reports[gena+relgeneration][individual]->get_parent_metabolic_error();
         double secretion_effect=reports[gena+relgeneration][individual]->get_secretion_error() - reports[gena+relgeneration][individual]->get_parent_secretion_error();
         // negative value = smaller gap = beneficial mutation
-        fprintf(output_file,"%"PRId32" %"PRId32" %"PRId32" %"PRId32" %"PRId32" %+.15f %+.15f\n", gena+relgeneration+begin_gener, individual, reproductive_success[relgeneration][individual], bigger_reproductive_success[relgeneration][individual], gen_bigger_reproductive_success[relgeneration][individual]+gena+begin_gener, metabolic_effect, secretion_effect);
+        fprintf(output_file,"%"PRId32" %"PRId32" %"PRId32" %"PRId32" %"PRId32" %+.15f %+.15f\n", gena+relgeneration+begin_gener, individual, reproductive_success[relgeneration][individual], bigger_reproductive_success[relgeneration][individual], (gen_bigger_reproductive_success[relgeneration][individual]!=-1)?(gen_bigger_reproductive_success[relgeneration][individual]+gena+begin_gener):-1, metabolic_effect, secretion_effect);
       }
     }
     
@@ -220,7 +231,7 @@ int main(int argc, char** argv)
   // Close the files and clean memory
   fclose(output_file);
   
-  for(i=0;i<STEPGEN+NGEN;i++){
+  for(i=0;i<stepgen+ngen;i++){
     for(j=0;j<nb_indivs;j++){
       delete [] reproductive_success_bygen[i][j];
     }
@@ -228,7 +239,7 @@ int main(int argc, char** argv)
   }
   delete [] reproductive_success_bygen;
   
-  for (i=0;i<STEPGEN;i++){
+  for (i=0;i<stepgen;i++){
     delete [] bigger_reproductive_success[i];
     delete [] gen_bigger_reproductive_success[i];
     delete [] reproductive_success[i];
@@ -254,16 +265,18 @@ int main(int argc, char** argv)
 void print_help( void )
 {
   printf( "Analysis and lineage of mutations post-treatment \n" );
-  printf( "Usage : parsemutations [-b gen0 -e gen1] [-h]\n");
+  printf( "Usage : parsemutations -b gen0 -e gen1 -g gra -f fut [-h]\n");
   printf( "\n" );
-  printf( "\t-b gener1 or --begin gener1 : \n" );
-  printf( "\t                  Retrieve the lineage up to generation gener1.\n" );
-  printf( "\t                  There must be a genome backup file for this\n" );
-  printf( "\t                  generation. If not specified, the program \n" );
-  printf( "\t                  retrieves the lineage up to generation 0.\n");
+  printf( "\t-b gen0 or --begin gen0 : \n" );
+  printf( "\t                  First generatin to analyze\n" );
   printf( "\n" );
-  printf( "\t-e end_gener or --end end_gener : \n" );
-  printf( "\t                  Retrieve the lineage of the individual of end_gener \n" );
+  printf( "\t-e gen1 or --end gen1 : \n" );
+  printf( "\t                  Last generation to analyze \n" );
   printf( "\n" );
-  
+  printf( "\t-g stepgen or --granularity stepgen : \n" );
+  printf( "\t                  How many generations to analyze at a time \n" );
+  printf( "\n" );
+  printf( "\t-f ngen or --futur ngen : \n" );
+  printf( "\t                  How many future generations to consider when calculating reproductive success \n" );
+  printf( "\n" );
 }
