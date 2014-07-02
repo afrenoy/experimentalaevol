@@ -7,6 +7,12 @@
 //
 
 #include "parsemutations.h"
+#define NGEN 1000 
+// Number of generations to take into account to calculate reproductive success. Should be a few times higher than population radius.
+
+#define STEPGEN 500
+// Discretisation of the algorithm: we analyse successively (for all i) from i*STEPGEN to (i+1)*STEPGEN, so using data from i*STEPGEN to (i+1)*STEPGEN + NGEN
+// Does not change the output but changes time and space complexity. If low, we use more CPU but less memory (because there are more independent and smaller steps)
 
 void print_help( void );
 
@@ -92,126 +98,151 @@ int main(int argc, char** argv)
     fprintf(stderr, "Please check your permissions in this directory.\n");
     exit(EXIT_FAILURE);
   }
+  fprintf(output_file,"#Syntax:\n#generation\n#individual\n#total reproductive success\n#highest reproductive success among all generations\n#generation at which highest reproductive success is reached\n#metabolic effect of the mutation set\n#secretion effect of the mutation set\n\n");
+
   
-  // Calculate reproductive success and reproductive success by generation of each (set of) mutation
-  reproductive_success=new int32_t*[nb_geners];
-  bigger_reproductive_success=new int32_t*[nb_geners];
-  bigger_targetgen=new int32_t*[nb_geners];
-  reproductive_success_bygen=new int32_t**[nb_geners];
+  // Allocate memory
+  reproductive_success_bygen=new int32_t**[STEPGEN+NGEN];
+  bigger_reproductive_success=new int32_t*[STEPGEN];
+  gen_bigger_reproductive_success=new int32_t*[STEPGEN];
+  reproductive_success=new int32_t*[STEPGEN];
   
-  for(i=0;i<nb_geners;i++){
-    reproductive_success[i] = new int32_t[nb_indivs];
-    bigger_reproductive_success[i] = new int32_t[nb_indivs];
-    bigger_targetgen[i] = new int32_t[nb_indivs];
+  for(i=0;i<STEPGEN+NGEN;i++){
     reproductive_success_bygen[i] = new int32_t*[nb_indivs];
     for(j=0;j<nb_indivs;j++){
-      reproductive_success_bygen[i][j] = new int32_t[nb_geners];
+      reproductive_success_bygen[i][j] = new int32_t[STEPGEN+NGEN];
     }
   }
   
-  int32_t generation,individual,targetgen;
-  
-  // Dynamic programming algorithm
-  // initialize the table with 0s
-  for (generation=0;generation<nb_geners;generation++) {
-    for (individual=0;individual<nb_indivs;individual++){
-      reproductive_success[generation][individual]=0;
-      for (targetgen=0;targetgen<nb_geners;targetgen++){
-        reproductive_success_bygen[generation][individual][targetgen]=0;
-      }
-    }
-  }
-  /*
-  // fill the last generation with 0s
-  for (individual=0;individual<nb_indivs;individual++){
-    reproductive_success[nb_geners-1][individual]=0;
-  }
-  */
-  // then go backward from last generation
-  for (generation=nb_geners-1;generation>0;generation--) {
-    for (individual=0;individual<nb_indivs;individual++){
-      // Find parent and update its reproductive success
-      int32_t idparent = reports[generation][individual]->get_parent_id(); // the report that describes creation of individual at generation + 1 from parent_id at generation.
-      reproductive_success[generation-1][idparent]+=reproductive_success[generation][individual]+1;
-      reproductive_success_bygen[generation-1][idparent][generation]+=1;
-      for (targetgen=generation+1;targetgen<nb_geners;targetgen++){
-          reproductive_success_bygen[generation-1][idparent][targetgen]+=reproductive_success_bygen[generation][individual][targetgen];
-      }
-    }
-  }
-  // Note that at this stage we do not use the "first" reports (reports[0][x]) because they tell us where generation 1 come from, so what of the individuals of generation 0 are successful, but we do not know what mutations permitted to obtain generation 0 from generation -1.
-  // We will however use these reports when we will analyse reproductive_success[0][x] (individuals at generation 1) because these reports explain what created this generation of individuals.
-  
-  // Assert the sum of reproductive success is correct at each generation
-  for (generation=0;generation<nb_geners;generation++) {
-    int32_t sum=0;
-    for (individual=0;individual<nb_indivs;individual++){
-      sum+=reproductive_success[generation][individual];
-    }
-    assert(sum==(nb_geners-1-generation)*nb_indivs);
+  for (i=0;i<STEPGEN;i++){
+    bigger_reproductive_success[i]=new int32_t[nb_indivs];
+    gen_bigger_reproductive_success[i]=new int32_t[nb_indivs];
+    reproductive_success[i]=new int32_t[nb_indivs];
   }
   
-  // Also assert correctness of the sum of reproductive success by generation
-  for (generation=0;generation<nb_geners;generation++) {
-    for (individual=0;individual<nb_indivs;individual++){
-      int32_t totalsum=0;
-      for (targetgen=generation+1;targetgen<nb_geners;targetgen++){
-        totalsum+=reproductive_success_bygen[generation][individual][targetgen];
-      }
-      assert (totalsum==reproductive_success[generation][individual]);
-    }
-    for (targetgen=generation+1;targetgen<nb_geners;targetgen++){
-      int32_t totalsum=0;
+  // For each STEPGEN generations
+  int32_t nbstep=(nb_geners-NGEN)/STEPGEN; // We do not analyse the last NGEN generations to avoid a creating a bias
+  int32_t step;
+  for (step=0;step<nbstep;step++){
+    int32_t gena=step*STEPGEN; // First generation we analyse
+    int32_t genb=(step+1)*STEPGEN; // Last generation we analyse
+    int32_t genc=genb+NGEN; // Last generation we need to consider to be able to analyse until genb
+    
+    
+    // Initialize memory with 0s
+    int32_t generation,individual,targetgen,relgeneration,reltargetgen;
+
+    for (relgeneration=0;relgeneration<STEPGEN+NGEN;relgeneration++) {
       for (individual=0;individual<nb_indivs;individual++){
-        totalsum+=reproductive_success_bygen[generation][individual][targetgen];
-      }
-      assert (totalsum==nb_indivs);
-    }
-  }
-
-
-  // For each individual (at each generation), find the target generation at which reproductive success by generation is better (= largest patch created)
-  for (generation=0;generation<nb_geners;generation++){
-    for (individual=0;individual<nb_indivs;individual++){
-      int32_t maxvalue=0;
-      int32_t maxindex=-1;
-      for (targetgen=generation+1;targetgen<nb_geners;targetgen++){
-        if (reproductive_success_bygen[generation][individual][targetgen]>maxvalue){
-          maxvalue=reproductive_success_bygen[generation][individual][targetgen];
-          maxindex=targetgen;
+        for (reltargetgen=0;reltargetgen<STEPGEN+NGEN;reltargetgen++){
+          reproductive_success_bygen[relgeneration][individual][reltargetgen]=0;
         }
       }
-      bigger_reproductive_success[generation][individual]=maxvalue;
-      bigger_targetgen[generation][individual]=maxindex;
     }
-  }
 
-  // output all the analyzed mutations
-  fprintf(output_file,"#Syntax:\n#generation\n#individual\n#total reproductive success\n#highest reproductive success among all generations\n#generation at which highest reproductive success is reached\n#metabolic effect of the mutation set\n#secretion effect of the mutation set\n\n");
-  for (generation=0;generation<nb_geners;generation++){
-    for (individual=0;individual<nb_indivs;individual++){
-      double metabolic_effect=reports[generation][individual]->get_metabolic_error() - reports[generation][individual]->get_parent_metabolic_error();
-      double secretion_effect=reports[generation][individual]->get_secretion_error() - reports[generation][individual]->get_parent_secretion_error();
-      // negative value = smaller gap = beneficial mutation
-      fprintf(output_file,"%"PRId32" %"PRId32" %"PRId32" %"PRId32" %"PRId32" %+.15f %+.15f\n", generation+begin_gener, individual, reproductive_success[generation][individual], bigger_reproductive_success[generation][individual], bigger_targetgen[generation][individual]+begin_gener, metabolic_effect, secretion_effect);
+    for (relgeneration=0;relgeneration<STEPGEN;relgeneration++) {
+      for (individual=0;individual<nb_indivs;individual++){
+        bigger_reproductive_success[relgeneration][individual]=0;
+        gen_bigger_reproductive_success[relgeneration][individual]=0;
+        reproductive_success[relgeneration][individual]=0;
+      }
     }
+    
+    // Dynamic programming algorithm
+    
+    for (relgeneration=STEPGEN+NGEN-1;relgeneration>0;relgeneration--) {
+      generation=relgeneration+gena;
+      for (individual=0;individual<nb_indivs;individual++){
+        // Find parent and update its reproductive success
+        int32_t idparent = reports[generation][individual]->get_parent_id(); // the report that describes creation of individual at generation + 1 from parent_id at generation.
+        reproductive_success_bygen[relgeneration-1][idparent][relgeneration]+=1;
+        for (reltargetgen=relgeneration+1;reltargetgen<STEPGEN+NGEN;reltargetgen++){
+          reproductive_success_bygen[relgeneration-1][idparent][reltargetgen]+=reproductive_success_bygen[relgeneration][individual][reltargetgen];
+        }
+      }
+    }
+    
+    // Assert consistency: for all relgeneration, for all reltargetgen, the sum of reproductive success of all individuals should be equal to the number of individual
+    for (relgeneration=0;relgeneration<STEPGEN+NGEN;relgeneration++) {
+      for (reltargetgen=relgeneration+1;reltargetgen<STEPGEN+NGEN;reltargetgen++){
+        int32_t sum_indivs=0;
+        for (individual=0;individual<nb_indivs;individual++){
+          sum_indivs+=reproductive_success_bygen[relgeneration][individual][reltargetgen];
+        }
+        assert(sum_indivs==nb_indivs);
+      }
+    }
+    
+    // Find total reproductive success and best reproductive success (among all generations) during NGEN
+    for (relgeneration=0;relgeneration<STEPGEN;relgeneration++) {
+      for (individual=0;individual<nb_indivs;individual++){
+        int32_t valuebest=0;
+        int32_t indexbest=-1;
+        int32_t totsuccess=0; // Start with zero because we do not count the focal individual in its offsprings
+        for (reltargetgen=relgeneration+1;reltargetgen<=relgeneration+NGEN;reltargetgen++){
+          if (reproductive_success_bygen[relgeneration][individual][reltargetgen]>valuebest){
+            valuebest=reproductive_success_bygen[relgeneration][individual][reltargetgen];
+            indexbest=reltargetgen;
+          }
+          totsuccess+=reproductive_success_bygen[relgeneration][individual][reltargetgen];
+        }
+        bigger_reproductive_success[relgeneration][individual]=valuebest;
+        gen_bigger_reproductive_success[relgeneration][individual]=indexbest;
+        reproductive_success[relgeneration][individual]=totsuccess;
+      }
+    }
+    
+    // Assert consistency: for all generations, for all individuals, the sum of total reproductive success is nb_indivs*NGEN
+    for (relgeneration=0;relgeneration<STEPGEN;relgeneration++) {
+      int32_t sum=0;
+      for (individual=0;individual<nb_indivs;individual++){
+        sum+=reproductive_success[relgeneration][individual];
+      }
+      //printf("%"PRId32" %"PRId32"\n",sum,nb_indivs*NGEN);
+      assert(sum==nb_indivs*NGEN);
+    }
+    
+    // output all the analyzed mutations
+    for (relgeneration=0;relgeneration<STEPGEN;relgeneration++){
+      for (individual=0;individual<nb_indivs;individual++){
+        double metabolic_effect=reports[gena+relgeneration][individual]->get_metabolic_error() - reports[gena+relgeneration][individual]->get_parent_metabolic_error();
+        double secretion_effect=reports[gena+relgeneration][individual]->get_secretion_error() - reports[gena+relgeneration][individual]->get_parent_secretion_error();
+        // negative value = smaller gap = beneficial mutation
+        fprintf(output_file,"%"PRId32" %"PRId32" %"PRId32" %"PRId32" %"PRId32" %+.15f %+.15f\n", gena+relgeneration+begin_gener, individual, reproductive_success[relgeneration][individual], bigger_reproductive_success[relgeneration][individual], gen_bigger_reproductive_success[relgeneration][individual]+gena+begin_gener, metabolic_effect, secretion_effect);
+      }
+    }
+    
+    // We do not clean memory now because we will use it in next iteration
+
   }
+  
   
   // Close the files and clean memory
   fclose(output_file);
+  
+  for(i=0;i<STEPGEN+NGEN;i++){
+    for(j=0;j<nb_indivs;j++){
+      delete [] reproductive_success_bygen[i][j];
+    }
+    delete [] reproductive_success_bygen[i];
+  }
+  delete [] reproductive_success_bygen;
+  
+  for (i=0;i<STEPGEN;i++){
+    delete [] bigger_reproductive_success[i];
+    delete [] gen_bigger_reproductive_success[i];
+    delete [] reproductive_success[i];
+  }
+  delete [] bigger_reproductive_success;
+  delete [] gen_bigger_reproductive_success;
+  delete [] reproductive_success;
+
   for(i=0;i<end_gener - begin_gener;i++)
   {
     delete [] reports[i];
-    delete [] reproductive_success[i];
-    for (j=0;j<nb_indivs;j++){
-      delete [] reproductive_success_bygen[i][j];
-    }
-    delete [] bigger_reproductive_success[i];
-    delete [] bigger_targetgen[i];
-    delete [] reproductive_success_bygen[i];
   }
   delete [] reports;
-  delete [] reproductive_success;
+
   delete exp_manager;
   
   exit(EXIT_SUCCESS);
