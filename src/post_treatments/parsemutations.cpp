@@ -19,18 +19,14 @@
  
 */
 
-void print_help( void );
-
 
 int main(int argc, char** argv)
 {
   // Parse the parameters
-  int32_t begin_gener = 0;
-  int32_t end_gener = -1;
-  int32_t ngen = 1000;
-  int32_t stepgen = 500;
-  
-  char tree_file_name[50];
+  begin_gener = 0;
+  end_gener = -1;
+  ngen = 1000;
+  stepgen = 500;
   
   const char * short_options = "hb:e:g:f:";
   static struct option long_options[] = {
@@ -55,17 +51,31 @@ int main(int argc, char** argv)
     }
   }
   
+  // Load the simulation
+  loadreports();
+  
+  // Compute reproductive success of the individuals
+  computereproductivesuccess();
+  
+  // Close the files and clean memory
+  clean();
+  
+  exit(EXIT_SUCCESS);
+  
+}
+
+void loadreports( void )
+{
   if ( end_gener == -1 )
   {
     printf( "error: You must provide a generation number.\n");
     exit( EXIT_FAILURE );
   }
-  
-  // Load the simulation
+
 #ifndef __NO_X
-  ae_exp_manager* exp_manager = new ae_exp_manager_X11();
+  exp_manager = new ae_exp_manager_X11();
 #else
-  ae_exp_manager* exp_manager = new ae_exp_manager();
+  exp_manager = new ae_exp_manager();
 #endif
   exp_manager->load( end_gener, false, true, false );
   
@@ -77,7 +87,7 @@ int main(int argc, char** argv)
   ae_tree * tree = NULL;
   
   reports = new ae_replication_report**[nb_geners];
-  int32_t i,j;
+  int32_t i;
   for(i=0;i<end_gener - begin_gener;i++){
     reports[i] = new ae_replication_report*[nb_indivs];
   }
@@ -98,27 +108,31 @@ int main(int argc, char** argv)
     delete tree;
   }
   printf("Done with loading\n");
+}
 
+void computereproductivesuccess( void )
+{
   // Open the output file
   char output_file_name[101];
   snprintf( output_file_name, 100, "mutations-b%06"PRId32"-e%06"PRId32".txt", begin_gener, end_gener);
   
-  FILE* output_file = fopen(output_file_name, "w");
+  output_file = fopen(output_file_name, "w");
   if ( output_file == NULL )
   {
-    fprintf(stderr, "File %s could not be created, exiting.\n", output_file_name);
-    fprintf(stderr, "Please check your permissions in this directory.\n");
+    fprintf(stderr, "Failed to create file %s, exiting.\n", output_file_name);
     exit(EXIT_FAILURE);
   }
-  fprintf(output_file,"#Syntax:\n#generation\n#individual\n#total reproductive success\n#highest reproductive success among all generations\n#generation at which highest reproductive success is reached\n#metabolic effect of the mutation set\n#secretion effect of the mutation set\n\n");
 
-  
+  // Write header to output file
+  fprintf(output_file,"#Syntax:\n #generation\n #individual\n #total reproductive success\n #highest reproductive success among all generations\n #generation at which highest reproductive success is reached\n #metabolic effect of the mutation set\n #secretion effect of the mutation set\n\n");
+
   // Allocate memory
   reproductive_success_bygen=new int32_t**[stepgen+ngen];
   bigger_reproductive_success=new int32_t*[stepgen];
   gen_bigger_reproductive_success=new int32_t*[stepgen];
   reproductive_success=new int32_t*[stepgen];
   
+  int32_t i,j;
   for(i=0;i<stepgen+ngen;i++){
     reproductive_success_bygen[i] = new int32_t*[nb_indivs];
     for(j=0;j<nb_indivs;j++){
@@ -143,7 +157,7 @@ int main(int argc, char** argv)
     
     // Initialize memory with 0s
     int32_t generation,individual,relgeneration,reltargetgen;
-
+    
     for (relgeneration=0;relgeneration<stepgen+ngen;relgeneration++) {
       for (individual=0;individual<nb_indivs;individual++){
         for (reltargetgen=0;reltargetgen<stepgen+ngen;reltargetgen++){
@@ -151,7 +165,7 @@ int main(int argc, char** argv)
         }
       }
     }
-
+    
     for (relgeneration=0;relgeneration<stepgen;relgeneration++) {
       for (individual=0;individual<nb_indivs;individual++){
         bigger_reproductive_success[relgeneration][individual]=0;
@@ -224,13 +238,15 @@ int main(int argc, char** argv)
     }
     
     // We do not clean memory now because we will use it in next iteration
-
+    
   }
-  
-  
-  // Close the files and clean memory
+}
+
+void clean( void )
+{
   fclose(output_file);
   
+  int32_t i,j;
   for(i=0;i<stepgen+ngen;i++){
     for(j=0;j<nb_indivs;j++){
       delete [] reproductive_success_bygen[i][j];
@@ -247,20 +263,15 @@ int main(int argc, char** argv)
   delete [] bigger_reproductive_success;
   delete [] gen_bigger_reproductive_success;
   delete [] reproductive_success;
-
+  
   for(i=0;i<end_gener - begin_gener;i++)
   {
     delete [] reports[i];
   }
   delete [] reports;
-
+  
   delete exp_manager;
-  
-  exit(EXIT_SUCCESS);
-  
 }
-
-
 
 void print_help( void )
 {

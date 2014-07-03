@@ -31,8 +31,23 @@
 #include <ae_dna_replic_report.h>
 #include <ae_mutation.h>
 
+void print_help( void );
+void loadreports( void );
+void computereproductivesuccess( void );
+void clean ( void );
+
+
+ae_exp_manager* exp_manager;
+char tree_file_name[50];
+FILE* output_file;
+
 int32_t nb_indivs;
 int32_t nb_geners;
+
+int32_t begin_gener;
+int32_t end_gener;
+int32_t stepgen;
+int32_t ngen;
 
 ae_replication_report***  reports;
 int32_t** reproductive_success;
