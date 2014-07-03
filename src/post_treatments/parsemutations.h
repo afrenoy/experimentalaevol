@@ -50,6 +50,7 @@ int32_t begin_gener;
 int32_t end_gener;
 int32_t stepgen;
 int32_t ngen;
+int32_t rwindow;
 
 int32_t popx;
 int32_t popy;

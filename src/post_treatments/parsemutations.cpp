@@ -27,14 +27,16 @@ int main(int argc, char** argv)
   end_gener = -1;
   ngen = 1000;
   stepgen = 500;
+  rwindow = -1;
   
-  const char * short_options = "hb:e:g:f:";
+  const char * short_options = "hb:e:g:f:r:";
   static struct option long_options[] = {
     {"help",        no_argument,       NULL,  'h'},
     {"begin",       required_argument, NULL,  'b'},
-    {"end",         required_argument, NULL,  'e' },
-    {"granularity", required_argument, NULL,  'g' },
-    {"future",      required_argument, NULL,  'f' },
+    {"end",         required_argument, NULL,  'e'},
+    {"granularity", required_argument, NULL,  'g'},
+    {"future",      required_argument, NULL,  'f'},
+    {"rwindow",     required_argument, NULL,  'r'},
     {0, 0, 0, 0}
   };
   
@@ -48,6 +50,7 @@ int main(int argc, char** argv)
       case 'e' : end_gener = atol(optarg); break;
       case 'g' : stepgen = atol(optarg); break;
       case 'f' : ngen = atol(optarg); break;
+      case 'r' : rwindow = atol(optarg); break;
     }
   }
   
@@ -57,16 +60,14 @@ int main(int argc, char** argv)
   // Compute reproductive success of the individuals
   computereproductivesuccess();
   
-  
-  //
-  int32_t* results = new int32_t[nb_indivs];
-  for (int32_t g=0;g<nb_geners-15;g++){
-    double r = snapshot2gen(g,g+15,results);
-    printf("%f\n",r);
+  // Take snapshots and calculate relatedness
+  if (rwindow>0){
+    int32_t* results = new int32_t[nb_indivs];
+    for (int32_t g=0;g<nb_geners-rwindow;g++){
+      double r = snapshot2gen(g,g+rwindow,results);
+      printf("%f\n",r);
+    }
   }
-  
-  //for (int32_t individual=0;individual<nb_indivs;individual++) printf("%"PRId32":%"PRId32" ", individual, results[individual]);
-  //printf("\n%f\n",r);
   
   // Close the files and clean memory
   clean();
@@ -382,5 +383,8 @@ void print_help( void )
   printf( "\n" );
   printf( "\t-f ngen or --futur ngen : \n" );
   printf( "\t                  How many future generations to consider when calculating reproductive success \n" );
+  printf( "\n" );
+  printf( "\t-r ngen or --rwindow ngen : \n" );
+  printf( "\t                  How many future generations to consider when calculating relatedness \n" );
   printf( "\n" );
 }
