@@ -60,7 +60,7 @@ int main(int argc, char** argv)
   
   //
   int32_t* results = new int32_t[nb_indivs];
-  double r = snapshot2gen(0,11,results);
+  double r = snapshot2gen(0,15,results);
   for (int32_t individual=0;individual<nb_indivs;individual++) printf("%"PRId32":%"PRId32" ", individual, results[individual]);
   printf("\n%f\n",r);
   
@@ -187,14 +187,14 @@ void computereproductivesuccess( void )
     
     // Dynamic programming algorithm
     
-    for (relgeneration=stepgen+ngen-1;relgeneration>0;relgeneration--) {
+    for (relgeneration=stepgen+ngen-2;relgeneration>=0;relgeneration--) {
       generation=relgeneration+gena;
       for (individual=0;individual<nb_indivs;individual++){
         // Find parent and update its reproductive success
         int32_t idparent = reports[generation][individual]->get_parent_id(); // the report that describes creation of individual at generation + 1 from parent_id at generation.
-        reproductive_success_bygen[relgeneration-1][idparent][relgeneration]+=1;
-        for (reltargetgen=relgeneration+1;reltargetgen<stepgen+ngen;reltargetgen++){
-          reproductive_success_bygen[relgeneration-1][idparent][reltargetgen]+=reproductive_success_bygen[relgeneration][individual][reltargetgen];
+        reproductive_success_bygen[relgeneration][idparent][relgeneration+1]+=1;
+        for (reltargetgen=relgeneration+2;reltargetgen<stepgen+ngen;reltargetgen++){
+          reproductive_success_bygen[relgeneration][idparent][reltargetgen]+=reproductive_success_bygen[relgeneration+1][individual][reltargetgen];
         }
       }
     }
