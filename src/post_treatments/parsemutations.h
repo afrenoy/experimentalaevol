@@ -15,7 +15,6 @@
 #include <zlib.h>
 #include <sys/stat.h>
 
-
 #include <ae_macros.h>
 #include <ae_utils.h>
 #ifndef __NO_X
@@ -35,7 +34,10 @@ void print_help( void );
 void loadreports( void );
 void computereproductivesuccess( void );
 void clean ( void );
+double snapshot2gen( int32_t gen0, int32_t gen1, int32_t* results);
 
+inline int32_t gety(int32_t individual);
+inline int32_t getx(int32_t individual);
 
 ae_exp_manager* exp_manager;
 char tree_file_name[50];
@@ -49,16 +51,12 @@ int32_t end_gener;
 int32_t stepgen;
 int32_t ngen;
 
+int32_t popx;
+int32_t popy;
+
 ae_replication_report***  reports;
 int32_t** reproductive_success;
 int32_t*** reproductive_success_bygen;
 int32_t** bigger_reproductive_success;
 int32_t** gen_bigger_reproductive_success;
 
-/*
-int32_t** snapshot2gen(int32_t gen0, int32_t gen1)
-{
-  int32_t
-  
-}
-*/

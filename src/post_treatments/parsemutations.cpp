@@ -57,6 +57,13 @@ int main(int argc, char** argv)
   // Compute reproductive success of the individuals
   computereproductivesuccess();
   
+  
+  //
+  int32_t* results = new int32_t[nb_indivs];
+  double r = snapshot2gen(0,11,results);
+  for (int32_t individual=0;individual<nb_indivs;individual++) printf("%"PRId32":%"PRId32" ", individual, results[individual]);
+  printf("\n%f\n",r);
+  
   // Close the files and clean memory
   clean();
   
@@ -83,6 +90,11 @@ void loadreports( void )
   nb_indivs = exp_manager->get_nb_indivs();
   nb_geners = end_gener - begin_gener;
   
+  popx = exp_manager->get_spatial_structure()->get_grid_width();
+  popy = exp_manager->get_spatial_structure()->get_grid_height();
+  assert(nb_indivs==popx*popy);
+  assert(popx==popy); // For now I am too lazy to extract neighborood information in case of non square population (see relatedness calculation below). To be continued ...
+  
   // Load the tree files and copy replication reports into big table reports
   ae_tree * tree = NULL;
   
@@ -93,7 +105,7 @@ void loadreports( void )
   }
   
   int32_t loading_step;
-  //printf("%"PRId32"\n",tree_step);
+
   for (loading_step = end_gener; loading_step >= begin_gener+tree_step; loading_step-=tree_step){
     sprintf( tree_file_name,"tree/tree_%06"PRId32".ae", loading_step );
     printf("  Loading tree file %s\n",tree_file_name);
@@ -101,7 +113,6 @@ void loadreports( void )
     int32_t generation,individual;
     for (generation=0;generation<tree_step;generation++) {
       for (individual=0;individual<nb_indivs;individual++){
-        //printf("about to treat %"PRId32" %"PRId32" %"PRId32"\n",loading_step,generation,individual);
         reports[generation+loading_step-tree_step-begin_gener][individual]=new ae_replication_report(*(tree->get_report_by_index(generation+1,individual)));
       }
     }
@@ -271,6 +282,84 @@ void clean( void )
   delete [] reports;
   
   delete exp_manager;
+}
+
+double snapshot2gen( int32_t gen0, int32_t gen1, int32_t* results)
+{
+  // Every individual at generation gen1 will get a tag corresponding to their ancestor at generation gen0
+  
+  int32_t generation,individual;
+  int32_t** tag = new int32_t*[gen1-gen0+1];
+  for (generation=gen0;generation<=gen1;generation++){
+    tag[generation-gen0]=new int32_t[nb_indivs];
+  }
+  
+  // Tag the first generation with their own number
+  for (individual=0;individual<nb_indivs;individual++){
+    tag[0][individual]=individual;
+  }
+  
+  // Spread the tag generation by generation until reaching gen1
+  for (generation=gen0;generation<gen1;generation++){
+    for (individual=0;individual<nb_indivs;individual++){
+      int32_t idparent = reports[generation][individual]->get_parent_id();
+      tag[generation-gen0+1][individual]=tag[generation-gen0][idparent];
+    }
+  }
+  
+  // Copy the tag at last generation in results array
+  for (individual=0; individual<nb_indivs;individual++){
+    results[individual]=tag[gen1-gen0][individual];
+  }
+  
+  // Clean the tag array
+  for (generation=gen0;generation<=gen1;generation++){
+    delete [] tag[generation-gen0];
+  }
+  delete [] tag;
+  
+  int32_t allele;
+  // Calculate relatedness at end generation
+  int32_t* totaleffective=new int32_t[nb_indivs]; // Effective of each "allele" (ie ancestor tag) in the final population. There remains at most nb_indivs ancestors tags
+  for (allele=0;allele<nb_indivs;allele++){
+    totaleffective[allele]=0;
+  }
+  for (individual=0;individual<nb_indivs;individual++){
+    totaleffective[results[individual]]+=1;
+  }
+  
+  double r=0.;
+  for (allele=0;allele<nb_indivs;allele++){
+    if (totaleffective[allele]==0) continue; // Nobody is bearing this allele
+    double rpar=0.;
+    for (individual=0;individual<nb_indivs;individual++){
+      if (results[individual]==allele){
+        // analyse the neighborood of individual
+        int32_t nn=0; // number of neighbors bearing the same allele, including focal individual
+        int32_t nx,ny;
+        int32_t x=getx(individual);
+        int32_t y=gety(individual);
+        for (nx=x-1;nx<=x+1;nx++){
+          for (ny=y-1;ny<=y+1;ny++){
+            int32_t neighbor=(nx%popx)+(ny%popy)*popx;
+            if (results[neighbor]==allele) nn+=1;
+          }
+        }
+        rpar+=(nn*nb_indivs/9. - totaleffective[allele])/totaleffective[allele];
+      }
+    }
+    r+=abs(rpar);
+  }
+  
+  return r;
+}
+
+inline int32_t gety(int32_t individual){
+  return (individual/popx);
+}
+
+inline int32_t getx(int32_t individual){
+  return (individual%popx);
 }
 
 void print_help( void )
