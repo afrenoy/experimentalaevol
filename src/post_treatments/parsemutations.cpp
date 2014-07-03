@@ -60,9 +60,13 @@ int main(int argc, char** argv)
   
   //
   int32_t* results = new int32_t[nb_indivs];
-  double r = snapshot2gen(0,15,results);
-  for (int32_t individual=0;individual<nb_indivs;individual++) printf("%"PRId32":%"PRId32" ", individual, results[individual]);
-  printf("\n%f\n",r);
+  for (int32_t g=0;g<nb_geners-15;g++){
+    double r = snapshot2gen(g,g+15,results);
+    printf("%f\n",r);
+  }
+  
+  //for (int32_t individual=0;individual<nb_indivs;individual++) printf("%"PRId32":%"PRId32" ", individual, results[individual]);
+  //printf("\n%f\n",r);
   
   // Close the files and clean memory
   clean();
@@ -345,13 +349,13 @@ double snapshot2gen( int32_t gen0, int32_t gen1, int32_t* results)
             if (results[neighbor]==allele) nn+=1;
           }
         }
-        rpar+=(nn*nb_indivs/9. - totaleffective[allele])/totaleffective[allele];
+        rpar+=(double(nn)*double(nb_indivs)/9. - double(totaleffective[allele]))/(double(nb_indivs) - double(totaleffective[allele]));
       }
     }
     r+=abs(rpar);
   }
   
-  return r;
+  return r/float(nb_indivs);
 }
 
 inline int32_t gety(int32_t individual){
