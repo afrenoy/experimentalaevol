@@ -340,14 +340,20 @@ double snapshot2gen( int32_t gen0, int32_t gen1, int32_t* results)
         int32_t y=gety(individual);
         for (nx=x-1;nx<=x+1;nx++){
           for (ny=y-1;ny<=y+1;ny++){
-            int32_t neighbor=(nx%popx)+(ny%popy)*popx;
+            int32_t neighbor=((nx+popx)%popx)+((ny+popy)%popy)*popx;
             if (results[neighbor]==allele) nn+=1;
           }
         }
-        rpar+=(double(nn*nb_indivs)/9. - double(totaleffective[allele]));
+        double rparans=rpar;
+        rpar+=(double((nn-1)*nb_indivs)/8. - double(totaleffective[allele]));
+        if ( ((rpar<0)&&(rparans>0)&&(double((nn-1)*nb_indivs)/8. - double(totaleffective[allele])>0)) || ((rpar>0)&&(rparans<0)&&(double((nn-1)*nb_indivs)/8. - double(totaleffective[allele])<0)) ){
+          printf("OVERFLOW here\n");
+          exit(EXIT_FAILURE);
+        }
       }
     }
     if (totaleffective[allele]!=nb_indivs){
+      //if (abs(rpar)/double(nb_indivs - totaleffective[allele])>1) printf("allele: %"PRId32"; rpar: %f; effective: %"PRId32" \n",allele,rpar,totaleffective[allele]);
       r+=abs(rpar)/double(nb_indivs - totaleffective[allele]);
     }
     else printf("Between generation %"PRId32" and %"PRId32", invasion of one single ancestor -> relatedness set to 0\n",gen0,gen1);
@@ -373,10 +379,7 @@ void computerelatedness( void )
     for (int32_t g=0;g<nb_geners-rwindow;g++){
       double r = snapshot2gen(g,g+rwindow,results);
       fprintf(relatedness_file,"%f\n",r);
-      if (r<0){
-        for (int32_t i=0;i<nb_indivs;i++) printf("%"PRId32":%"PRId32" ",i,results[i]);
-        exit(0);
-      }
+      assert ((r<=1.)&&(r>=0.));
     }
     delete [] results;
   }
