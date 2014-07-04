@@ -59,15 +59,9 @@ int main(int argc, char** argv)
   
   // Compute reproductive success of the individuals
   computereproductivesuccess();
-  
+
   // Take snapshots and calculate relatedness
-  if (rwindow>0){
-    int32_t* results = new int32_t[nb_indivs];
-    for (int32_t g=0;g<nb_geners-rwindow;g++){
-      double r = snapshot2gen(g,g+rwindow,results);
-      printf("%f\n",r);
-    }
-  }
+  computerelatedness();
   
   // Close the files and clean memory
   clean();
@@ -350,13 +344,43 @@ double snapshot2gen( int32_t gen0, int32_t gen1, int32_t* results)
             if (results[neighbor]==allele) nn+=1;
           }
         }
-        rpar+=(double(nn)*double(nb_indivs)/9. - double(totaleffective[allele]))/(double(nb_indivs) - double(totaleffective[allele]));
+        rpar+=(double(nn*nb_indivs)/9. - double(totaleffective[allele]));
       }
     }
-    r+=abs(rpar);
+    if (totaleffective[allele]!=nb_indivs){
+      r+=abs(rpar)/double(nb_indivs - totaleffective[allele]);
+    }
+    else printf("Between generation %"PRId32" and %"PRId32", invasion of one single ancestor -> relatedness set to 0\n",gen0,gen1);
   }
   
   return r/float(nb_indivs);
+}
+
+void computerelatedness( void )
+{
+  char output_file_name[101];
+  snprintf( output_file_name, 100, "relatedness-b%06"PRId32"-e%06"PRId32".txt", begin_gener, end_gener);
+  
+  relatedness_file = fopen(output_file_name, "w");
+  if ( relatedness_file == NULL )
+  {
+    fprintf(stderr, "Failed to create file %s, exiting.\n", output_file_name);
+    exit(EXIT_FAILURE);
+  }
+  
+  if (rwindow>0){
+    int32_t* results = new int32_t[nb_indivs];
+    for (int32_t g=0;g<nb_geners-rwindow;g++){
+      double r = snapshot2gen(g,g+rwindow,results);
+      fprintf(relatedness_file,"%f\n",r);
+      if (r<0){
+        for (int32_t i=0;i<nb_indivs;i++) printf("%"PRId32":%"PRId32" ",i,results[i]);
+        exit(0);
+      }
+    }
+    delete [] results;
+  }
+  fclose(relatedness_file);
 }
 
 inline int32_t gety(int32_t individual){

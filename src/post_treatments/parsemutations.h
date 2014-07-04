@@ -35,6 +35,7 @@ void loadreports( void );
 void computereproductivesuccess( void );
 void clean ( void );
 double snapshot2gen( int32_t gen0, int32_t gen1, int32_t* results);
+void computerelatedness( void );
 
 inline int32_t gety(int32_t individual);
 inline int32_t getx(int32_t individual);
@@ -42,6 +43,7 @@ inline int32_t getx(int32_t individual);
 ae_exp_manager* exp_manager;
 char tree_file_name[50];
 FILE* output_file;
+FILE* relatedness_file;
 
 int32_t nb_indivs;
 int32_t nb_geners;
