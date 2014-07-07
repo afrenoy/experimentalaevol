@@ -61,16 +61,17 @@ AC_CHECK_FUNCS([floor memset mkdir pow rint sqrt gzread])
 #                                  OPTIONS
 #
 #   Supported options [default]:
-#     --with-x                          [yes]
-#     --enable-optim                    [enabled]
-#     --enable-raevol                   [disabled]
-#     --enable-normalized-fitness       [disabled]
-#     --enable-binary-secretion         [disabled]
-#     --enable-mtperiod=period          [disabled]
-#     --enable-trivialjumps=jumpsize    [disabled]
-#     --enable-devel                    [disabled]
-#     --enable-debug                    [disabled]
-#     --enable-in2p3                    [disabled]
+#     --with-x                            [yes]
+#     --enable-optim                      [enabled]
+#     --enable-raevol                     [disabled]
+#     --enable-normalized-fitness         [disabled]
+#     --enable-binary-secretion           [disabled]
+#     --enable-variation-metabolism-only  [disabled]
+#     --enable-mtperiod=period            [disabled]
+#     --enable-trivialjumps=jumpsize      [disabled]
+#     --enable-devel                      [disabled]
+#     --enable-debug                      [disabled]
+#     --enable-in2p3                      [disabled]
 #
 # ****************************************************************************
 
@@ -185,6 +186,19 @@ AC_MSG_RESULT($enable_binary_secretion)
 AM_CONDITIONAL(WITH_BINARY_SECRETION, test x"$enable_binary_secretion" != xno)
 if test "x$enable_binary_secretion" = "xyes" ; then
    AC_DEFINE(BINARY_SECRETION)
+fi
+
+#  ******************* --enable-variation-metabolism-only option ***************************
+#
+#  With this option, the VARIATION_METABOLISM_ONLY flag is defined, 
+#  making environmental changes affect only metabolism 
+
+AC_MSG_CHECKING([whether environmental changes are restricted to metabolism])
+AC_ARG_ENABLE(variation-metabolism-only, [  --enable-variation-metabolism-only to only apply variation to metabolism], , enable_variation_metabolism_only=no)
+AC_MSG_RESULT($enable_variation_metabolism_only)
+AM_CONDITIONAL(WITH_VARIATION_METABOLISM_ONLY, test x"$enable_variation_metabolism_only" != xno)
+if test "x$enable_variation_metabolism_only" = "xyes" ; then
+   AC_DEFINE(VARIATION_METABOLISM_ONLY)
 fi
 
 

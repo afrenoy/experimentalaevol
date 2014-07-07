@@ -642,6 +642,8 @@ ENABLE_DEVEL_FALSE
 ENABLE_DEVEL_TRUE
 ENABLE_FORCEPJ_FALSE
 ENABLE_FORCEPJ_TRUE
+WITH_VARIATION_METABOLISM_ONLY_FALSE
+WITH_VARIATION_METABOLISM_ONLY_TRUE
 WITH_BINARY_SECRETION_FALSE
 WITH_BINARY_SECRETION_TRUE
 WITH_NORMALIZED_FITNESS_FALSE
@@ -759,6 +761,7 @@ enable_optim
 enable_raevol
 enable_normalized_fitness
 enable_binary_secretion
+enable_variation_metabolism_only
 enable_mtperiod
 enable_trivialjumps
 enable_devel
@@ -1408,6 +1411,7 @@ Optional Features:
   --enable-raevol to enable regulation
   --enable-normalized-fitness to enable fitness normalization
   --enable-binary-secretion to use binary secretion
+  --enable-variation-metabolism-only to only apply variation to metabolism
   --enable-mtperiod=period
         Set the Mersenne Twister period to 2^period (default is 2^607).
 
@@ -5345,16 +5349,17 @@ done
 #                                  OPTIONS
 #
 #   Supported options [default]:
-#     --with-x                          [yes]
-#     --enable-optim                    [enabled]
-#     --enable-raevol                   [disabled]
-#     --enable-normalized-fitness       [disabled]
-#     --enable-binary-secretion         [disabled]
-#     --enable-mtperiod=period          [disabled]
-#     --enable-trivialjumps=jumpsize    [disabled]
-#     --enable-devel                    [disabled]
-#     --enable-debug                    [disabled]
-#     --enable-in2p3                    [disabled]
+#     --with-x                            [yes]
+#     --enable-optim                      [enabled]
+#     --enable-raevol                     [disabled]
+#     --enable-normalized-fitness         [disabled]
+#     --enable-binary-secretion           [disabled]
+#     --enable-variation-metabolism-only  [disabled]
+#     --enable-mtperiod=period            [disabled]
+#     --enable-trivialjumps=jumpsize      [disabled]
+#     --enable-devel                      [disabled]
+#     --enable-debug                      [disabled]
+#     --enable-in2p3                      [disabled]
 #
 # ****************************************************************************
 
@@ -6382,6 +6387,35 @@ if test "x$enable_binary_secretion" = "xyes" ; then
 
 fi
 
+#  ******************* --enable-variation-metabolism-only option ***************************
+#
+#  With this option, the VARIATION_METABOLISM_ONLY flag is defined,
+#  making environmental changes affect only metabolism
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether environmental changes are restricted to metabolism" >&5
+$as_echo_n "checking whether environmental changes are restricted to metabolism... " >&6; }
+# Check whether --enable-variation-metabolism-only was given.
+if test "${enable_variation_metabolism_only+set}" = set; then :
+  enableval=$enable_variation_metabolism_only;
+else
+  enable_variation_metabolism_only=no
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $enable_variation_metabolism_only" >&5
+$as_echo "$enable_variation_metabolism_only" >&6; }
+ if test x"$enable_variation_metabolism_only" != xno; then
+  WITH_VARIATION_METABOLISM_ONLY_TRUE=
+  WITH_VARIATION_METABOLISM_ONLY_FALSE='#'
+else
+  WITH_VARIATION_METABOLISM_ONLY_TRUE='#'
+  WITH_VARIATION_METABOLISM_ONLY_FALSE=
+fi
+
+if test "x$enable_variation_metabolism_only" = "xyes" ; then
+   $as_echo "#define VARIATION_METABOLISM_ONLY 1" >>confdefs.h
+
+fi
+
 
 
 #  ************************* --enable-mtperiod=period option *******************************
@@ -6987,6 +7021,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${WITH_BINARY_SECRETION_TRUE}" && test -z "${WITH_BINARY_SECRETION_FALSE}"; then
   as_fn_error $? "conditional \"WITH_BINARY_SECRETION\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${WITH_VARIATION_METABOLISM_ONLY_TRUE}" && test -z "${WITH_VARIATION_METABOLISM_ONLY_FALSE}"; then
+  as_fn_error $? "conditional \"WITH_VARIATION_METABOLISM_ONLY\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${ENABLE_FORCEPJ_TRUE}" && test -z "${ENABLE_FORCEPJ_FALSE}"; then

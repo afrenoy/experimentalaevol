@@ -609,19 +609,43 @@ void ae_environment::_apply_autoregressive_mean_variation( void )
     gaussian      = gaussian_node->get_obj();
     ref_gaussian  = ref_gaussian_node->get_obj();
     
+#ifdef VARIATION_METABOLISM_ONLY
+    // Find the feature of the gaussian
+    int nfeat=-1;
+    for ( int i=0; i<=(get_nb_segments() - 1); i++ )
+    {
+      if ( (ref_gaussian->get_mean() >= get_segment_boundaries(i) ) && (ref_gaussian->get_mean() < get_segment_boundaries(i+1)) )
+      {
+        nfeat = get_axis_feature(i);
+        break;
+      }
+    }
+    if (ref_gaussian->get_mean()==1) nfeat = get_axis_feature(get_nb_segments()-1);
+    if (nfeat<0)
+    {
+      printf( "ERROR : unknown feature (mean = %f) in file %s : l%d\n", ref_gaussian->get_mean(), __FILE__, __LINE__ );
+      exit( EXIT_FAILURE );
+    }
+#endif
     // Find the current delta_mean = current_mean - ref_mean
     double delta_mean = gaussian->get_mean() - ref_gaussian->get_mean();
     //double delta_height = gaussian->get_height() - ref_gaussian->get_height();
 
     // Compute the next value :
-    // Dm(t+1) = Dm(t)*(1-1/tau) + ssd/tau*sqrt(2*tau-1)*normal_random()
-    delta_mean =  delta_mean * (1.0 - 1.0/_var_tau) + (_var_sigma/_var_tau) * sqrt(2*_var_tau- 1.0) * _var_prng->gaussian_random();
-    //delta_height =  delta_height * (1.0 - 1.0/_var_tau) + (_var_sigma/_var_tau) * sqrt(2*_var_tau- 1.0) * _var_prng->gaussian_random();
-
-    // Deduce the new value of the mean : ref_mean + delta_m
-    gaussian->set_mean( ref_gaussian->get_mean() + delta_mean );
-    //gaussian->set_height( ref_gaussian->get_height() + delta_height );
-    
+#ifdef VARIATION_METABOLISM_ONLY
+    if (nfeat==METABOLISM) // We only apply environmental changes to metabolism
+    {
+#endif
+      // Dm(t+1) = Dm(t)*(1-1/tau) + ssd/tau*sqrt(2*tau-1)*normal_random()
+      delta_mean =  delta_mean * (1.0 - 1.0/_var_tau) + (_var_sigma/_var_tau) * sqrt(2*_var_tau- 1.0) * _var_prng->gaussian_random();
+      //delta_height =  delta_height * (1.0 - 1.0/_var_tau) + (_var_sigma/_var_tau) * sqrt(2*_var_tau- 1.0) * _var_prng->gaussian_random();
+      
+      // Deduce the new value of the mean : ref_mean + delta_m
+      gaussian->set_mean( ref_gaussian->get_mean() + delta_mean );
+      //gaussian->set_height( ref_gaussian->get_height() + delta_height );
+#ifdef VARIATION_METABOLISM_ONLY
+    }
+#endif
     gaussian_node = gaussian_node->get_next();
     ref_gaussian_node = ref_gaussian_node->get_next();
   }
