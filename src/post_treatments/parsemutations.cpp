@@ -27,7 +27,7 @@ int main(int argc, char** argv)
   end_gener = -1;
   ngen = 1000;
   stepgen = 500;
-  rwindow = -1;
+  int32_t rwindow = -1;
   
   const char * short_options = "hb:e:g:f:r:";
   static struct option long_options[] = {
@@ -61,8 +61,15 @@ int main(int argc, char** argv)
   computereproductivesuccess();
 
   // Take snapshots and calculate relatedness
-  computerelatedness();
-  
+  if (rwindow==0){ // 0 means compute relatedness for all possible time windows
+    for (rwindow=10;rwindow<=500;rwindow+=10){
+      computerelatedness(rwindow);
+    }
+  }
+  else if (rwindow>0){
+    computerelatedness(rwindow);
+  }
+
   // Close the files and clean memory
   clean();
   
@@ -362,10 +369,10 @@ double snapshot2gen( int32_t gen0, int32_t gen1, int32_t* results)
   return r/float(nb_indivs);
 }
 
-void computerelatedness( void )
+void computerelatedness( int32_t rwindow )
 {
   char output_file_name[101];
-  snprintf( output_file_name, 100, "relatedness-b%06"PRId32"-e%06"PRId32".txt", begin_gener, end_gener);
+  snprintf( output_file_name, 100, "relatedness-b%06"PRId32"-e%06"PRId32"-r%03"PRId32".txt", begin_gener, end_gener,rwindow);
   
   relatedness_file = fopen(output_file_name, "w");
   if ( relatedness_file == NULL )

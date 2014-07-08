@@ -35,7 +35,7 @@ void loadreports( void );
 void computereproductivesuccess( void );
 void clean ( void );
 double snapshot2gen( int32_t gen0, int32_t gen1, int32_t* results);
-void computerelatedness( void );
+void computerelatedness( int32_t );
 
 inline int32_t gety(int32_t individual);
 inline int32_t getx(int32_t individual);
@@ -52,7 +52,6 @@ int32_t begin_gener;
 int32_t end_gener;
 int32_t stepgen;
 int32_t ngen;
-int32_t rwindow;
 
 int32_t popx;
 int32_t popy;
