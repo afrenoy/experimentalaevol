@@ -124,7 +124,7 @@ void computereproductivesuccess( void )
 {
   // Open the output file
   char output_file_name[101];
-  snprintf( output_file_name, 100, "mutations-b%06"PRId32"-e%06"PRId32".txt", begin_gener, end_gener);
+  snprintf( output_file_name, 100, "mutations-b%06"PRId32"-e%06"PRId32"-f%06"PRId32".txt", begin_gener, end_gener, ngen);
   
   output_file = fopen(output_file_name, "w");
   if ( output_file == NULL )
@@ -356,7 +356,7 @@ double snapshot2gen( int32_t gen0, int32_t gen1, int32_t* results)
       //if (abs(rpar)/double(nb_indivs - totaleffective[allele])>1) printf("allele: %"PRId32"; rpar: %f; effective: %"PRId32" \n",allele,rpar,totaleffective[allele]);
       r+=abs(rpar)/double(nb_indivs - totaleffective[allele]);
     }
-    else printf("Between generation %"PRId32" and %"PRId32", invasion of one single ancestor -> relatedness set to 0\n",gen0,gen1);
+    //else printf("Between generation %"PRId32" and %"PRId32", invasion of one single ancestor -> relatedness set to 0\n",gen0,gen1);
   }
   
   return r/float(nb_indivs);
