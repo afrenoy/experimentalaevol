@@ -419,6 +419,6 @@ void print_help( void )
   printf( "\t                  How many future generations to consider when calculating reproductive success \n" );
   printf( "\n" );
   printf( "\t-r ngen or --rwindow ngen : \n" );
-  printf( "\t                  How many future generations to consider when calculating relatedness \n" );
+  printf( "\t                  How many future generations to consider when calculating relatedness. When set to 0, try all values between 10 and 500 with increment 10. \n" );
   printf( "\n" );
 }

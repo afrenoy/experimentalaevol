@@ -397,6 +397,7 @@ or :    extract [-r num_generation | -p pop_file ] [-t triangles_file] [-s seque
 \t-p pop_file : read the generation saved in population file pop_file\n\
 \t-t tf : extract and save some infos about the phenotypes of the individuals to file tf\n\
 \t-s sf : extract and save the sequences of the individuals to file sf\n\
+\t-i if : extract and save other infos about the individuals (position, rank,...) to file if\n\
 \t-g num_gu : only treat this genetic unit (by default: treat all genetic units)\n\
 \t-b : only treat the best individual\n");
 }
