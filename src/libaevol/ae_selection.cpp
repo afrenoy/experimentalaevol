@@ -430,7 +430,7 @@ void ae_selection::write_setup_file( gzFile exp_setup_file ) const
   gzwrite( exp_setup_file, &_selection_pressure, sizeof(_selection_pressure) );
 #ifdef BINARY_SECRETION
   gzwrite( exp_setup_file, &_mutdc, sizeof(_mutdc) );
-  gzwrite( exp_setup_file, &_mutdc, sizeof(_mutcd) );
+  gzwrite( exp_setup_file, &_mutcd, sizeof(_mutcd) );
 #endif
 }
 
@@ -470,7 +470,7 @@ void ae_selection::load( gzFile& exp_setup_file,
   _prng = new ae_jumping_mt( backup_file );
 #ifdef BINARY_SECRETION
   gzread( exp_setup_file, &_mutdc, sizeof(_mutdc) );
-  gzread( exp_setup_file, &_mutdc, sizeof(_mutcd) );
+  gzread( exp_setup_file, &_mutcd, sizeof(_mutcd) );
 #endif
 }
 
