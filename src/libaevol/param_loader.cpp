@@ -1112,7 +1112,11 @@ void param_loader::load( ae_exp_manager* exp_m, bool verbose, char* chromosome, 
   // ---------------------------------------------------------------- Secretion
   exp_s->set_with_secretion( _param_values->_with_secretion );
 #ifdef BINARY_SECRETION
-  assert(!exp_s->get_with_secretion()); // If we us a binary secretion we can not use a 'classical' secretion feature
+  if (exp_s->get_with_secretion()) // If we us a binary secretion we can not use a 'classical' secretion feature
+  {
+    printf( "ERROR: classical secretion can not be used when aevol is compiled with --enable-binary-secretion\n" );
+    exit(EXIT_FAILURE);
+  }
   if ((_param_values->_mutdc>0) || (_param_values->_mutcd>0))
   {
     exp_s->set_with_secretion(true);
