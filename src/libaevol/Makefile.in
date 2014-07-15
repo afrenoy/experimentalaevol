@@ -104,17 +104,17 @@ am__libaevol_a_SOURCES_DIST = ae_align.cpp ae_codon.cpp ae_dna.cpp \
 	ae_replication_report.cpp ae_dna_replic_report.cpp ae_rna.cpp \
 	ae_stats.cpp ae_stat_record.cpp ae_string.cpp ae_tree.cpp \
 	ae_vis_a_vis.cpp ae_selection.cpp ae_spatial_structure.cpp \
-	params.cpp param_loader.cpp f_line.cpp ae_align.h ae_codon.h \
-	ae_dna.h ae_dump.h ae_enums.h ae_environment.h \
-	ae_env_segment.h ae_exp_manager.h ae_exp_setup.h \
-	ae_fuzzy_set.h ae_gaussian.h ae_genetic_unit.h ae_grid_cell.h \
-	ae_individual.h ae_list.h ae_logs.h ae_macros.h ae_mutation.h \
-	ae_object.h ae_output_manager.h ae_params_mut.h ae_phenotype.h \
+	param_loader.cpp f_line.cpp ae_align.h ae_codon.h ae_dna.h \
+	ae_dump.h ae_enums.h ae_environment.h ae_env_segment.h \
+	ae_exp_manager.h ae_exp_setup.h ae_fuzzy_set.h ae_gaussian.h \
+	ae_genetic_unit.h ae_grid_cell.h ae_individual.h ae_list.h \
+	ae_logs.h ae_macros.h ae_mutation.h ae_object.h \
+	ae_output_manager.h ae_params_mut.h ae_phenotype.h \
 	ae_population.h ae_point_1d.h ae_point_2d.h ae_protein.h \
 	ae_jumping_mt.h ae_jump_poly.h ae_replication_report.h \
 	ae_dna_replic_report.h ae_rna.h ae_stats.h ae_stat_record.h \
 	ae_string.h ae_tree.h ae_utils.h ae_vis_a_vis.h ae_selection.h \
-	ae_spatial_structure.h params.h param_loader.h f_line.h \
+	ae_spatial_structure.h param_loader.h f_line.h \
 	ae_fuzzy_set_X11.cpp ae_individual_X11.cpp \
 	ae_population_X11.cpp ae_exp_manager_X11.cpp ae_X11_window.cpp \
 	ae_fuzzy_set_X11.h ae_individual_X11.h ae_population_X11.h \
@@ -144,8 +144,7 @@ am__objects_1 = libaevol_a-ae_align.$(OBJEXT) \
 	libaevol_a-ae_vis_a_vis.$(OBJEXT) \
 	libaevol_a-ae_selection.$(OBJEXT) \
 	libaevol_a-ae_spatial_structure.$(OBJEXT) \
-	libaevol_a-params.$(OBJEXT) libaevol_a-param_loader.$(OBJEXT) \
-	libaevol_a-f_line.$(OBJEXT)
+	libaevol_a-param_loader.$(OBJEXT) libaevol_a-f_line.$(OBJEXT)
 am__objects_2 =
 am__objects_3 = libaevol_a-ae_fuzzy_set_X11.$(OBJEXT) \
 	libaevol_a-ae_individual_X11.$(OBJEXT) \
@@ -172,7 +171,7 @@ am__libraevol_a_SOURCES_DIST = ae_align.cpp ae_codon.cpp ae_dna.cpp \
 	ae_replication_report.cpp ae_dna_replic_report.cpp ae_rna.cpp \
 	ae_stats.cpp ae_stat_record.cpp ae_string.cpp ae_tree.cpp \
 	ae_vis_a_vis.cpp ae_selection.cpp ae_spatial_structure.cpp \
-	params.cpp param_loader.cpp f_line.cpp ae_individual_R.cpp \
+	param_loader.cpp f_line.cpp ae_individual_R.cpp \
 	ae_influence_R.cpp ae_protein_R.cpp ae_rna_R.cpp \
 	ae_selection_R.cpp ae_align.h ae_codon.h ae_dna.h ae_dump.h \
 	ae_enums.h ae_environment.h ae_env_segment.h ae_exp_manager.h \
@@ -183,7 +182,7 @@ am__libraevol_a_SOURCES_DIST = ae_align.cpp ae_codon.cpp ae_dna.cpp \
 	ae_protein.h ae_jumping_mt.h ae_jump_poly.h \
 	ae_replication_report.h ae_dna_replic_report.h ae_rna.h \
 	ae_stats.h ae_stat_record.h ae_string.h ae_tree.h ae_utils.h \
-	ae_vis_a_vis.h ae_selection.h ae_spatial_structure.h params.h \
+	ae_vis_a_vis.h ae_selection.h ae_spatial_structure.h \
 	param_loader.h f_line.h ae_array_short.h ae_individual_R.h \
 	ae_influence_R.h ae_matrix_double.h ae_protein_R.h ae_rna_R.h \
 	ae_selection_R.h ae_fuzzy_set_X11.cpp ae_individual_X11.cpp \
@@ -217,7 +216,6 @@ am__objects_4 = libraevol_a-ae_align.$(OBJEXT) \
 	libraevol_a-ae_vis_a_vis.$(OBJEXT) \
 	libraevol_a-ae_selection.$(OBJEXT) \
 	libraevol_a-ae_spatial_structure.$(OBJEXT) \
-	libraevol_a-params.$(OBJEXT) \
 	libraevol_a-param_loader.$(OBJEXT) \
 	libraevol_a-f_line.$(OBJEXT)
 am__objects_5 = libraevol_a-ae_individual_R.$(OBJEXT) \
@@ -490,7 +488,7 @@ common_headers = ae_align.h ae_codon.h ae_dna.h ae_dump.h ae_enums.h \
 	ae_protein.h ae_jumping_mt.h ae_jump_poly.h \
 	ae_replication_report.h ae_dna_replic_report.h ae_rna.h \
 	ae_stats.h ae_stat_record.h ae_string.h ae_tree.h ae_utils.h \
-	ae_vis_a_vis.h ae_selection.h ae_spatial_structure.h params.h \
+	ae_vis_a_vis.h ae_selection.h ae_spatial_structure.h \
 	param_loader.h f_line.h
 common_sources = ae_align.cpp ae_codon.cpp ae_dna.cpp ae_dump.cpp \
 	ae_environment.cpp ae_exp_manager.cpp ae_exp_setup.cpp \
@@ -501,7 +499,7 @@ common_sources = ae_align.cpp ae_codon.cpp ae_dna.cpp ae_dump.cpp \
 	ae_replication_report.cpp ae_dna_replic_report.cpp ae_rna.cpp \
 	ae_stats.cpp ae_stat_record.cpp ae_string.cpp ae_tree.cpp \
 	ae_vis_a_vis.cpp ae_selection.cpp ae_spatial_structure.cpp \
-	params.cpp param_loader.cpp f_line.cpp
+	param_loader.cpp f_line.cpp
 X11_headers = ae_fuzzy_set_X11.h ae_individual_X11.h ae_population_X11.h ae_exp_manager_X11.h ae_X11_window.h
 X11_sources = ae_fuzzy_set_X11.cpp ae_individual_X11.cpp ae_population_X11.cpp ae_exp_manager_X11.cpp ae_X11_window.cpp
 raevol_headers = ae_array_short.h ae_individual_R.h ae_influence_R.h ae_matrix_double.h ae_protein_R.h ae_rna_R.h ae_selection_R.h
@@ -627,7 +625,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libaevol_a-ae_vis_a_vis.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libaevol_a-f_line.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libaevol_a-param_loader.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libaevol_a-params.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libraevol_a-ae_X11_window.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libraevol_a-ae_align.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libraevol_a-ae_codon.Po@am__quote@
@@ -670,7 +667,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libraevol_a-ae_vis_a_vis.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libraevol_a-f_line.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libraevol_a-param_loader.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libraevol_a-params.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -1091,20 +1087,6 @@ libaevol_a-ae_spatial_structure.obj: ae_spatial_structure.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ae_spatial_structure.cpp' object='libaevol_a-ae_spatial_structure.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libaevol_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libaevol_a-ae_spatial_structure.obj `if test -f 'ae_spatial_structure.cpp'; then $(CYGPATH_W) 'ae_spatial_structure.cpp'; else $(CYGPATH_W) '$(srcdir)/ae_spatial_structure.cpp'; fi`
-
-libaevol_a-params.o: params.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libaevol_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libaevol_a-params.o -MD -MP -MF $(DEPDIR)/libaevol_a-params.Tpo -c -o libaevol_a-params.o `test -f 'params.cpp' || echo '$(srcdir)/'`params.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libaevol_a-params.Tpo $(DEPDIR)/libaevol_a-params.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='params.cpp' object='libaevol_a-params.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libaevol_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libaevol_a-params.o `test -f 'params.cpp' || echo '$(srcdir)/'`params.cpp
-
-libaevol_a-params.obj: params.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libaevol_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libaevol_a-params.obj -MD -MP -MF $(DEPDIR)/libaevol_a-params.Tpo -c -o libaevol_a-params.obj `if test -f 'params.cpp'; then $(CYGPATH_W) 'params.cpp'; else $(CYGPATH_W) '$(srcdir)/params.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libaevol_a-params.Tpo $(DEPDIR)/libaevol_a-params.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='params.cpp' object='libaevol_a-params.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libaevol_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libaevol_a-params.obj `if test -f 'params.cpp'; then $(CYGPATH_W) 'params.cpp'; else $(CYGPATH_W) '$(srcdir)/params.cpp'; fi`
 
 libaevol_a-param_loader.o: param_loader.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libaevol_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libaevol_a-param_loader.o -MD -MP -MF $(DEPDIR)/libaevol_a-param_loader.Tpo -c -o libaevol_a-param_loader.o `test -f 'param_loader.cpp' || echo '$(srcdir)/'`param_loader.cpp
@@ -1609,20 +1591,6 @@ libraevol_a-ae_spatial_structure.obj: ae_spatial_structure.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ae_spatial_structure.cpp' object='libraevol_a-ae_spatial_structure.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libraevol_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libraevol_a-ae_spatial_structure.obj `if test -f 'ae_spatial_structure.cpp'; then $(CYGPATH_W) 'ae_spatial_structure.cpp'; else $(CYGPATH_W) '$(srcdir)/ae_spatial_structure.cpp'; fi`
-
-libraevol_a-params.o: params.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libraevol_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libraevol_a-params.o -MD -MP -MF $(DEPDIR)/libraevol_a-params.Tpo -c -o libraevol_a-params.o `test -f 'params.cpp' || echo '$(srcdir)/'`params.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libraevol_a-params.Tpo $(DEPDIR)/libraevol_a-params.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='params.cpp' object='libraevol_a-params.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libraevol_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libraevol_a-params.o `test -f 'params.cpp' || echo '$(srcdir)/'`params.cpp
-
-libraevol_a-params.obj: params.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libraevol_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libraevol_a-params.obj -MD -MP -MF $(DEPDIR)/libraevol_a-params.Tpo -c -o libraevol_a-params.obj `if test -f 'params.cpp'; then $(CYGPATH_W) 'params.cpp'; else $(CYGPATH_W) '$(srcdir)/params.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libraevol_a-params.Tpo $(DEPDIR)/libraevol_a-params.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='params.cpp' object='libraevol_a-params.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libraevol_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o libraevol_a-params.obj `if test -f 'params.cpp'; then $(CYGPATH_W) 'params.cpp'; else $(CYGPATH_W) '$(srcdir)/params.cpp'; fi`
 
 libraevol_a-param_loader.o: param_loader.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libraevol_a_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT libraevol_a-param_loader.o -MD -MP -MF $(DEPDIR)/libraevol_a-param_loader.Tpo -c -o libraevol_a-param_loader.o `test -f 'param_loader.cpp' || echo '$(srcdir)/'`param_loader.cpp
