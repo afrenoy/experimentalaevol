@@ -261,7 +261,6 @@ param_loader::param_loader( const char* file_name )
   }
   
   assert( _param_file );
-  //_cur_line = 0;
   
   read_file();
 }
@@ -1033,77 +1032,6 @@ void param_loader::interpret_line( f_line* line, int32_t cur_line )
       }
     }
   }
-// I can not get this big chunk of code to compile with option --enable-raevol, is it supposed to work ??
-/*
-  #ifdef __REGUL
-    else if ( strcmp( line->words[0], "HILL_SHAPE_N" ) == 0 )
-    {
-      _param_values->set_hill_shape_n( atof( line->words[1] ) );
-    }
-    else if ( strcmp( line->words[0], "HILL_SHAPE_THETA" ) == 0 )
-    {
-      _param_values->set_hill_shape_theta( atof( line->words[1] ) );
-    }
-    else if ( strcmp( line->words[0], "DEGRADATION_RATE" ) == 0 )
-    {
-      _param_values->set_degradation_rate( atof( line->words[1] ) );
-    }
-    else if ( strcmp( line->words[0], "DEGRADATION_STEP" ) == 0 )
-    {
-      _param_values->set_degradation_step( atof( line->words[1] ) );
-      // Check that 1/degradation_step is an integer
-      if( 1/_param_values->get_degradation_step() != ((int) 1/_param_values->get_degradation_step()) )
-      {
-        printf( "ERROR in param file \"%s\" on line %"PRId32" : DEGRADATION STEP\n",
-                _param_file_name, cur_line );
-        printf( "This step has to divide 1.\n");
-        exit( EXIT_FAILURE );
-      }
-    }
-    else if ( strcmp( line->words[0], "INDIVIDUAL_EVALUATION_DATES" ) == 0 )
-    {
-      _param_values->set_individual_evaluation_nbr( line->nb_words - 1 );
-      if( _param_values->get_individual_evaluation_nbr() == 0 )
-      {
-        printf( "ERROR in param file \"%s\" on line %"PRId32" : no evaluation dates provided\n",
-                _param_file_name, cur_line );
-        exit( EXIT_FAILURE );
-      }
-      ae_array_short* individual_evaluation_dates  = new ae_array_short( _param_values->get_individual_evaluation_nbr() );
-      for( int16_t i = 0 ; i < _param_values->set_individual_evaluation_nbr() ; i++ )
-      {
-        individual_evaluation_dates->set_value( i, atoi( line->words[1 + i] ) );
-      }
-      individual_evaluation_dates->sort();
-      _param_values->set_individual_evaluation_dates( individual_evaluation_dates );
-    }
-    else if ( strcmp( line->words[0], "BINDING_ZEROS_PERCENTAGE" ) == 0 )
-    {
-      _param_values->set_binding_zeros_percentage( atof( line->words[1] ) );
-    }
-    else if ( strcmp( line->words[0], "WITH_HEREDITY" ) == 0 )
-    {
-      if ( strncmp( line->words[1], "true", 4 ) == 0 )
-      {
-        _param_values->set_with_heredity( true );
-      }
-      else if ( strncmp( line->words[1], "false", 5 ) == 0 )
-      {
-        _param_values->set_with_heredity( false );
-      }
-      else
-      {
-        printf( "ERROR in param file \"%s\" on line %"PRId32" : unknown with_heredity option (use true/false).\n",
-                _param_file_name, cur_line );
-        exit( EXIT_FAILURE ); 
-      }
-    }
-    else if ( strcmp( line->words[0], "PROTEIN_PRESENCE_LIMIT" ) == 0 )
-    {
-      _param_values->set_protein_presence_limit( atof( line->words[1] ) );
-    }
-  #endif
-*/
 #ifdef BINARY_SECRETION
   else if ( strcmp( line->words[0], "SWITCH_DC") == 0 )
   {
@@ -1126,7 +1054,6 @@ void param_loader::read_file( void )
   // The rewind is only necessary when using multiple param files
   rewind( _param_file );
 
- // _cur_line = 0;
   int32_t cur_line = 0;
   f_line* line;
   
@@ -1627,7 +1554,6 @@ f_line* param_loader::get_line( int32_t* cur_line_ptr ) // void
       return NULL;
     }
     (*cur_line_ptr)++;
-    //_cur_line++;
     format_line( formated_line, line, &found_interpretable_line );
   }
 

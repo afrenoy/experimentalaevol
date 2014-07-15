@@ -135,8 +135,6 @@ class param_loader
     FILE*   _param_file;
     
   
-    //int32_t _cur_line;
-  
     // Values read from parameter file
     int32_t _nb_gener;
     
