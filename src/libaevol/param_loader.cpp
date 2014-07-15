@@ -85,20 +85,6 @@ class ae_environment;
 
 param_loader::param_loader( const char* file_name )
 {
-  _param_file_name = strdup( file_name );
-  _param_file  = fopen( _param_file_name,  "r" );
-  
-  if ( _param_file == NULL )
-  {
-    printf( "ERROR : couldn't open file %s\n", file_name );
-    exit( EXIT_FAILURE );
-  }
-  
-  assert( _param_file );
-  //_cur_line = 0;
-  
-  read_file();
-  
   // Give default values to parameters
   
   // ---------------------------------- Number of generations to be simulated
@@ -263,7 +249,21 @@ param_loader::param_loader( const char* file_name )
   // ------------------------------------------------------- Binding matrix
   _binding_zeros_percentage = 75;
 #endif
-
+  
+  // Read parameter file
+  _param_file_name = strdup( file_name );
+  _param_file  = fopen( _param_file_name,  "r" );
+  
+  if ( _param_file == NULL )
+  {
+    printf( "ERROR : couldn't open file %s\n", file_name );
+    exit( EXIT_FAILURE );
+  }
+  
+  assert( _param_file );
+  //_cur_line = 0;
+  
+  read_file();
 }
 
 // =================================================================
