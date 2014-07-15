@@ -428,8 +428,8 @@ void param_loader::interpret_line( f_line* line, int32_t cur_line )
   }
   else if ( strcmp( line->words[0], "DUMP_STEP" ) == 0 )
   {
-    _make_dumps = true;
     _dump_step = atol( line->words[1] );
+    if (_dump_step>0) _make_dumps = true;
   }
   else if ( strcmp( line->words[0], "BACKUP_STEP" ) == 0 )
   {
