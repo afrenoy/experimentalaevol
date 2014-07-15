@@ -136,8 +136,7 @@ class param_loader
     
   
     // Values read from parameter file
-    int32_t _nb_gener;
-    
+
     // ----------------------------------------- PseudoRandom Number Generators
     // Seed for the selection random generator
     int32_t _seed;

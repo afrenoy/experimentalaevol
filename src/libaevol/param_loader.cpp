@@ -87,9 +87,6 @@ param_loader::param_loader( const char* file_name )
 {
   // Give default values to parameters
   
-  // ---------------------------------- Number of generations to be simulated
-  _nb_gener = 0;
-  
   // ----------------------------------------- PseudoRandom Number Generators
   _seed           = 0;
   _mut_seed       = 0;
@@ -695,10 +692,6 @@ void param_loader::interpret_line( f_line* line, int32_t cur_line )
     }
     _stoch_seed = atol( line->words[1] );
     stoch_seed_already_set = true;
-  }
-  else if ( strcmp( line->words[0], "NB_GENER" ) == 0 )
-  {
-    _nb_gener = atol( line->words[1] );
   }
   else if ( strcmp( line->words[0], "WITH_4PTS_TRANS" ) == 0 )
   {
