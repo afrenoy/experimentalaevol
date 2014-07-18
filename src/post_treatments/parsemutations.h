@@ -1,10 +1,4 @@
-//
-//  parsemutations.h
-//  Aevol4.3local
-//
-//  Created by Antoine Frénoy on 02/04/2014.
-//
-//
+// For now a lot of data are global variables
 
 #include <errno.h>
 #include <inttypes.h>

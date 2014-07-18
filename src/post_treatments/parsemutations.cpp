@@ -1,13 +1,4 @@
-//
-//  parsemutations.cpp
-//  Aevol4.3local
-//
-//  Created by Antoine Frénoy on 02/04/2014.
-//
-//
-
 #include "parsemutations.h"
-
 /*
  
  This post-treatment analyses all the reproductive events (being caracterised by a set of mutations) and outputs the reproductive success of each of these reproductive events.
@@ -403,7 +394,7 @@ inline int32_t getx(int32_t individual){
 
 void print_help( void )
 {
-  printf( "Analysis and lineage of mutations post-treatment \n" );
+  printf( "A post-treatment that analyses all reproductive events. It computes reproductive success for every individual that lived during the simulation, and identity by descent relatedness between pairs of generations. \n" );
   printf( "Usage : parsemutations -b gen0 -e gen1 -g gra -f fut [-h]\n");
   printf( "\n" );
   printf( "\t-b gen0 or --begin gen0 : \n" );
@@ -412,11 +403,11 @@ void print_help( void )
   printf( "\t-e gen1 or --end gen1 : \n" );
   printf( "\t                  Last generation to analyze \n" );
   printf( "\n" );
-  printf( "\t-g stepgen or --granularity stepgen : \n" );
-  printf( "\t                  How many generations to analyze at a time \n" );
-  printf( "\n" );
   printf( "\t-f ngen or --futur ngen : \n" );
   printf( "\t                  How many future generations to consider when calculating reproductive success \n" );
+  printf( "\n" );
+  printf( "\t-g stepgen or --granularity stepgen : \n" );
+  printf( "\t                  How many generations to analyze at a time. These value has no effect on the output, but higher value means higher memory use and lower CPU use. Approximately, spatial complexity is O[(stepgen+ngen)^2*nb_indivs], time complexity is O[((gen1-gen0)/stepgen])*(stepgen+ngen)*nb_indivs]\n" );
   printf( "\n" );
   printf( "\t-r ngen or --rwindow ngen : \n" );
   printf( "\t                  How many future generations to consider when calculating relatedness. When set to 0, try all values between 10 and 500 with increment 10. \n" );
