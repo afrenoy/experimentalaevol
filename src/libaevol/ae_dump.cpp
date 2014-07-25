@@ -103,7 +103,7 @@ void ae_dump::write_fitness_total( void )
   
   if ( _exp_m->is_spatially_structured() )
   {
-    sprintf( filename_buffer, "stats/dump/fitness_total_%04"PRId32".out", _exp_m->get_num_gener() ) ;
+    sprintf( filename_buffer, "stats/dump/fitness_total_%06"PRId32".out", _exp_m->get_num_gener() ) ;
     current_file = fopen( filename_buffer, "w+" );
     double** map = _exp_m->get_spatial_structure()->get_total_fitness_grid();
     fprintf( current_file, "#\tX\tY\tfitness_total(X, Y)\n" );
@@ -132,7 +132,7 @@ void ae_dump::write_secreted_amount ( void )
 {
   if ( _exp_m->is_spatially_structured() )
   {
-    sprintf( filename_buffer, "stats/dump/secreted_amount_%04"PRId32".out", _exp_m->get_num_gener() ) ;
+    sprintf( filename_buffer, "stats/dump/secreted_amount_%06"PRId32".out", _exp_m->get_num_gener() ) ;
     current_file = fopen( filename_buffer, "w+" );
     
     double** map = _exp_m->get_spatial_structure()->get_secreted_amount_grid();
@@ -147,6 +147,11 @@ void ae_dump::write_secreted_amount ( void )
     }
     fflush( current_file );
     fclose( current_file );
+    for ( int16_t x = 0; x < _exp_m->get_grid_width() ; x++ )
+    {
+      delete [] map[x];
+    }
+    delete [] map;
   }
 }
 
@@ -154,7 +159,7 @@ void ae_dump::write_fitness_metabolic ( void )
 {
   if ( _exp_m->is_spatially_structured() )
   {
-    sprintf( filename_buffer, "stats/dump/fitness_metabolic_%04"PRId32".out", _exp_m->get_num_gener() ) ;
+    sprintf( filename_buffer, "stats/dump/fitness_metabolic_%06"PRId32".out", _exp_m->get_num_gener() ) ;
     current_file = fopen( filename_buffer, "w+" );
     
     double** map = _exp_m->get_spatial_structure()->get_metabolic_fitness_grid();
@@ -169,6 +174,11 @@ void ae_dump::write_fitness_metabolic ( void )
     }
     fflush( current_file );
     fclose( current_file );
+    for ( int16_t x = 0; x < _exp_m->get_grid_width() ; x++ )
+    {
+      delete [] map[x];
+    }
+    delete [] map;
   }
 }
 
@@ -176,7 +186,7 @@ void ae_dump::write_secretion_present ( void )
 {
   if ( _exp_m->is_spatially_structured() )
   {
-    sprintf( filename_buffer, "stats/dump/secretion_present_%04"PRId32".out", _exp_m->get_num_gener() ) ;
+    sprintf( filename_buffer, "stats/dump/secretion_present_%06"PRId32".out", _exp_m->get_num_gener() ) ;
     current_file = fopen( filename_buffer, "w+" );
     
     double** map = _exp_m->get_spatial_structure()->get_secretion_present_grid();
@@ -189,6 +199,11 @@ void ae_dump::write_secretion_present ( void )
     }
     fflush( current_file );
     fclose( current_file );
+    for ( int16_t x = 0; x < _exp_m->get_grid_width() ; x++ )
+    {
+      delete [] map[x];
+    }
+    delete [] map;
   }
 }
 
@@ -197,7 +212,7 @@ void ae_dump::write_secretion_present ( void )
 */
 void ae_dump::write_individual_probes( void )
 {
-  sprintf( filename_buffer, "stats/dump/individual_probes_%04"PRId32".out", _exp_m->get_num_gener() ) ;
+  sprintf( filename_buffer, "stats/dump/individual_probes_%06"PRId32".out", _exp_m->get_num_gener() ) ;
   current_file = fopen( filename_buffer, "w" );
   
   fprintf(current_file, "Id\tInt_Probe_1\tInt_Probe_2\tInt_Probe_3\tInt_Probe_4\tInt_Probe_5\tDouble_Probe_1\tDouble_Probe_2\tDouble_Probe_3\tDouble_Probe_4\tDouble_Probe_5\n");
