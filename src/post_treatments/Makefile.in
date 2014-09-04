@@ -84,7 +84,8 @@ POST_UNINSTALL = :
 @WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_compute_pop_stats$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_extract$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_addintprobe$(EXEEXT) \
-@WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_parsemutations$(EXEEXT)
+@WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_parsemutations$(EXEEXT) \
+@WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_transfrom_plasmid$(EXEEXT)
 @WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@bin_PROGRAMS = aevol_misc_rrobustness$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rancstats$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rcreate_eps$(EXEEXT) \
@@ -100,7 +101,8 @@ POST_UNINSTALL = :
 @WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_compute_pop_stats$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_extract$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_addintprobe$(EXEEXT) \
-@WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_parsemutations$(EXEEXT)
+@WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_parsemutations$(EXEEXT) \
+@WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_transfrom_plasmid$(EXEEXT)
 @WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@bin_PROGRAMS = aevol_misc_rrobustness$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rancstats$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rcreate_eps$(EXEEXT) \
@@ -117,7 +119,8 @@ POST_UNINSTALL = :
 @WITH_DEBUG_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_extract$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_view_generation$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_addintprobe$(EXEEXT) \
-@WITH_DEBUG_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_parsemutations$(EXEEXT)
+@WITH_DEBUG_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_parsemutations$(EXEEXT) \
+@WITH_DEBUG_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_transfrom_plasmid$(EXEEXT)
 @WITH_DEBUG_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_TRUE@bin_PROGRAMS = aevol_misc_rrobustness$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_TRUE@	aevol_misc_rancstats$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_TRUE@	aevol_misc_rcreate_eps$(EXEEXT) \
@@ -133,7 +136,8 @@ POST_UNINSTALL = :
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_compute_pop_stats_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_extract_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_addintprobe_debug$(EXEEXT) \
-@WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_parsemutations_debug$(EXEEXT)
+@WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_parsemutations_debug$(EXEEXT) \
+@WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_transfrom_plasmid_debug$(EXEEXT)
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@bin_PROGRAMS = aevol_misc_robustness_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_ancstats_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_create_eps_debug$(EXEEXT) \
@@ -143,7 +147,8 @@ POST_UNINSTALL = :
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_extract_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_view_generation_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_addintprobe_debug$(EXEEXT) \
-@WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_parsemutations_debug$(EXEEXT)
+@WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_parsemutations_debug$(EXEEXT) \
+@WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_transfrom_plasmid_debug$(EXEEXT)
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@bin_PROGRAMS = aevol_misc_rrobustness_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rancstats_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rcreate_eps_debug$(EXEEXT) \
@@ -483,6 +488,25 @@ aevol_misc_rrobustness_debug_LDADD = $(LDADD)
 @WITH_RAEVOL_FALSE@	$(top_srcdir)/src/libaevol/SFMT-src-1.4/libsfmt.a
 @WITH_RAEVOL_TRUE@aevol_misc_rrobustness_debug_DEPENDENCIES =  \
 @WITH_RAEVOL_TRUE@	$(top_srcdir)/src/libaevol/libraevol.a
+am_aevol_misc_transfrom_plasmid_OBJECTS =  \
+	aevol_misc_transfrom_plasmid-transform_plasmid.$(OBJEXT)
+aevol_misc_transfrom_plasmid_OBJECTS =  \
+	$(am_aevol_misc_transfrom_plasmid_OBJECTS)
+aevol_misc_transfrom_plasmid_LDADD = $(LDADD)
+@WITH_RAEVOL_FALSE@aevol_misc_transfrom_plasmid_DEPENDENCIES =  \
+@WITH_RAEVOL_FALSE@	$(top_srcdir)/src/libaevol/libaevol.a \
+@WITH_RAEVOL_FALSE@	$(top_srcdir)/src/libaevol/SFMT-src-1.4/libsfmt.a
+@WITH_RAEVOL_TRUE@aevol_misc_transfrom_plasmid_DEPENDENCIES =  \
+@WITH_RAEVOL_TRUE@	$(top_srcdir)/src/libaevol/libraevol.a
+am_aevol_misc_transfrom_plasmid_debug_OBJECTS = aevol_misc_transfrom_plasmid_debug-transform_plasmid.$(OBJEXT)
+aevol_misc_transfrom_plasmid_debug_OBJECTS =  \
+	$(am_aevol_misc_transfrom_plasmid_debug_OBJECTS)
+aevol_misc_transfrom_plasmid_debug_LDADD = $(LDADD)
+@WITH_RAEVOL_FALSE@aevol_misc_transfrom_plasmid_debug_DEPENDENCIES =  \
+@WITH_RAEVOL_FALSE@	$(top_srcdir)/src/libaevol/libaevol.a \
+@WITH_RAEVOL_FALSE@	$(top_srcdir)/src/libaevol/SFMT-src-1.4/libsfmt.a
+@WITH_RAEVOL_TRUE@aevol_misc_transfrom_plasmid_debug_DEPENDENCIES =  \
+@WITH_RAEVOL_TRUE@	$(top_srcdir)/src/libaevol/libraevol.a
 am_aevol_misc_view_generation_OBJECTS =  \
 	aevol_misc_view_generation-view_generation.$(OBJEXT)
 aevol_misc_view_generation_OBJECTS =  \
@@ -580,6 +604,8 @@ SOURCES = $(aevol_misc_addintprobe_SOURCES) \
 	$(aevol_misc_robustness_debug_SOURCES) \
 	$(aevol_misc_rrobustness_SOURCES) \
 	$(aevol_misc_rrobustness_debug_SOURCES) \
+	$(aevol_misc_transfrom_plasmid_SOURCES) \
+	$(aevol_misc_transfrom_plasmid_debug_SOURCES) \
 	$(aevol_misc_view_generation_SOURCES) \
 	$(aevol_misc_view_generation_debug_SOURCES)
 DIST_SOURCES = $(aevol_misc_addintprobe_SOURCES) \
@@ -614,6 +640,8 @@ DIST_SOURCES = $(aevol_misc_addintprobe_SOURCES) \
 	$(aevol_misc_robustness_debug_SOURCES) \
 	$(aevol_misc_rrobustness_SOURCES) \
 	$(aevol_misc_rrobustness_debug_SOURCES) \
+	$(aevol_misc_transfrom_plasmid_SOURCES) \
+	$(aevol_misc_transfrom_plasmid_debug_SOURCES) \
 	$(aevol_misc_view_generation_SOURCES) \
 	$(aevol_misc_view_generation_debug_SOURCES)
 am__can_run_installinfo = \
@@ -776,12 +804,13 @@ CLEANFILES = aevol_misc_rrobustness_debug aevol_misc_rancstats_debug \
 	aevol_misc_create_eps_debug aevol_misc_fixed_mutations_debug \
 	aevol_misc_lineage_debug compute_pop_stats_debug extract_debug \
 	aevol_misc_view_generation_debug aevol_misc_addintprobe_debug \
-	aevol_misc_parsemutations_debug aevol_misc_robustness \
+	aevol_misc_parsemutations_debug \
+	aevol_misc_transfrom_plasmid_debug aevol_misc_robustness \
 	aevol_misc_ancstats aevol_misc_create_eps \
 	aevol_misc_fixed_mutations aevol_misc_lineage \
 	aevol_misc_compute_pop_stats aevol_misc_extract \
 	aevol_misc_view_generation aevol_misc_addintprobe \
-	aevol_misc_parsemutations
+	aevol_misc_parsemutations aevol_misc_transfrom_plasmid
 
 # The target_CPPFLAGS for each target may look useless, it is here to force automake to create
 # prefixed object files so that we don't use an object file built for another set of macrodefinitions
@@ -838,6 +867,10 @@ aevol_misc_view_generation_SOURCES = view_generation.cpp
 aevol_misc_view_generation_CPPFLAGS = $(AM_CPPFLAGS)
 aevol_misc_view_generation_debug_SOURCES = view_generation.cpp
 aevol_misc_view_generation_debug_CPPFLAGS = $(AM_CPPFLAGS)
+aevol_misc_transfrom_plasmid_SOURCES = transform_plasmid.cpp
+aevol_misc_transfrom_plasmid_CPPFLAGS = $(AM_CPPFLAGS)
+aevol_misc_transfrom_plasmid_debug_SOURCES = transform_plasmid.cpp
+aevol_misc_transfrom_plasmid_debug_CPPFLAGS = $(AM_CPPFLAGS)
 
 #aevol_misc_compute_pop_stats_HEADERS = population_statistics.h
 aevol_misc_compute_pop_stats_SOURCES = population_statistics.cpp \
@@ -1085,6 +1118,14 @@ aevol_misc_rrobustness_debug$(EXEEXT): $(aevol_misc_rrobustness_debug_OBJECTS) $
 	@rm -f aevol_misc_rrobustness_debug$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(aevol_misc_rrobustness_debug_OBJECTS) $(aevol_misc_rrobustness_debug_LDADD) $(LIBS)
 
+aevol_misc_transfrom_plasmid$(EXEEXT): $(aevol_misc_transfrom_plasmid_OBJECTS) $(aevol_misc_transfrom_plasmid_DEPENDENCIES) $(EXTRA_aevol_misc_transfrom_plasmid_DEPENDENCIES) 
+	@rm -f aevol_misc_transfrom_plasmid$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(aevol_misc_transfrom_plasmid_OBJECTS) $(aevol_misc_transfrom_plasmid_LDADD) $(LIBS)
+
+aevol_misc_transfrom_plasmid_debug$(EXEEXT): $(aevol_misc_transfrom_plasmid_debug_OBJECTS) $(aevol_misc_transfrom_plasmid_debug_DEPENDENCIES) $(EXTRA_aevol_misc_transfrom_plasmid_debug_DEPENDENCIES) 
+	@rm -f aevol_misc_transfrom_plasmid_debug$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(aevol_misc_transfrom_plasmid_debug_OBJECTS) $(aevol_misc_transfrom_plasmid_debug_LDADD) $(LIBS)
+
 aevol_misc_view_generation$(EXEEXT): $(aevol_misc_view_generation_OBJECTS) $(aevol_misc_view_generation_DEPENDENCIES) $(EXTRA_aevol_misc_view_generation_DEPENDENCIES) 
 	@rm -f aevol_misc_view_generation$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(aevol_misc_view_generation_OBJECTS) $(aevol_misc_view_generation_LDADD) $(LIBS)
@@ -1139,6 +1180,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aevol_misc_rrobustness-robustness.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aevol_misc_rrobustness_debug-population_statistics.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aevol_misc_rrobustness_debug-robustness.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aevol_misc_transfrom_plasmid-transform_plasmid.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aevol_misc_transfrom_plasmid_debug-transform_plasmid.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aevol_misc_view_generation-view_generation.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aevol_misc_view_generation_debug-view_generation.Po@am__quote@
 
@@ -1715,6 +1758,34 @@ aevol_misc_rrobustness_debug-robustness.obj: robustness.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='robustness.cpp' object='aevol_misc_rrobustness_debug-robustness.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(aevol_misc_rrobustness_debug_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o aevol_misc_rrobustness_debug-robustness.obj `if test -f 'robustness.cpp'; then $(CYGPATH_W) 'robustness.cpp'; else $(CYGPATH_W) '$(srcdir)/robustness.cpp'; fi`
+
+aevol_misc_transfrom_plasmid-transform_plasmid.o: transform_plasmid.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(aevol_misc_transfrom_plasmid_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT aevol_misc_transfrom_plasmid-transform_plasmid.o -MD -MP -MF $(DEPDIR)/aevol_misc_transfrom_plasmid-transform_plasmid.Tpo -c -o aevol_misc_transfrom_plasmid-transform_plasmid.o `test -f 'transform_plasmid.cpp' || echo '$(srcdir)/'`transform_plasmid.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/aevol_misc_transfrom_plasmid-transform_plasmid.Tpo $(DEPDIR)/aevol_misc_transfrom_plasmid-transform_plasmid.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='transform_plasmid.cpp' object='aevol_misc_transfrom_plasmid-transform_plasmid.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(aevol_misc_transfrom_plasmid_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o aevol_misc_transfrom_plasmid-transform_plasmid.o `test -f 'transform_plasmid.cpp' || echo '$(srcdir)/'`transform_plasmid.cpp
+
+aevol_misc_transfrom_plasmid-transform_plasmid.obj: transform_plasmid.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(aevol_misc_transfrom_plasmid_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT aevol_misc_transfrom_plasmid-transform_plasmid.obj -MD -MP -MF $(DEPDIR)/aevol_misc_transfrom_plasmid-transform_plasmid.Tpo -c -o aevol_misc_transfrom_plasmid-transform_plasmid.obj `if test -f 'transform_plasmid.cpp'; then $(CYGPATH_W) 'transform_plasmid.cpp'; else $(CYGPATH_W) '$(srcdir)/transform_plasmid.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/aevol_misc_transfrom_plasmid-transform_plasmid.Tpo $(DEPDIR)/aevol_misc_transfrom_plasmid-transform_plasmid.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='transform_plasmid.cpp' object='aevol_misc_transfrom_plasmid-transform_plasmid.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(aevol_misc_transfrom_plasmid_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o aevol_misc_transfrom_plasmid-transform_plasmid.obj `if test -f 'transform_plasmid.cpp'; then $(CYGPATH_W) 'transform_plasmid.cpp'; else $(CYGPATH_W) '$(srcdir)/transform_plasmid.cpp'; fi`
+
+aevol_misc_transfrom_plasmid_debug-transform_plasmid.o: transform_plasmid.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(aevol_misc_transfrom_plasmid_debug_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT aevol_misc_transfrom_plasmid_debug-transform_plasmid.o -MD -MP -MF $(DEPDIR)/aevol_misc_transfrom_plasmid_debug-transform_plasmid.Tpo -c -o aevol_misc_transfrom_plasmid_debug-transform_plasmid.o `test -f 'transform_plasmid.cpp' || echo '$(srcdir)/'`transform_plasmid.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/aevol_misc_transfrom_plasmid_debug-transform_plasmid.Tpo $(DEPDIR)/aevol_misc_transfrom_plasmid_debug-transform_plasmid.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='transform_plasmid.cpp' object='aevol_misc_transfrom_plasmid_debug-transform_plasmid.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(aevol_misc_transfrom_plasmid_debug_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o aevol_misc_transfrom_plasmid_debug-transform_plasmid.o `test -f 'transform_plasmid.cpp' || echo '$(srcdir)/'`transform_plasmid.cpp
+
+aevol_misc_transfrom_plasmid_debug-transform_plasmid.obj: transform_plasmid.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(aevol_misc_transfrom_plasmid_debug_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT aevol_misc_transfrom_plasmid_debug-transform_plasmid.obj -MD -MP -MF $(DEPDIR)/aevol_misc_transfrom_plasmid_debug-transform_plasmid.Tpo -c -o aevol_misc_transfrom_plasmid_debug-transform_plasmid.obj `if test -f 'transform_plasmid.cpp'; then $(CYGPATH_W) 'transform_plasmid.cpp'; else $(CYGPATH_W) '$(srcdir)/transform_plasmid.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/aevol_misc_transfrom_plasmid_debug-transform_plasmid.Tpo $(DEPDIR)/aevol_misc_transfrom_plasmid_debug-transform_plasmid.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='transform_plasmid.cpp' object='aevol_misc_transfrom_plasmid_debug-transform_plasmid.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(aevol_misc_transfrom_plasmid_debug_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o aevol_misc_transfrom_plasmid_debug-transform_plasmid.obj `if test -f 'transform_plasmid.cpp'; then $(CYGPATH_W) 'transform_plasmid.cpp'; else $(CYGPATH_W) '$(srcdir)/transform_plasmid.cpp'; fi`
 
 aevol_misc_view_generation-view_generation.o: view_generation.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(aevol_misc_view_generation_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT aevol_misc_view_generation-view_generation.o -MD -MP -MF $(DEPDIR)/aevol_misc_view_generation-view_generation.Tpo -c -o aevol_misc_view_generation-view_generation.o `test -f 'view_generation.cpp' || echo '$(srcdir)/'`view_generation.cpp
