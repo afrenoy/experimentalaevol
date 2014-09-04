@@ -91,16 +91,22 @@ int main( int argc, char* argv[] )
   // We parse the individuals and transform them
   ae_list_node<ae_individual*>* indiv_node = pop->get_indivs()->get_first();
   ae_individual* indiv      = NULL;
-  int32_t nb=0;
   while( indiv_node != NULL )
   {
     indiv = (ae_individual *) indiv_node->get_obj();
     char* plasmid=new char[lplasmid]; // Warning: will become the DNA of the first individual created -> no not delete, will be freed in ~ae_dna.
     strncpy(plasmid, rawplasmid, lplasmid);
     indiv->add_GU(plasmid,lplasmid);
+    indiv->set_replication_report(NULL); // plasmid's DNA should not have replic reports otherwise stat_record will try to access it.
+    indiv->get_genetic_unit(1)->get_dna()->set_replic_report(NULL);
     indiv_node = indiv_node->get_next();
   }
-
+  
+  // We know need to make several changes in experiment so it 'accepts' this new plasmid
+  exp_manager->get_exp_s()->set_with_plasmids( true ); // We need to change the allow_plasmid parameter, otherwise aevol_run will crash
+  
+  
+  // We save and exit
   exp_manager->save();
   delete exp_manager;
 
