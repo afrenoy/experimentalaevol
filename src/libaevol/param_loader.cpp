@@ -1699,7 +1699,7 @@ ae_individual* param_loader::create_random_individual_with_good_gene( ae_exp_man
   // If there are plasmids, make sure there is at least one metabolic gene on each genetic units
   if ( _allow_plasmids )
   {
-    if ( _plasmid_initial_gene == 1 )
+    if ( _plasmid_initial_gene == 1 ) // two independently generated genetic units
     {
       while ( indiv->get_genetic_unit(0)->get_dist_to_target_by_feature( METABOLISM ) >= env_metabolic_area  ||
               indiv->get_genetic_unit(1)->get_dist_to_target_by_feature( METABOLISM ) >= env_metabolic_area  )
@@ -1707,8 +1707,9 @@ ae_individual* param_loader::create_random_individual_with_good_gene( ae_exp_man
         delete indiv;
         indiv = create_random_individual( exp_m, param_mut, id );
       }
+      // TODO: not very smart, because the chances of randomly creating two good genes at the same time are very low! We should totally change the way plasmids are handled in this part of the initialization code.
     }
-    else
+    else // it is either 0 (generate one good gene (metabolic if there is metabolism, secretion otherwise) on the chromosome and copy it to the plasmid), either 1 (generate one good metabolic gene on the chromosome and one secretion gene on the plasmid)
     {
       // here things work the same as before, but in the constructor of the individual, 
       // a single genetic unit is created and then copied from the chromosome to the plasmid
@@ -1720,7 +1721,7 @@ ae_individual* param_loader::create_random_individual_with_good_gene( ae_exp_man
           indiv = create_random_individual( exp_m, param_mut, id );
         }
       }
-      else
+      else // In case there is no metabolic target, we create a secretion gene
       {
         while ( indiv->get_dist_to_target_by_feature( SECRETION ) >= exp_m->get_env()->get_area_by_feature( SECRETION ) )
         {
@@ -1729,11 +1730,16 @@ ae_individual* param_loader::create_random_individual_with_good_gene( ae_exp_man
         }
       }
     }
-    if ( _plasmid_initial_gene == 2 ) // only valid if there is a metabolic target
+    if ( _plasmid_initial_gene == 2 ) // only valid if there is a metabolic and a secretion target
     {
       if (exp_m->get_env()->get_area_by_feature( METABOLISM )==0.0)
       {
         printf( "ERROR : plasmid_initial_gene is 2 but there is no metabolic target\n" );
+        exit( EXIT_FAILURE );
+      }
+      if (exp_m->get_env()->get_area_by_feature( SECRETION )==0.0)
+      {
+        printf( "ERROR : plasmid_initial_gene is 2 but there is no secretion target\n" );
         exit( EXIT_FAILURE );
       }
       // We already have one chromosome with a good metabolic gene
