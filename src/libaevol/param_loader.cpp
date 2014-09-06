@@ -1729,8 +1729,13 @@ ae_individual* param_loader::create_random_individual_with_good_gene( ae_exp_man
         }
       }
     }
-    if ( _plasmid_initial_gene == 2 )
+    if ( _plasmid_initial_gene == 2 ) // only valid if there is a metabolic target
     {
+      if (exp_m->get_env()->get_area_by_feature( METABOLISM )==0.0)
+      {
+        printf( "ERROR : plasmid_initial_gene is 2 but there is no metabolic target\n" );
+        exit( EXIT_FAILURE );
+      }
       // We already have one chromosome with a good metabolic gene
       
       // We now create one other genetic unit with a good secretion gene in an independant individual
