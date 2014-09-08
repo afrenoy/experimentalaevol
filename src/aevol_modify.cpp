@@ -167,6 +167,9 @@ int main( int argc, char* argv[] )
   
   bool env_change = false;
   bool env_hasbeenmodified = false;
+  bool record_tree = false;
+  int32_t tree_step = 100;
+  ae_tree_mode tree_mode = NORMAL;
   
   f_line* line;
   int32_t cur_line = 0;
@@ -222,6 +225,50 @@ int main( int argc, char* argv[] )
       env_hasbeenmodified = true;
       delete env_axis_segment_boundaries;
       delete env_axis_features;
+    }
+    else if ( strcmp( line->words[0], "RECORD_TREE" ) == 0 )
+    {
+      if ( strncmp( line->words[1], "true", 4 ) == 0 )
+      {
+        record_tree = true;
+      }
+      else if ( strncmp( line->words[1], "false", 5 ) == 0 )
+      {
+        printf( "ERROR stop recording tree is not implemented yet.\n");
+        exit(EXIT_FAILURE);
+      }
+      else
+      {
+        printf( "ERROR in param file \"%s\" on line %"PRId32" : unknown tree recording option (use true/false).\n",
+               param_file_name, cur_line );
+        exit( EXIT_FAILURE );
+      }
+      if (exp_manager->get_output_m()->get_record_tree())
+      {
+        printf( "ERROR modification of already existing tree not impemented yet\n" );
+        exit(EXIT_FAILURE);
+      }
+    }
+    else if ( strcmp( line->words[0], "TREE_STEP" ) == 0 )
+    {
+      tree_step = atol( line->words[1] );
+    }
+    else if ( strcmp( line->words[0], "TREE_MODE" ) == 0 )
+    {
+      if ( strcmp( line->words[1], "light" ) == 0 )
+      {
+        tree_mode = LIGHT;
+      }
+      else if ( strcmp( line->words[1], "normal" ) == 0 )
+      {
+        tree_mode = NORMAL;
+      }
+      else
+      {
+        printf( "ERROR in param file \"%s\" on line %"PRId32" : unknown tree mode option (use normal/light).\n",
+               param_file_name, cur_line );
+        exit( EXIT_FAILURE );
+      }
     }
     else if ( strcmp( line->words[0], "POPULATION_SIZE") == 0 )
     {
@@ -457,6 +504,11 @@ int main( int argc, char* argv[] )
   if (env_hasbeenmodified)
   {
     env->build();
+  }
+  if (record_tree)
+  {
+    printf("WARNING: if TREE_STEP in not specified, it will be set to default value\n");
+    exp_manager->get_output_m()->init_tree( exp_manager, tree_mode, tree_step );
   }
   
   // 9) Save the modified experiment
