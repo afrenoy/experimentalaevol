@@ -94,6 +94,7 @@ int main( int argc, char* argv[] )
     _trait_gu_location[i]=0;
   }
   exp_manager->get_exp_s()->set_trait_gu_location(_trait_gu_location);
+  exp_manager->get_output_m()->set_compute_phen_contrib_by_GU(true);
   
   // We parse the individuals and transform them
   ae_list_node<ae_individual*>* indiv_node = pop->get_indivs()->get_first();
