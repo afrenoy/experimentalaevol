@@ -86,8 +86,9 @@ ae_exp_setup::ae_exp_setup( ae_exp_manager* exp_m )
   _donor_cost       = 0.0;
   _recipient_cost   = 0.0;
   _swap_GUs         = false;
+  _restriction_on_trait_gu_location = false;
   _trait_gu_location = new int16_t[NB_FEATURES];
-  
+  _isolate_GUs = false;
   // -------------------------------------------------------------- Secretion
   _with_secretion = false;
   _secretion_contrib_to_fitness = 0.0;
@@ -127,7 +128,7 @@ void ae_exp_setup::write_setup_file( gzFile exp_setup_file ) const
   }
   
   // --------------------------------------------------------------- Plasmids
-  int8_t tmp_with_plasmids = get_with_plasmids();
+  int8_t tmp_with_plasmids = _with_plasmids;
   gzwrite( exp_setup_file, &tmp_with_plasmids, sizeof(tmp_with_plasmids) );
   if ( tmp_with_plasmids )
   {
