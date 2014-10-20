@@ -167,10 +167,17 @@ int main( int argc, char* argv[] )
   
   bool env_change = false;
   bool env_hasbeenmodified = false;
+  bool trait_gu_location_hasbeenmodified = false;
   bool record_tree = false;
   int32_t tree_step = 100;
   ae_tree_mode tree_mode = NORMAL;
-  
+  int16_t* new_trait_gu_location = new int16_t[NB_FEATURES];
+  int16_t i;
+  for (i=0; i<NB_FEATURES; i++)
+  {
+    new_trait_gu_location[i]=0;
+  }
+
   f_line* line;
   int32_t cur_line = 0;
   while ( ( line = get_line(param_file) ) != NULL ) 
@@ -225,6 +232,40 @@ int main( int argc, char* argv[] )
       env_hasbeenmodified = true;
       delete env_axis_segment_boundaries;
       delete env_axis_features;
+    }
+    else if ( strcmp( line->words[0], "TRAIT_GU_LOCATION" ) == 0)
+    {
+      if ( strcmp( line->words[1], "NEUTRAL" ) == 0 )
+      {
+        new_trait_gu_location[NEUTRAL] = atoi( line->words[2] );
+      }
+      else if ( strcmp( line->words[1], "METABOLISM" ) == 0 )
+      {
+        new_trait_gu_location[METABOLISM] = atoi( line->words[2] );
+      }
+      else if ( strcmp( line->words[1], "SECRETION" ) == 0 )
+      {
+        new_trait_gu_location[SECRETION] = atoi( line->words[2] );
+      }
+      else if ( strcmp( line->words[1], "DONOR" ) == 0 )
+      {
+        new_trait_gu_location[DONOR] = atoi( line->words[2] );
+      }
+      else if ( strcmp( line->words[1], "RECIPIENT" ) == 0 )
+      {
+        new_trait_gu_location[RECIPIENT] = atoi( line->words[2] );
+      }
+      else
+      {
+        printf( "ERROR in param file \"%s\" on line %"PRId32" : unknown axis feature \"%s\".\n",
+               param_file_name, cur_line, line->words[2] );
+        exit( EXIT_FAILURE );
+      }
+      trait_gu_location_hasbeenmodified=true;
+    }
+    else if ( strcmp( line->words[0], "ISOLATE_GUS" ) == 0 )
+    {
+      exp_manager->get_exp_s()->set_isolate_GUs(true);
     }
     else if ( strcmp( line->words[0], "RECORD_TREE" ) == 0 )
     {
@@ -504,6 +545,10 @@ int main( int argc, char* argv[] )
   if (env_hasbeenmodified)
   {
     env->build();
+  }
+  if (trait_gu_location_hasbeenmodified){
+    exp_manager->get_exp_s()->set_trait_gu_location(new_trait_gu_location);
+    delete [] new_trait_gu_location;
   }
   if (record_tree)
   {
