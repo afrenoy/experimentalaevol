@@ -85,14 +85,16 @@ POST_UNINSTALL = :
 @WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_extract$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_addintprobe$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_parsemutations$(EXEEXT) \
-@WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_transfrom_plasmid$(EXEEXT)
+@WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_transfrom_plasmid$(EXEEXT) \
+@WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_mutational_robustness$(EXEEXT)
 @WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@bin_PROGRAMS = aevol_misc_rrobustness$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rancstats$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rcreate_eps$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rfixed_mutations$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rlineage$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rcompute_pop_stats$(EXEEXT) \
-@WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rextract$(EXEEXT)
+@WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rextract$(EXEEXT) \
+@WITH_DEBUG_FALSE@@WITH_IN2P3_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_mutational_robustness$(EXEEXT)
 @WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@bin_PROGRAMS = aevol_misc_robustness$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_ancstats$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_create_eps$(EXEEXT) \
@@ -102,14 +104,16 @@ POST_UNINSTALL = :
 @WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_extract$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_addintprobe$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_parsemutations$(EXEEXT) \
-@WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_transfrom_plasmid$(EXEEXT)
+@WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_transfrom_plasmid$(EXEEXT) \
+@WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_mutational_robustness$(EXEEXT)
 @WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@bin_PROGRAMS = aevol_misc_rrobustness$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rancstats$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rcreate_eps$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rfixed_mutations$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rlineage$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rcompute_pop_stats$(EXEEXT) \
-@WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rextract$(EXEEXT)
+@WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rextract$(EXEEXT) \
+@WITH_DEBUG_FALSE@@WITH_IN2P3_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_mutational_robustness$(EXEEXT)
 @WITH_DEBUG_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@bin_PROGRAMS = aevol_misc_robustness$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_ancstats$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_create_eps$(EXEEXT) \
@@ -120,14 +124,16 @@ POST_UNINSTALL = :
 @WITH_DEBUG_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_view_generation$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_addintprobe$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_parsemutations$(EXEEXT) \
-@WITH_DEBUG_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_transfrom_plasmid$(EXEEXT)
+@WITH_DEBUG_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_transfrom_plasmid$(EXEEXT) \
+@WITH_DEBUG_FALSE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_mutational_robustness$(EXEEXT)
 @WITH_DEBUG_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_TRUE@bin_PROGRAMS = aevol_misc_rrobustness$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_TRUE@	aevol_misc_rancstats$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_TRUE@	aevol_misc_rcreate_eps$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_TRUE@	aevol_misc_rfixed_mutations$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_TRUE@	aevol_misc_rlineage$(EXEEXT) \
 @WITH_DEBUG_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_TRUE@	aevol_misc_rcompute_pop_stats$(EXEEXT) \
-@WITH_DEBUG_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_TRUE@	aevol_misc_rextract$(EXEEXT)
+@WITH_DEBUG_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_TRUE@	aevol_misc_rextract$(EXEEXT) \
+@WITH_DEBUG_FALSE@@WITH_RAEVOL_TRUE@@WITH_X_TRUE@	aevol_misc_mutational_robustness$(EXEEXT)
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@bin_PROGRAMS = aevol_misc_robustness_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_ancstats_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_create_eps_debug$(EXEEXT) \
@@ -137,7 +143,8 @@ POST_UNINSTALL = :
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_extract_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_addintprobe_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_parsemutations_debug$(EXEEXT) \
-@WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_transfrom_plasmid_debug$(EXEEXT)
+@WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_transfrom_plasmid_debug$(EXEEXT) \
+@WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_FALSE@	aevol_misc_mutational_robustness$(EXEEXT)
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@bin_PROGRAMS = aevol_misc_robustness_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_ancstats_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_create_eps_debug$(EXEEXT) \
@@ -148,21 +155,24 @@ POST_UNINSTALL = :
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_view_generation_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_addintprobe_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_parsemutations_debug$(EXEEXT) \
-@WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_transfrom_plasmid_debug$(EXEEXT)
+@WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_transfrom_plasmid_debug$(EXEEXT) \
+@WITH_DEBUG_TRUE@@WITH_RAEVOL_FALSE@@WITH_X_TRUE@	aevol_misc_mutational_robustness$(EXEEXT)
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@bin_PROGRAMS = aevol_misc_rrobustness_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rancstats_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rcreate_eps_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rfixed_mutations_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rlineage_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rcompute_pop_stats_debug$(EXEEXT) \
-@WITH_DEBUG_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rextract_debug$(EXEEXT)
+@WITH_DEBUG_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_rextract_debug$(EXEEXT) \
+@WITH_DEBUG_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_FALSE@	aevol_misc_mutational_robustness$(EXEEXT)
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_TRUE@bin_PROGRAMS = aevol_misc_rrobustness_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_TRUE@	aevol_misc_rancstats_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_TRUE@	aevol_misc_rcreate_eps_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_TRUE@	aevol_misc_rfixed_mutations_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_TRUE@	aevol_misc_rlineage_debug$(EXEEXT) \
 @WITH_DEBUG_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_TRUE@	aevol_misc_rcompute_pop_stats_debug$(EXEEXT) \
-@WITH_DEBUG_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_TRUE@	aevol_misc_rextract_debug$(EXEEXT)
+@WITH_DEBUG_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_TRUE@	aevol_misc_rextract_debug$(EXEEXT) \
+@WITH_DEBUG_TRUE@@WITH_RAEVOL_TRUE@@WITH_X_TRUE@	aevol_misc_mutational_robustness$(EXEEXT)
 subdir = src/post_treatments
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp
@@ -308,6 +318,15 @@ aevol_misc_lineage_debug_LDADD = $(LDADD)
 @WITH_RAEVOL_FALSE@	$(top_srcdir)/src/libaevol/libaevol.a \
 @WITH_RAEVOL_FALSE@	$(top_srcdir)/src/libaevol/SFMT-src-1.4/libsfmt.a
 @WITH_RAEVOL_TRUE@aevol_misc_lineage_debug_DEPENDENCIES =  \
+@WITH_RAEVOL_TRUE@	$(top_srcdir)/src/libaevol/libraevol.a
+am_aevol_misc_mutational_robustness_OBJECTS = aevol_misc_mutational_robustness-mutationalrobustness.$(OBJEXT)
+aevol_misc_mutational_robustness_OBJECTS =  \
+	$(am_aevol_misc_mutational_robustness_OBJECTS)
+aevol_misc_mutational_robustness_LDADD = $(LDADD)
+@WITH_RAEVOL_FALSE@aevol_misc_mutational_robustness_DEPENDENCIES =  \
+@WITH_RAEVOL_FALSE@	$(top_srcdir)/src/libaevol/libaevol.a \
+@WITH_RAEVOL_FALSE@	$(top_srcdir)/src/libaevol/SFMT-src-1.4/libsfmt.a
+@WITH_RAEVOL_TRUE@aevol_misc_mutational_robustness_DEPENDENCIES =  \
 @WITH_RAEVOL_TRUE@	$(top_srcdir)/src/libaevol/libraevol.a
 am_aevol_misc_parsemutations_OBJECTS =  \
 	aevol_misc_parsemutations-parsemutations.$(OBJEXT)
@@ -586,6 +605,7 @@ SOURCES = $(aevol_misc_addintprobe_SOURCES) \
 	$(aevol_misc_fixed_mutations_debug_SOURCES) \
 	$(aevol_misc_lineage_SOURCES) \
 	$(aevol_misc_lineage_debug_SOURCES) \
+	$(aevol_misc_mutational_robustness_SOURCES) \
 	$(aevol_misc_parsemutations_SOURCES) \
 	$(aevol_misc_parsemutations_debug_SOURCES) \
 	$(aevol_misc_rancstats_SOURCES) \
@@ -622,6 +642,7 @@ DIST_SOURCES = $(aevol_misc_addintprobe_SOURCES) \
 	$(aevol_misc_fixed_mutations_debug_SOURCES) \
 	$(aevol_misc_lineage_SOURCES) \
 	$(aevol_misc_lineage_debug_SOURCES) \
+	$(aevol_misc_mutational_robustness_SOURCES) \
 	$(aevol_misc_parsemutations_SOURCES) \
 	$(aevol_misc_parsemutations_debug_SOURCES) \
 	$(aevol_misc_rancstats_SOURCES) \
@@ -797,12 +818,13 @@ AM_CPPFLAGS = -I./ -I$(top_srcdir)/src/libaevol -D__STDC_FORMAT_MACROS \
 CLEANFILES = aevol_misc_rrobustness_debug aevol_misc_rancstats_debug \
 	aevol_misc_rcreate_eps_debug aevol_misc_rfixed_mutations_debug \
 	aevol_misc_rlineage_debug aevol_misc_rcompute_pop_stats_debug \
-	aevol_misc_rrobustness aevol_misc_rancstats \
-	aevol_misc_rcreate_eps aevol_misc_rfixed_mutations \
-	aevol_misc_rlineage aevol_misc_rcompute_pop_stats \
-	aevol_misc_robustness_debug aevol_misc_ancstats_debug \
-	aevol_misc_create_eps_debug aevol_misc_fixed_mutations_debug \
-	aevol_misc_lineage_debug compute_pop_stats_debug extract_debug \
+	aevol_misc_mutational_robustness aevol_misc_rrobustness \
+	aevol_misc_rancstats aevol_misc_rcreate_eps \
+	aevol_misc_rfixed_mutations aevol_misc_rlineage \
+	aevol_misc_rcompute_pop_stats aevol_misc_robustness_debug \
+	aevol_misc_ancstats_debug aevol_misc_create_eps_debug \
+	aevol_misc_fixed_mutations_debug aevol_misc_lineage_debug \
+	compute_pop_stats_debug extract_debug \
 	aevol_misc_view_generation_debug aevol_misc_addintprobe_debug \
 	aevol_misc_parsemutations_debug \
 	aevol_misc_transfrom_plasmid_debug aevol_misc_robustness \
@@ -871,6 +893,8 @@ aevol_misc_transfrom_plasmid_SOURCES = transform_plasmid.cpp
 aevol_misc_transfrom_plasmid_CPPFLAGS = $(AM_CPPFLAGS)
 aevol_misc_transfrom_plasmid_debug_SOURCES = transform_plasmid.cpp
 aevol_misc_transfrom_plasmid_debug_CPPFLAGS = $(AM_CPPFLAGS)
+aevol_misc_mutational_robustness_SOURCES = mutationalrobustness.cpp
+aevol_misc_mutational_robustness_CPPFLAGS = $(AM_CPPFLAGS)
 
 #aevol_misc_compute_pop_stats_HEADERS = population_statistics.h
 aevol_misc_compute_pop_stats_SOURCES = population_statistics.cpp \
@@ -1046,6 +1070,10 @@ aevol_misc_lineage_debug$(EXEEXT): $(aevol_misc_lineage_debug_OBJECTS) $(aevol_m
 	@rm -f aevol_misc_lineage_debug$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(aevol_misc_lineage_debug_OBJECTS) $(aevol_misc_lineage_debug_LDADD) $(LIBS)
 
+aevol_misc_mutational_robustness$(EXEEXT): $(aevol_misc_mutational_robustness_OBJECTS) $(aevol_misc_mutational_robustness_DEPENDENCIES) $(EXTRA_aevol_misc_mutational_robustness_DEPENDENCIES) 
+	@rm -f aevol_misc_mutational_robustness$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(aevol_misc_mutational_robustness_OBJECTS) $(aevol_misc_mutational_robustness_LDADD) $(LIBS)
+
 aevol_misc_parsemutations$(EXEEXT): $(aevol_misc_parsemutations_OBJECTS) $(aevol_misc_parsemutations_DEPENDENCIES) $(EXTRA_aevol_misc_parsemutations_DEPENDENCIES) 
 	@rm -f aevol_misc_parsemutations$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(aevol_misc_parsemutations_OBJECTS) $(aevol_misc_parsemutations_LDADD) $(LIBS)
@@ -1156,6 +1184,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aevol_misc_fixed_mutations_debug-fixed_mutations.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aevol_misc_lineage-lineage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aevol_misc_lineage_debug-lineage.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aevol_misc_mutational_robustness-mutationalrobustness.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aevol_misc_parsemutations-parsemutations.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aevol_misc_parsemutations_debug-parsemutations.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aevol_misc_rancstats-ancstats.Po@am__quote@
@@ -1422,6 +1451,20 @@ aevol_misc_lineage_debug-lineage.obj: lineage.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='lineage.cpp' object='aevol_misc_lineage_debug-lineage.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(aevol_misc_lineage_debug_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o aevol_misc_lineage_debug-lineage.obj `if test -f 'lineage.cpp'; then $(CYGPATH_W) 'lineage.cpp'; else $(CYGPATH_W) '$(srcdir)/lineage.cpp'; fi`
+
+aevol_misc_mutational_robustness-mutationalrobustness.o: mutationalrobustness.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(aevol_misc_mutational_robustness_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT aevol_misc_mutational_robustness-mutationalrobustness.o -MD -MP -MF $(DEPDIR)/aevol_misc_mutational_robustness-mutationalrobustness.Tpo -c -o aevol_misc_mutational_robustness-mutationalrobustness.o `test -f 'mutationalrobustness.cpp' || echo '$(srcdir)/'`mutationalrobustness.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/aevol_misc_mutational_robustness-mutationalrobustness.Tpo $(DEPDIR)/aevol_misc_mutational_robustness-mutationalrobustness.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='mutationalrobustness.cpp' object='aevol_misc_mutational_robustness-mutationalrobustness.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(aevol_misc_mutational_robustness_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o aevol_misc_mutational_robustness-mutationalrobustness.o `test -f 'mutationalrobustness.cpp' || echo '$(srcdir)/'`mutationalrobustness.cpp
+
+aevol_misc_mutational_robustness-mutationalrobustness.obj: mutationalrobustness.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(aevol_misc_mutational_robustness_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT aevol_misc_mutational_robustness-mutationalrobustness.obj -MD -MP -MF $(DEPDIR)/aevol_misc_mutational_robustness-mutationalrobustness.Tpo -c -o aevol_misc_mutational_robustness-mutationalrobustness.obj `if test -f 'mutationalrobustness.cpp'; then $(CYGPATH_W) 'mutationalrobustness.cpp'; else $(CYGPATH_W) '$(srcdir)/mutationalrobustness.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/aevol_misc_mutational_robustness-mutationalrobustness.Tpo $(DEPDIR)/aevol_misc_mutational_robustness-mutationalrobustness.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='mutationalrobustness.cpp' object='aevol_misc_mutational_robustness-mutationalrobustness.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(aevol_misc_mutational_robustness_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o aevol_misc_mutational_robustness-mutationalrobustness.obj `if test -f 'mutationalrobustness.cpp'; then $(CYGPATH_W) 'mutationalrobustness.cpp'; else $(CYGPATH_W) '$(srcdir)/mutationalrobustness.cpp'; fi`
 
 aevol_misc_parsemutations-parsemutations.o: parsemutations.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(aevol_misc_parsemutations_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT aevol_misc_parsemutations-parsemutations.o -MD -MP -MF $(DEPDIR)/aevol_misc_parsemutations-parsemutations.Tpo -c -o aevol_misc_parsemutations-parsemutations.o `test -f 'parsemutations.cpp' || echo '$(srcdir)/'`parsemutations.cpp
