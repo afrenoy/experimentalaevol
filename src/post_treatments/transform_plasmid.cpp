@@ -29,13 +29,17 @@ int main( int argc, char* argv[] )
   // Initialize command-line option variables with default values  
   char* plasmid_file_name  = NULL;
   int32_t num_gener = -1;
+  int32_t plasmid_maximal_length = 10000000;
+  int32_t plasmid_minimal_length = 40;
   
   // Define allowed options
-  const char * options_list = "hr:p:";
+  const char * options_list = "hr:p:m:M:";
   static struct option long_options_list[] = {
     { "help", 1, NULL, 'h' },
     { "resume", 1, NULL, 'r' },
     { "plasmid", 1, NULL, 'p' },
+    { "min", 1, NULL, 'm' },
+    { "max", 1, NULL, 'M' },
     { 0, 0, 0, 0 }
   };
 
@@ -55,6 +59,12 @@ int main( int argc, char* argv[] )
       case 'p':
         plasmid_file_name = new char [strlen(optarg)+1];
         strcpy( plasmid_file_name, optarg );
+        break;
+      case 'm':
+        plasmid_minimal_length = atol( optarg );
+        break;
+      case 'M':
+        plasmid_maximal_length = atol( optarg );
         break;
     }
   }
@@ -106,6 +116,8 @@ int main( int argc, char* argv[] )
     strncpy(plasmid, rawplasmid, lplasmid);
     plasmid[lplasmid]='\0';
     indiv->add_GU(plasmid,lplasmid);
+    indiv->get_genetic_unit(1)->set_min_gu_length(plasmid_minimal_length);
+    indiv->get_genetic_unit(1)->set_max_gu_length(plasmid_maximal_length);
     indiv->set_replication_report(NULL); // plasmid's DNA should not have replic reports otherwise stat_record will try to access it.
     indiv->get_genetic_unit(1)->get_dna()->set_replic_report(NULL);
     indiv->get_genetic_unit(1)->compute_phenotypic_contribution();
@@ -126,12 +138,11 @@ int main( int argc, char* argv[] )
 
 void print_help( char* prog_name ) 
 {
-  printf( "\n\
-Add a plasmid to each individual \n\
-Usage : transform_indiv -h\n\
-or :    transform_indiv -r ng -p plasmid_file \n\
-\t-h : display this screen\n\
-\t-r ng  : modify generation ng (need a full backup), \n\
-\t-p plasmid_file : read plasmid sequence from file plasmid_file\n\
-");
+  printf( "\n");
+  printf("Add a plasmid to each individual \n");
+  printf("Usage : transform_indiv -h\n");
+  printf("or :    transform_indiv -r ng -p plasmid_file \n");
+  printf("\t-h : display this screen\n");
+  printf("\t-r ng  : modify generation ng (need a full backup), \n");
+  printf("\t-p plasmid_file : read plasmid sequence from file plasmid_file\n");
 }
