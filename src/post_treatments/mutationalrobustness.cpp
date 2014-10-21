@@ -98,7 +98,6 @@ int main( int argc, char* argv[] )
 
 // Treatment of one individual
 void analyse_indiv(ae_exp_manager* exp, ae_individual* initial_indiv, FILE* output, int32_t ndiv ){
-  printf("%f %d\n",initial_indiv->get_fitness(),initial_indiv->get_rank());
   ae_environment* env = exp->get_env();
   double initial_metabolic_error = initial_indiv->get_dist_to_target_by_feature( METABOLISM );
   double initial_secretion_error = initial_indiv->get_dist_to_target_by_feature( SECRETION );
