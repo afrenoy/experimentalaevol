@@ -76,13 +76,18 @@ int main( int argc, char* argv[] )
   fprintf( output, "#\n" );
 
   // Parse and treat the individuals
-  ae_list_node<ae_individual*>* indiv_node = pop->get_indivs()->get_first();
-  ae_individual* indiv      = NULL;
-  while( indiv_node != NULL ){
-    indiv = (ae_individual *) indiv_node->get_obj();
-    indiv->do_transcription_translation_folding();
+  if (!best_only){
+    ae_list_node<ae_individual*>* indiv_node = pop->get_indivs()->get_first();
+    ae_individual* indiv      = NULL;
+    while( indiv_node != NULL ){
+      indiv = (ae_individual *) indiv_node->get_obj();
+      analyse_indiv(exp_manager, indiv, output, ndiv);
+      indiv_node = indiv_node->get_next();
+    }
+  }
+  else{
+    ae_individual* indiv=pop->get_best();
     analyse_indiv(exp_manager, indiv, output, ndiv);
-    indiv_node = indiv_node->get_next();
   }
 
   // Clean memory and exit
@@ -93,6 +98,7 @@ int main( int argc, char* argv[] )
 
 // Treatment of one individual
 void analyse_indiv(ae_exp_manager* exp, ae_individual* initial_indiv, FILE* output, int32_t ndiv ){
+  printf("%f %d\n",initial_indiv->get_fitness(),initial_indiv->get_rank());
   ae_environment* env = exp->get_env();
   double initial_metabolic_error = initial_indiv->get_dist_to_target_by_feature( METABOLISM );
   double initial_secretion_error = initial_indiv->get_dist_to_target_by_feature( SECRETION );
