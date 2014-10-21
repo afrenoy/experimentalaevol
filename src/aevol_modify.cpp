@@ -311,6 +311,14 @@ int main( int argc, char* argv[] )
         exit( EXIT_FAILURE );
       }
     }
+    else if ( strcmp( line->words[0], "BACKUP_STEP" ) == 0 )
+    {
+      exp_manager->get_output_m()->set_backup_step( atol( line->words[1] ) );
+    }
+    else if ( strcmp( line->words[0], "BIG_BACKUP_STEP" ) == 0 )
+    {
+      exp_manager->get_output_m()->set_big_backup_step( atol( line->words[1] ) );
+    }
     else if ( strcmp( line->words[0], "POPULATION_SIZE") == 0 )
     {
     	pop->set_nb_indivs(atol( line->words[1] ) );
