@@ -241,7 +241,8 @@ class ae_individual : public ae_object
     inline void set_max_genome_length( int32_t max_genome_length );
     
     inline void add_GU( char * &sequence, int32_t length );
-    
+    inline void set_allow_plasmids( bool allow_plasmids );
+
     // Mutation rates etc...
     inline void set_point_mutation_rate( double point_mutation_rate);
     inline void set_small_insertion_rate( double small_insertion_rate);
@@ -1294,6 +1295,11 @@ inline void ae_individual::set_w_max( double w_max )
 inline void ae_individual::add_GU( char * &sequence, int32_t length )
 {
   _genetic_unit_list->add( new ae_genetic_unit( this, sequence, length ) );
+}
+
+inline void ae_individual::set_allow_plasmids( bool allow_plasmids )
+{
+  _allow_plasmids=allow_plasmids;
 }
 
 // Genome size constraints

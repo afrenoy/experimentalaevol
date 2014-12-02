@@ -76,13 +76,18 @@ int main( int argc, char* argv[] )
   fprintf( output, "#\n" );
 
   // Parse and treat the individuals
-  ae_list_node<ae_individual*>* indiv_node = pop->get_indivs()->get_first();
-  ae_individual* indiv      = NULL;
-  while( indiv_node != NULL ){
-    indiv = (ae_individual *) indiv_node->get_obj();
-    indiv->do_transcription_translation_folding();
+  if (!best_only){
+    ae_list_node<ae_individual*>* indiv_node = pop->get_indivs()->get_first();
+    ae_individual* indiv      = NULL;
+    while( indiv_node != NULL ){
+      indiv = (ae_individual *) indiv_node->get_obj();
+      analyse_indiv(exp_manager, indiv, output, ndiv);
+      indiv_node = indiv_node->get_next();
+    }
+  }
+  else{
+    ae_individual* indiv=pop->get_best();
     analyse_indiv(exp_manager, indiv, output, ndiv);
-    indiv_node = indiv_node->get_next();
   }
 
   // Clean memory and exit
