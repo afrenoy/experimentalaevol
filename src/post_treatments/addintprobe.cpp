@@ -18,14 +18,7 @@
 #include <ae_list.h>
 #include <ae_exp_manager.h>
 
-
-
-
 void print_help( char* prog_name );
-void analyse_indiv( ae_individual* indiv, FILE* triangles_file, FILE* sequence_file, int16_t gu, ae_environment* env );
-void analyse_gu( ae_genetic_unit* gen_unit, int32_t gen_unit_number, FILE* triangles_file, ae_environment* env );
-
-
 
 int main( int argc, char* argv[] )
 {
