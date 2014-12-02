@@ -316,6 +316,31 @@ int main( int argc, char* argv[] )
     	pop->set_nb_indivs(atol( line->words[1] ) );
       printf("\tChange of population size to %ld\n",atol( line->words[1] ));
     }
+    else if ( strcmp( line->words[0], "SELECTION_SCHEME" ) == 0 )
+    {
+      if ( strncmp( line->words[1], "lin", 3 ) == 0 )
+      {
+        sel->set_selection_scheme(RANK_LINEAR);
+      }
+      else if ( strncmp( line->words[1], "exp", 3 ) == 0 )
+      {
+        sel->set_selection_scheme(RANK_EXPONENTIAL);
+      }
+      else if ( strncmp( line->words[1], "fitness", 7 ) == 0 )
+      {
+        sel->set_selection_scheme(FITNESS_PROPORTIONATE);
+      }
+      else if ( strcmp( line->words[1], "fittest" ) == 0 )
+      {
+        sel->set_selection_scheme(FITTEST);
+      }
+      else
+      {
+        printf( "ERROR in param file \"%s\" on line %"PRId32" : unknown selection scheme \"%s\".\n",
+               param_file_name, cur_line, line->words[1] );
+        exit( EXIT_FAILURE );
+      }
+    }
     else if ( strcmp( line->words[0], "SELECTION_PRESSURE") == 0 )
     {
     	sel->set_selection_pressure(atof( line->words[1] ) );
