@@ -368,6 +368,7 @@ void ae_population::break_linkage () {
     get_indiv_by_id(n)->get_genetic_unit_list()->remove(get_indiv_by_id(n)->get_genetic_unit_list()->get_node(1),true,true);
     get_indiv_by_id(n)->reevaluate();
   }
+  update_best();
 }
 
 
