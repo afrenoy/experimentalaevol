@@ -551,6 +551,9 @@ void ae_exp_manager::run_evolution( void )
     // Take one step in the evolutionary loop
     step_to_next_generation();
 
+    // Break linkage
+    if ( (get_exp_s()->get_break_linkage() > 0) && ( _num_gener % get_exp_s()->_break_linkage == 0 )) get_pop()->break_linkage();
+
     // Write statistical data and store phylogenetic data (tree)
     _output_m->write_current_generation_outputs();
   }

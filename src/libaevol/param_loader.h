@@ -274,9 +274,12 @@ class param_loader
     double    _recipient_cost;
     bool      _compute_phen_contrib_by_GU;
     bool      _swap_GUs;
+
+    // ------------------------------------------------------------ Hitchhiking
     int16_t*  _trait_gu_location;
     bool      _isolate_GUs;
-    
+    int32_t   _break_linkage;
+
     // ------------------------------------------------------- Translation cost
     double _translation_cost;
     

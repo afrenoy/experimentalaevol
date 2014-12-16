@@ -208,6 +208,8 @@ param_loader::param_loader( const char* file_name )
   _recipient_cost             = 0;
   _compute_phen_contrib_by_GU = false;
   _swap_GUs         = false;
+
+  // ------------------------------------------------------------ Hitchhiking
   _trait_gu_location = new int16_t[NB_FEATURES];
   int16_t i;
   for (i=0; i<NB_FEATURES; i++)
@@ -215,6 +217,7 @@ param_loader::param_loader( const char* file_name )
     _trait_gu_location[i]=0;
   }
   _isolate_GUs = false;
+  _break_linkage = 0;
   
   // ------------------------------------------------------- Translation cost
   _translation_cost = 0;
@@ -366,6 +369,10 @@ void param_loader::interpret_line( f_line* line, int32_t cur_line )
   else if ( strcmp( line->words[0], "ISOLATE_GUS" ) == 0 )
   {
     _isolate_GUs = true;
+  }
+  else if (strcmp(line->words[0], "BREAK_LINKAGE") == 0 )
+  {
+    _break_linkage = atoi( line->words[1] );
   }
   else if ( strcmp( line->words[0], "ENV_SEPARATE_SEGMENTS" ) == 0 )
   {
@@ -1159,9 +1166,12 @@ void param_loader::load( ae_exp_manager* exp_m, bool verbose, char* chromosome, 
   exp_s->set_donor_cost( _donor_cost );
   exp_s->set_recipient_cost( _recipient_cost );
   exp_s->set_swap_GUs( _swap_GUs );
+
+  // -------------------------------------------------------------- Hitchhiking
   exp_s->set_trait_gu_location( _trait_gu_location);
   output_m->set_compute_phen_contrib_by_GU( _compute_phen_contrib_by_GU );
   exp_s->set_isolate_GUs( _isolate_GUs );
+  exp_s->set_break_linkage( _break_linkage );
   
   // -------------------------------------------------------- Spatial structure
   if ( _spatially_structured )
@@ -1294,6 +1304,10 @@ void param_loader::load( ae_exp_manager* exp_m, bool verbose, char* chromosome, 
     
     if (plasmid != NULL)
     {
+      if (!_allow_plasmids){
+        printf("ERROR: option -p was used but ALLOW_PLASMIDS was set to false\n");
+        exit(EXIT_FAILURE);
+      }
       indiv->add_GU( plasmid, lplasmid );
       indiv->get_genetic_unit(1)->set_min_gu_length(_plasmid_minimal_length);
       indiv->get_genetic_unit(1)->set_max_gu_length(_plasmid_maximal_length);

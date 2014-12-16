@@ -415,7 +415,7 @@ void ae_selection::step_to_next_generation_grid( void )
       }
     }
   }
-  
+
   // Update the best individual
   _exp_m->get_pop()->update_best();
 }

@@ -142,6 +142,9 @@ class ae_population : public ae_object
       void backup_stoch_prng( void );
     #endif
 
+    // Hitchhiking
+    void break_linkage ( void );
+
     // =================================================================
     //                           Public Attributes
     // =================================================================

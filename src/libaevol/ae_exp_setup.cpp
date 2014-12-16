@@ -86,9 +86,13 @@ ae_exp_setup::ae_exp_setup( ae_exp_manager* exp_m )
   _donor_cost       = 0.0;
   _recipient_cost   = 0.0;
   _swap_GUs         = false;
+
+  // ------------------------------------------------------------ Hitchhiking
   _restriction_on_trait_gu_location = false;
   _trait_gu_location = new int16_t[NB_FEATURES];
   _isolate_GUs = false;
+  _break_linkage = 0;
+
   // -------------------------------------------------------------- Secretion
   _with_secretion = false;
   _secretion_contrib_to_fitness = 0.0;
@@ -147,6 +151,7 @@ void ae_exp_setup::write_setup_file( gzFile exp_setup_file ) const
     }
     int8_t tmp_isolate_GUs = _isolate_GUs;
     gzwrite( exp_setup_file, &tmp_isolate_GUs, sizeof(tmp_isolate_GUs));
+    gzwrite( exp_setup_file, &_break_linkage, sizeof(_break_linkage) );
   }
   
   // -------------------------------------------------------------- Secretion
@@ -213,6 +218,7 @@ void ae_exp_setup::load( gzFile setup_file, gzFile backup_file, bool verbose )
     int8_t tmp_isolate_GUs;
     gzread( setup_file, &tmp_isolate_GUs, sizeof(tmp_isolate_GUs) );
     _isolate_GUs = tmp_isolate_GUs ? 1 : 0;
+    gzread( setup_file, &_break_linkage, sizeof(_break_linkage) );
   }
   
   // ------------------------------------------ Retrieve secretion parameters
