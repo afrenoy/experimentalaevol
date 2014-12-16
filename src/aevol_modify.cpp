@@ -267,6 +267,10 @@ int main( int argc, char* argv[] )
     {
       exp_manager->get_exp_s()->set_isolate_GUs(true);
     }
+    else if (strcmp(line->words[0], "BREAK_LINKAGE") == 0 )
+    {
+      exp_manager->get_exp_s()->set_break_linkage(atoi( line->words[1] ));
+    }
     else if ( strcmp( line->words[0], "RECORD_TREE" ) == 0 )
     {
       if ( strncmp( line->words[1], "true", 4 ) == 0 )
