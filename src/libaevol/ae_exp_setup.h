@@ -106,7 +106,8 @@ class ae_exp_setup : public ae_object
     inline int16_t* get_trait_gu_location( void ) const;
     inline bool   get_restriction_on_trait_gu_location( void ) const;
     inline bool   get_isolate_GUs( void ) const;
-    inline int32_t   get_break_linkage( void ) const;
+    inline int32_t  get_break_linkage_period( void ) const;
+    inline int16_t  get_break_linkage_nb_gu( void ) const;
 
     // -------------------------------------------------------------- Secretion
     inline bool   get_with_secretion( void ) const;
@@ -137,7 +138,7 @@ class ae_exp_setup : public ae_object
     // ------------------------------------------------------------ Hitchhiking
     inline void set_trait_gu_location( int16_t* trait_gu_location );
     inline void set_isolate_GUs( bool isolate_GUs );
-    inline void set_break_linkage( int32_t );
+    inline void set_break_linkage( int32_t, int16_t );
 
     // -------------------------------------------------------------- Secretion
     inline void set_with_secretion( bool with_secretion );
@@ -213,7 +214,8 @@ class ae_exp_setup : public ae_object
     int16_t* _trait_gu_location;
     bool _restriction_on_trait_gu_location;
     bool _isolate_GUs;
-    int32_t _break_linkage;
+    int32_t _break_linkage_period;
+    int16_t _break_linkage_nb_gu;
 
     // -------------------------------------------------- Secretion parameters
     bool    _with_secretion;
@@ -305,8 +307,12 @@ inline bool ae_exp_setup::get_isolate_GUs( void ) const
   return _isolate_GUs;
 }
 
-inline int32_t ae_exp_setup::get_break_linkage(void) const{
-  return _break_linkage;
+inline int32_t ae_exp_setup::get_break_linkage_period(void) const{
+  return _break_linkage_period;
+}
+
+inline int16_t ae_exp_setup::get_break_linkage_nb_gu(void) const{
+  return _break_linkage_nb_gu;
 }
 
 inline bool ae_exp_setup::get_with_secretion( void ) const
@@ -407,9 +413,10 @@ inline void ae_exp_setup::set_isolate_GUs( bool isolate_GUs )
   _isolate_GUs = isolate_GUs;
 }
 
-inline void ae_exp_setup::set_break_linkage( int32_t break_linkage )
+inline void ae_exp_setup::set_break_linkage( int32_t break_linkage_period, int16_t break_linkage_nb_gu )
 {
-  _break_linkage = break_linkage;
+  _break_linkage_period = break_linkage_period;
+  _break_linkage_nb_gu = break_linkage_nb_gu;
 }
 
 // -------------------------------------------------------------- Secretion

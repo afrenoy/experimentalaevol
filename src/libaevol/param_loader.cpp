@@ -217,7 +217,8 @@ param_loader::param_loader( const char* file_name )
     _trait_gu_location[i]=0;
   }
   _isolate_GUs = false;
-  _break_linkage = 0;
+  _break_linkage_period = 0;
+  _break_linkage_nb_gu = -1;
   
   // ------------------------------------------------------- Translation cost
   _translation_cost = 0;
@@ -372,7 +373,8 @@ void param_loader::interpret_line( f_line* line, int32_t cur_line )
   }
   else if (strcmp(line->words[0], "BREAK_LINKAGE") == 0 )
   {
-    _break_linkage = atoi( line->words[1] );
+    _break_linkage_period = atoi( line->words[1] );
+    _break_linkage_nb_gu = atoi( line->words[2] );
   }
   else if ( strcmp( line->words[0], "ENV_SEPARATE_SEGMENTS" ) == 0 )
   {
@@ -1171,7 +1173,7 @@ void param_loader::load( ae_exp_manager* exp_m, bool verbose, char* chromosome, 
   exp_s->set_trait_gu_location( _trait_gu_location);
   output_m->set_compute_phen_contrib_by_GU( _compute_phen_contrib_by_GU );
   exp_s->set_isolate_GUs( _isolate_GUs );
-  exp_s->set_break_linkage( _break_linkage );
+  exp_s->set_break_linkage( _break_linkage_period, _break_linkage_nb_gu );
   
   // -------------------------------------------------------- Spatial structure
   if ( _spatially_structured )

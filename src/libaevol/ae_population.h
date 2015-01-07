@@ -143,7 +143,7 @@ class ae_population : public ae_object
     #endif
 
     // Hitchhiking
-    void break_linkage ( void );
+    void break_linkage ( int16_t );
 
     // =================================================================
     //                           Public Attributes

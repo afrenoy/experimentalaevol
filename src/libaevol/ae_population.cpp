@@ -342,7 +342,7 @@ ae_individual* ae_population::create_clone( ae_individual* dolly, int32_t id )
 
 // Break linkage between genetic units 0 and 1: the genetic unit 1 will be pooled, mixed, and randomly reassigned to individuals
 // This function is intended to be used when the two genetic units are representing linked loci that do not 'interact', and not transferable elements
-void ae_population::break_linkage () {
+void ae_population::break_linkage (int16_t nb_gu) {
 
   // Create and populate an array 'shuffle' that represents a permutation of the _nb_indivs first integers
   int32_t shuffle[get_nb_indivs()];
@@ -357,16 +357,18 @@ void ae_population::break_linkage () {
     shuffle[j]=tmp;
   }
 
-  // Make fresh copies of genetic unit 1s (from donors) and put them at the end of recipients
+  // Make fresh copies of genetic unit nb_gu (from donors) and put them just after genetic unit nb_gu in recipients
   for (int32_t n=0; n<get_nb_indivs(); n++){
-    // Individual n gets genetic unit 1 from individual shuffle[n]
-    get_indiv_by_id(n)->get_genetic_unit_list()->add( new ae_genetic_unit(get_indiv_by_id(n), get_indiv_by_id(shuffle[n])->get_genetic_unit(1)));
-                               // ->get_sequence(), get_indiv_by_id(shuffle[n])->get_genetic_unit(1)->get_seq_length()
+    // Individual n gets genetic unit nb_gu from individual shuffle[n]
+    ae_individual* recipient = get_indiv_by_id(n);
+    ae_individual* donor = get_indiv_by_id(shuffle[n]);
+    recipient->get_genetic_unit_list()->add_after( new ae_genetic_unit(recipient, donor->get_genetic_unit(nb_gu)) , recipient->get_genetic_unit_list()->get_node(nb_gu) );
   }
+  // Remove the "former" genetic unit nb_gu from recipients and re-evaluate them
   for (int32_t n=0; n<get_nb_indivs(); n++){
-    // Remove the extra genetic units from recipient and re-evaluate them
-    get_indiv_by_id(n)->get_genetic_unit_list()->remove(get_indiv_by_id(n)->get_genetic_unit_list()->get_node(1),true,true);
-    get_indiv_by_id(n)->reevaluate();
+    ae_individual* recipient = get_indiv_by_id(n);
+    recipient->get_genetic_unit_list()->remove(recipient->get_genetic_unit_list()->get_node(nb_gu),true,true);
+    recipient->reevaluate();
   }
   update_best();
 }

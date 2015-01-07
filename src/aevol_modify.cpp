@@ -269,7 +269,7 @@ int main( int argc, char* argv[] )
     }
     else if (strcmp(line->words[0], "BREAK_LINKAGE") == 0 )
     {
-      exp_manager->get_exp_s()->set_break_linkage(atoi( line->words[1] ));
+      exp_manager->get_exp_s()->set_break_linkage(atoi( line->words[1] ), atoi( line->words[2] ));
     }
     else if ( strcmp( line->words[0], "RECORD_TREE" ) == 0 )
     {

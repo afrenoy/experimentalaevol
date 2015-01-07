@@ -278,7 +278,8 @@ class param_loader
     // ------------------------------------------------------------ Hitchhiking
     int16_t*  _trait_gu_location;
     bool      _isolate_GUs;
-    int32_t   _break_linkage;
+    int32_t   _break_linkage_period;
+    int16_t   _break_linkage_nb_gu;
 
     // ------------------------------------------------------- Translation cost
     double _translation_cost;

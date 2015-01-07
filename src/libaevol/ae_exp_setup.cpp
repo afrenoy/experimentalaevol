@@ -91,7 +91,8 @@ ae_exp_setup::ae_exp_setup( ae_exp_manager* exp_m )
   _restriction_on_trait_gu_location = false;
   _trait_gu_location = new int16_t[NB_FEATURES];
   _isolate_GUs = false;
-  _break_linkage = 0;
+  _break_linkage_period = 0;
+  _break_linkage_nb_gu = 0;
 
   // -------------------------------------------------------------- Secretion
   _with_secretion = false;
@@ -151,7 +152,8 @@ void ae_exp_setup::write_setup_file( gzFile exp_setup_file ) const
     }
     int8_t tmp_isolate_GUs = _isolate_GUs;
     gzwrite( exp_setup_file, &tmp_isolate_GUs, sizeof(tmp_isolate_GUs));
-    gzwrite( exp_setup_file, &_break_linkage, sizeof(_break_linkage) );
+    gzwrite( exp_setup_file, &_break_linkage_period, sizeof(_break_linkage_period) );
+    gzwrite( exp_setup_file, &_break_linkage_nb_gu, sizeof(_break_linkage_nb_gu) );
   }
   
   // -------------------------------------------------------------- Secretion
@@ -218,7 +220,8 @@ void ae_exp_setup::load( gzFile setup_file, gzFile backup_file, bool verbose )
     int8_t tmp_isolate_GUs;
     gzread( setup_file, &tmp_isolate_GUs, sizeof(tmp_isolate_GUs) );
     _isolate_GUs = tmp_isolate_GUs ? 1 : 0;
-    gzread( setup_file, &_break_linkage, sizeof(_break_linkage) );
+    gzread( setup_file, &_break_linkage_period, sizeof(_break_linkage_period) );
+    gzread( setup_file, &_break_linkage_nb_gu, sizeof(_break_linkage_nb_gu) );
   }
   
   // ------------------------------------------ Retrieve secretion parameters

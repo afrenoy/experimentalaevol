@@ -552,8 +552,11 @@ void ae_exp_manager::run_evolution( void )
     step_to_next_generation();
 
     // Break linkage
-    if ( (get_exp_s()->get_break_linkage() > 0) && ( _num_gener % get_exp_s()->_break_linkage == 0 )) get_pop()->break_linkage();
-
+    if ( (get_exp_s()->get_break_linkage_period() > 0) && ( _num_gener % get_exp_s()->get_break_linkage_period() == 0 ))
+    {
+      printf("%" PRId16 " %" PRId32 "\n",get_exp_s()->get_break_linkage_nb_gu(),get_exp_s()->get_break_linkage_period() );
+      get_pop()->break_linkage(get_exp_s()->get_break_linkage_nb_gu());
+    }
     // Write statistical data and store phylogenetic data (tree)
     _output_m->write_current_generation_outputs();
   }
