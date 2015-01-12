@@ -1725,7 +1725,7 @@ ae_individual* param_loader::create_random_individual_with_good_gene( ae_exp_man
       }
       // TODO: not very smart, because the chances of randomly creating two good genes at the same time are very low! We should totally change the way plasmids are handled in this part of the initialization code.
     }
-    else // it is either 0 (generate one good gene (metabolic if there is metabolism, secretion otherwise) on the chromosome and copy it to the plasmid), either 1 (generate one good metabolic gene on the chromosome and one secretion gene on the plasmid)
+    else // it is either 0 (generate one good gene (metabolic if there is metabolism, secretion otherwise) on the chromosome and copy it to the plasmid), either 2 (generate one good metabolic gene on the chromosome and one secretion gene on the plasmid)
     {
       // here things work the same as before, but in the constructor of the individual, 
       // a single genetic unit is created and then copied from the chromosome to the plasmid
