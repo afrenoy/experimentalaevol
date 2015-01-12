@@ -343,6 +343,8 @@ ae_individual* ae_population::create_clone( ae_individual* dolly, int32_t id )
 // Break linkage between genetic units 0 and 1: the genetic unit 1 will be pooled, mixed, and randomly reassigned to individuals
 // This function is intended to be used when the two genetic units are representing linked loci that do not 'interact', and not transferable elements
 void ae_population::break_linkage (int16_t nb_gu) {
+  // We will do something ugly and use selection prng here, because it is the only one that makes sense
+  ae_jumping_mt* bl_prng=_exp_m->get_sel()->get_prng();
 
   // Create and populate an array 'shuffle' that represents a permutation of the _nb_indivs first integers
   int32_t shuffle[get_nb_indivs()];
@@ -350,8 +352,8 @@ void ae_population::break_linkage (int16_t nb_gu) {
     shuffle[i]=i;
   }
   for (int32_t n=0; n<get_nb_indivs()*5; n++){
-    int32_t i=_stoch_prng->random(get_nb_indivs());
-    int32_t j=_stoch_prng->random(get_nb_indivs());
+    int32_t i=bl_prng->random(get_nb_indivs());
+    int32_t j=bl_prng->random(get_nb_indivs());
     int32_t tmp = shuffle[i];
     shuffle[i]=shuffle[j];
     shuffle[j]=tmp;
