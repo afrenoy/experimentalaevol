@@ -312,7 +312,7 @@ inline void analyse_indiv( ae_individual* indiv, FILE* triangles_file, FILE* seq
   
   if ( info_file != NULL )
   {
-    fprintf(info_file, "%e\n", indiv->get_fitness());
+    fprintf(info_file, "%e %e %e\n", indiv->get_fitness(),indiv->get_fitness_by_feature(METABOLISM),indiv->get_fitness_by_feature(SECRETION));
   }
   
   // We go to next line in each file
