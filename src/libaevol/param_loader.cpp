@@ -1068,7 +1068,7 @@ void param_loader::read_file( void )
 }
 
 
-void param_loader::load( ae_exp_manager* exp_m, bool verbose, char* chromosome, int32_t lchromosome, char* plasmid, int32_t lplasmid )
+void param_loader::load( ae_exp_manager* exp_m, bool verbose, std::function<std::list<char*>(void)> creator, char* chromosome, int32_t lchromosome, char* plasmid, int32_t lplasmid )
 {
   // Check consistency of min, max and initial length of chromosome and plasmid
   // Default for by GU minimal or maximal size is -1.
@@ -1284,12 +1284,67 @@ void param_loader::load( ae_exp_manager* exp_m, bool verbose, char* chromosome, 
   param_mut->set_deletion_proportion( _deletion_proportion );
   param_mut->set_translocation_proportion( _translocation_proportion );
   param_mut->set_inversion_proportion( _inversion_proportion );
-  
-  ae_individual* indiv        = NULL;
-  int32_t        id_new_indiv = 0;
-  
-  if (chromosome != NULL)
+
+  if (creator)
   {
+    int32_t id_new_indiv = 0;
+    int nblines=0;
+    while (true){
+      std::list<char*> gi = creator();
+      char* chr = gi.front();
+      if (chr==NULL) break;
+      int lchromosome = strlen(chr);
+      char* chromosome = new char[lchromosome+1];
+      strncpy(chromosome, chr, lchromosome+1);
+
+      ae_individual* indiv = new ae_individual( exp_m,
+                                               _prng,
+                                               _prng,
+                                               param_mut,
+                                               _w_max,
+                                               _min_genome_length,
+                                               _max_genome_length,
+                                               _allow_plasmids,
+                                               id_new_indiv,
+                                               0 );
+
+      indiv->add_GU( chromosome, lchromosome );
+      indiv->get_genetic_unit(0)->set_min_gu_length(_chromosome_minimal_length);
+      indiv->get_genetic_unit(0)->set_max_gu_length(_chromosome_maximal_length);
+
+      char* pla = gi.back();
+      if (pla!=NULL)
+      {
+        if (!_allow_plasmids){
+          printf("ERROR: a plasmid was specified but ALLOW_PLASMIDS was set to false\n");
+          exit(EXIT_FAILURE);
+        }
+        int lplasmid = strlen(plasmid);
+        char* plasmid = new char[lplasmid+1];
+        strncpy(plasmid, pla, lplasmid+1);;
+        indiv->add_GU( plasmid, lplasmid );
+        indiv->get_genetic_unit(1)->set_min_gu_length(_plasmid_minimal_length);
+        indiv->get_genetic_unit(1)->set_max_gu_length(_plasmid_maximal_length);
+      }
+      indiv->set_with_stochasticity( _with_stochasticity );
+      indiv->compute_statistical_data();
+      indiv->evaluate( exp_m->get_env() );
+      pop->add_indiv( indiv );
+
+      id_new_indiv++;
+    }
+    pop->sort_individuals();
+    printf("Read %d individuals from text file\n",id_new_indiv);
+    if (id_new_indiv!=_init_pop_size)
+    {
+      printf("ERROR: INIT_POP_SIZE incompatible with number of genomes present in input file\n");
+      exit(EXIT_FAILURE);
+    }
+  }
+  else if (chromosome != NULL)
+  {
+    int32_t        id_new_indiv = 0;
+
     ae_individual* indiv = new ae_individual( exp_m,
                                              _prng,
                                              _prng,
@@ -1332,6 +1387,9 @@ void param_loader::load( ae_exp_manager* exp_m, bool verbose, char* chromosome, 
   }
   else if ( _init_method & ONE_GOOD_GENE )
   {
+    ae_individual* indiv        = NULL;
+    int32_t        id_new_indiv = 0;
+
     if ( _init_method & CLONE )
     {
       // Create an individual with a "good" gene (in fact, make an indiv whose
@@ -1390,7 +1448,10 @@ void param_loader::load( ae_exp_manager* exp_m, bool verbose, char* chromosome, 
     }
   }
   else // if ( ! ONE_GOOD_GENE )
-  {    
+  {
+    ae_individual* indiv        = NULL;
+    int32_t        id_new_indiv = 0;
+
     if ( _init_method & CLONE )
     {
       // Create a random individual and set its id

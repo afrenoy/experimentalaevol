@@ -71,15 +71,17 @@ int main( int argc, char* argv[] )
   char* param_file_name = NULL;
   char* chromosome_file_name = NULL;
   char* plasmid_file_name = NULL;
+  char* sequences_file_name = NULL;
   
   // 2) Define allowed options
-  const char * options_list = "hf:Vc:p:";
+  const char * options_list = "hf:Vc:p:s:";
   static struct option long_options_list[] = {
     { "help",     no_argument,        NULL, 'h' },
     { "file",     required_argument,  NULL, 'f' },
     { "version",  no_argument,        NULL, 'V' },
     { "chromosome",   required_argument,  NULL, 'c' },
     { "plasmid",   required_argument,  NULL, 'p' },
+    { "sequences", required_argument, NULL, 's'},
     { 0, 0, 0, 0 }
   };
   
@@ -116,6 +118,12 @@ int main( int argc, char* argv[] )
       {
         plasmid_file_name = new char [strlen(optarg)+1];
         strcpy( plasmid_file_name, optarg );
+        break;
+      }
+      case 's':
+      {
+        sequences_file_name = new char [strlen(optarg)+1];
+        strcpy( sequences_file_name, optarg );
         break;
       }
       default :
@@ -175,22 +183,56 @@ int main( int argc, char* argv[] )
   #else
     ae_exp_manager* exp_manager = new ae_exp_manager();
   #endif
+
+  std::function<std::list<char*>(void)> empty;
+
   
   // 7) Load the parameter file
-  if (lchromosome > -1)
+  if (sequences_file_name != NULL )
+  {
+    FILE* source = fopen(sequences_file_name,"r");
+    if (source==NULL)
+    {
+      printf("ERROR: failed to open file %s in reading mode\n",sequences_file_name);
+      exit(EXIT_FAILURE);
+    }
+
+    my_param_loader->load( exp_manager, true, [&](void)->std::list<char*>{
+      char rawdata[1000000];
+      std::list<char*> r;
+      if ( (fgets(rawdata, 1000000, source) == NULL) || (feof(source)))
+      {
+        r.push_front(NULL);
+        return r;
+      }
+      char* chr = strtok(rawdata," \n");
+      if (chr==NULL)
+      {
+        r.push_front(NULL);
+        return r;
+      }
+      r.push_front(chr);
+      char* pla = strtok(NULL," \n");
+      r.push_back(pla);
+      return r;
+    });
+
+    fclose(source);
+  }
+  else if (lchromosome > -1)
   {
     if (lplasmid > -1)
     {
-      my_param_loader->load( exp_manager, true, chromosome, lchromosome, plasmid, lplasmid );
+      my_param_loader->load( exp_manager, true, empty, chromosome, lchromosome, plasmid, lplasmid );
     }
     else
     {
-      my_param_loader->load( exp_manager, true, chromosome, lchromosome );
+      my_param_loader->load( exp_manager, true, empty, chromosome, lchromosome );
     }
   }
   else
   {
-    my_param_loader->load( exp_manager, true );
+    my_param_loader->load( exp_manager, true, empty );
   }
   delete my_param_loader;
   

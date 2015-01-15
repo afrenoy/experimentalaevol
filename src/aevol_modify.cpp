@@ -642,6 +642,16 @@ int main( int argc, char* argv[] )
         exp_manager->get_output_m()->set_dump_step( step );
       }
     }
+#ifdef BINARY_SECRETION
+    else if ( strcmp( line->words[0], "SWITCH_DC") == 0 )
+    {
+      sel->set_mutdc(atof(line->words[1]));
+    }
+    else if ( strcmp( line->words[0], "SWITCH_CD") == 0 )
+    {
+      sel->set_mutcd(atof(line->words[1]));
+    }
+#endif
     else
     {
       printf( "%s:%d: error: the change %s is not implemented yet \n", __FILE__, __LINE__, line->words[0] );
